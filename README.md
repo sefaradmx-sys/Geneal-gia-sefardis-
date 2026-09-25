@@ -1,7 +1,10 @@
 # Genealogía Sefardí
 
+Sitio público: https://sefaradmx-sys.github.io/Geneal-gia-sefardis-/
+
 A small web application to explore and preserve Sephardic family trees. It serves
-a static frontend and a small JSON API backed by an in-memory dataset.
+a static frontend and a small JSON API backed by an in-memory dataset. The public
+page lives in `docs/` and is published with GitHub Pages.
 
 ## Requirements
 
