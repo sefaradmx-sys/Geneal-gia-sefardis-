@@ -3,7 +3,9 @@ WORKDIR /app
 COPY apps/web/package.json apps/web/package-lock.json ./
 RUN npm ci
 COPY apps/web ./
-ENV API_INTERNAL_URL=http://api:8000
+ARG NEXT_BASE_PATH=""
+ENV NEXT_BASE_PATH=$NEXT_BASE_PATH
+ENV API_INTERNAL_URL=http://lmc-api:8000
 RUN npm run build
 
 FROM node:22-alpine

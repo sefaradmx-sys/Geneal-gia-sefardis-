@@ -1,0 +1,41 @@
+# LA MV Census on the existing GarGa Vector stack.
+# Uses the shared Postgres/Redis network. Does not replace CRM, pulso, radio, or n8n.
+name: lmc
+
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: apps/api/Dockerfile
+    container_name: lmc-api
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - "8000"
+    mem_limit: 384m
+    networks:
+      - garga_default
+
+  web:
+    build:
+      context: ../..
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_BASE_PATH: /census
+    container_name: lmc-web
+    restart: unless-stopped
+    environment:
+      API_INTERNAL_URL: http://lmc-api:8000
+    expose:
+      - "3000"
+    ports:
+      - "3092:3000"
+    depends_on:
+      - api
+    mem_limit: 256m
+    networks:
+      - garga_default
+
+networks:
+  garga_default:
+    external: true

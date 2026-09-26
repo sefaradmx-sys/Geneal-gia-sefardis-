@@ -31,7 +31,7 @@ export function LoginForm() {
             type={visible ? "text" : "password"}
             autoComplete="current-password"
             required
-            placeholder="••••••••"
+            placeholder="Escribe tu contraseña"
             className="input h-11 pl-10 pr-10"
           />
           <button
