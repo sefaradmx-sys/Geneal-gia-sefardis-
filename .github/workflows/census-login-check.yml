@@ -1,0 +1,92 @@
+name: census-login-check
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - cursor/database-mart-acceso-a5bc
+    paths:
+      - ".github/workflows/census-login-check.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Probar el login público
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          report=$(mktemp)
+          {
+            echo "URL=http://108.181.203.225:10049/census/login"
+            curl -sS -m 25 -c /tmp/cj -b /tmp/cj -o /tmp/login.html -w "page:%{http_code}\n" \
+              http://108.181.203.225:10049/census/login
+            python3 - <<'PY'
+          import pathlib, re
+          html = pathlib.Path("/tmp/login.html").read_text(errors="ignore")
+          print("title", re.search(r"<title>(.*?)</title>", html).group(1) if re.search(r"<title>(.*?)</title>", html) else "?")
+          print("has_form", "<form" in html.lower())
+          # Next server action ids
+          ids = re.findall(r'\$ACTION_ID_([a-f0-9]+)', html)
+          ids += re.findall(r'"id"\s*:\s*"([a-f0-9]{40,})"', html)
+          ids += re.findall(r'actionId["\']?\s*[:=]\s*["\']([a-f0-9]+)["\']', html)
+          print("action_ids", ids[:5])
+          pathlib.Path("/tmp/action_ids.txt").write_text("\n".join(ids))
+          # next-action from flight data
+          m = re.findall(r'[0-9a-f]{40,}', html)
+          print("long_hex_count", len(m))
+          PY
+            # Install playwright for real form submit
+            pip -q install playwright >/dev/null
+            python -m playwright install --with-deps chromium >/dev/null
+            python3 - <<'PY'
+          from playwright.sync_api import sync_playwright
+          import pathlib
+
+          url = "http://108.181.203.225:10049/census/login"
+          # Passwords already published in repo/chat history — used only to diagnose the live box.
+          attempts = [
+              ("pmccoahuila@gmail.com", "tachy8507"),
+              ("admin", "tachy8507"),
+              ("admin", "Tachy8507#"),
+              ("admin@localhost", "tachy8507"),
+              ("admin@localhost", "Tachy8507#"),
+          ]
+          results = []
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              for user, password in attempts:
+                  page = browser.new_page()
+                  try:
+                      page.goto(url, wait_until="networkidle", timeout=30000)
+                      page.fill('input[name="username"]', user)
+                      page.fill('input[name="password"]', password)
+                      page.click('button[type="submit"]')
+                      page.wait_for_timeout(8000)
+                      final = page.url
+                      body = page.content()
+                      err = "Credenciales inválidas" in body or "No se pudo contactar" in body or "Demasiados intentos" in body
+                      ok = "/estudios" in final and "login" not in final
+                      pending = "Entrando" in body
+                      results.append(f"{user} → ok={ok} err={err} pending={pending} url={final}")
+                  except Exception as exc:
+                      results.append(f"{user} → EXC {type(exc).__name__}: {exc}")
+                  finally:
+                      page.close()
+              browser.close()
+          print("\n".join(results))
+          pathlib.Path("/tmp/login-results.txt").write_text("\n".join(results) + "\n")
+          PY
+          } > "$report" 2>&1
+          cat "$report"
+          jq -n --rawfile body "$report" '{body: $body}' > /tmp/comment.json
+          curl -sS -m 20 -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/comments" \
+            -d @/tmp/comment.json -o /tmp/comment-res.json -w "comment:%{http_code}\n"

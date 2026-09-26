@@ -4,3 +4,6 @@
 #	handle /census* {
 #		reverse_proxy lmc-web:3000
 #	}
+#	handle / {
+#		redir /census/login 302
+#	}
