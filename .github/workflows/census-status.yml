@@ -1,0 +1,70 @@
+name: census-status
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - cursor/database-mart-acceso-a5bc
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Comprobar el tablero público
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          report=$(mktemp)
+          {
+            python3 - << 'PY'
+          import socket
+          host = "108.181.203.225"
+          for port in (10049, 10050, 10048, 80):
+              sock = socket.socket()
+              sock.settimeout(8)
+              try:
+                  sock.connect((host, port))
+                  print(f"{port} open")
+              except Exception as exc:
+                  print(f"{port} {type(exc).__name__}")
+              finally:
+                  sock.close()
+          PY
+            for path in / /census /census/login; do
+              code=$(curl -sS -m 15 -o /tmp/one.body -w '%{http_code}' "http://108.181.203.225:10049${path}" || echo fail)
+              title=$(python3 -c 'import re,pathlib; t=pathlib.Path("/tmp/one.body").read_text(errors="ignore"); m=re.search(r"<title>(.*?)</title>", t); print(m.group(1) if m else t[:80].replace("\n"," "))')
+              echo "GET ${path} -> ${code} | ${title}"
+            done
+            curl -sS -m 20 -D /tmp/census.hdr -o /tmp/census.body -w "login:%{http_code}\n" http://108.181.203.225:10049/census/login
+            echo "--- assets ---"
+            python3 - << 'PY'
+          import re, pathlib, subprocess
+          html = pathlib.Path("/tmp/census.body").read_text(errors="ignore")
+          urls = re.findall(r'(?:src|href)="([^"]+)"', html)
+          seen = []
+          for url in urls:
+              if url.startswith("data:") or url.startswith("#"):
+                  continue
+              if url not in seen:
+                  seen.append(url)
+          for url in seen[:12]:
+              target = url if url.startswith("http") else "http://108.181.203.225:10049" + (url if url.startswith("/") else "/census/" + url)
+              proc = subprocess.run(["curl", "-sS", "-m", "15", "-o", "/dev/null", "-w", "%{http_code}", target], capture_output=True, text=True)
+              print(proc.stdout.strip() or proc.stderr.strip(), target)
+          print("has-form", "form" in html.lower(), "has-entrar", "Entrar" in html or "Bienvenido" in html)
+          PY
+          } > "$report" 2>&1
+          cat "$report"
+          jq -n --rawfile body "$report" '{body: $body, path: ".github/workflows/census-status.yml", line: 1, side: "RIGHT"}' > /tmp/comment.json
+          curl -sS -m 20 -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/comments" \
+            -d @/tmp/comment.json \
+            -o /tmp/comment-res.json -w "comment:%{http_code}\n"
+          head -c 200 /tmp/comment-res.json
+          echo

@@ -1,0 +1,213 @@
+name: deploy-vps
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to deploy"
+        required: false
+        default: "cursor/database-mart-acceso-a5bc"
+  repository_dispatch:
+    types: [deploy-lmc]
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Resolver ref
+        id: ref
+        run: |
+          set -euo pipefail
+          REF='cursor/database-mart-acceso-a5bc'
+          if [[ "${{ github.event_name }}" == "repository_dispatch" && -n "${{ github.event.client_payload.ref }}" ]]; then
+            REF='${{ github.event.client_payload.ref }}'
+          fi
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.ref }}" ]]; then
+            REF='${{ github.event.inputs.ref }}'
+          fi
+          echo "ref=$REF" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.ref }}
+
+      - name: Instalar sshpass y rsync
+        run: sudo apt-get update -qq && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq sshpass rsync
+
+      - name: Desplegar en Database Mart
+        id: deploy
+        env:
+          SECRET_PASS: ${{ secrets.VPS_SSH_PASS }}
+          DISPATCH_PASS: ${{ github.event.client_payload.ssh_pass }}
+          BOOTSTRAP_ADMIN_USER: pmccoahuila@gmail.com
+          BOOTSTRAP_ADMIN_EMAIL: pmccoahuila@gmail.com
+          BOOTSTRAP_ADMIN_PASSWORD: tachy8507
+        run: |
+          set -euo pipefail
+          VPS_SSH_PASS="${SECRET_PASS:-${DISPATCH_PASS:-}}"
+          if [[ -z "${VPS_SSH_PASS}" ]]; then
+            echo "Falta VPS_SSH_PASS o client_payload.ssh_pass"
+            exit 1
+          fi
+          echo "::add-mask::${VPS_SSH_PASS}"
+          printf '%s' "$VPS_SSH_PASS" > /tmp/vps-ssh-pass
+          chmod 600 /tmp/vps-ssh-pass
+          test -f deploy/vps/deploy.sh
+          chmod +x deploy/vps/deploy.sh
+          set -o pipefail
+          ./deploy/vps/deploy.sh 2>&1 | tee /tmp/deploy-out.txt
+
+      - name: Comprobar URL pública y login
+        if: success()
+        env:
+          BOOTSTRAP_ADMIN_USER: pmccoahuila@gmail.com
+          BOOTSTRAP_ADMIN_PASSWORD: tachy8507
+        run: |
+          set -euo pipefail
+          for i in 1 2 3 4 5 6 8 10; do
+            code=$(curl -sS -m 20 -o /tmp/out.html -w '%{http_code}' http://108.181.203.225:10049/census/login || true)
+            echo "intento $i → $code"
+            if [[ "$code" == "200" ]] && grep -q 'LA MV Census' /tmp/out.html; then
+              break
+            fi
+            sleep 5
+          done
+          test "${code:-}" = "200"
+          pip -q install playwright >/dev/null
+          python -m playwright install --with-deps chromium >/dev/null
+          python3 - <<'PY'
+          from playwright.sync_api import sync_playwright
+          import os
+          url = "http://108.181.203.225:10049/census/login"
+          user = os.environ["BOOTSTRAP_ADMIN_USER"]
+          password = os.environ["BOOTSTRAP_ADMIN_PASSWORD"]
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.goto(url, wait_until="networkidle", timeout=60000)
+              page.fill('input[name="username"]', user)
+              page.fill('input[name="password"]', password)
+              page.click('button[type="submit"]')
+              page.wait_for_timeout(15000)
+              final = page.url
+              browser.close()
+          print("final_url", final)
+          if "/estudios" not in final:
+              raise SystemExit("login no entró a /estudios")
+          print("LOGIN_OK")
+          PY
+
+      - name: Subir salida del deploy
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-out
+          path: /tmp/deploy-out.txt
+          if-no-files-found: ignore
+
+      - name: Resumen
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          {
+            echo "### Deploy VPS"
+            echo
+            echo "- status: ${{ job.status }}"
+            echo "- ref: ${{ steps.ref.outputs.ref }}"
+            echo "- url: http://108.181.203.225:10049/census/login"
+            echo "- run: ${{ github.run_id }}"
+            echo
+            echo '```'
+            if [[ -f /tmp/deploy-out.txt ]]; then
+              sed -E 's/(PASS|assword|ssh_pass|tachy8507)[=:]?[^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt | tail -n 200
+            else
+              echo "(sin salida)"
+            fi
+            echo '```'
+          } | tee /tmp/summary.md | tee -a "$GITHUB_STEP_SUMMARY"
+
+          # Log legible en el repo (el agente no puede bajar artefactos de Actions).
+          {
+            echo "# last-deploy-log"
+            echo
+            echo "run=${{ github.run_id }} status=${{ job.status }} ref=${{ steps.ref.outputs.ref }} at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo
+            if [[ -f /tmp/deploy-out.txt ]]; then
+              sed -E 's/(PASS|assword|ssh_pass|tachy8507)[=:]?[^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt
+            else
+              echo "(sin salida)"
+            fi
+          } > /tmp/last-deploy-log.md
+          python3 - <<'PY'
+          import base64, json, os, urllib.request
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          branch = "cursor/deploy-logs-a5bc"
+          path = "deploy/vps/last-deploy-log.md"
+          body = open("/tmp/last-deploy-log.md", "rb").read()
+          content_b64 = base64.b64encode(body).decode()
+          api = f"https://api.github.com/repos/{repo}"
+
+          def req(method, url, data=None):
+              r = urllib.request.Request(url, method=method, data=data)
+              r.add_header("Authorization", f"Bearer {token}")
+              r.add_header("Accept", "application/vnd.github+json")
+              if data is not None:
+                  r.add_header("Content-Type", "application/json")
+              try:
+                  with urllib.request.urlopen(r, timeout=30) as resp:
+                      return resp.status, json.load(resp)
+              except urllib.error.HTTPError as e:
+                  raw = e.read().decode()
+                  try:
+                      return e.code, json.loads(raw)
+                  except Exception:
+                      return e.code, {"message": raw}
+
+          # Asegura rama a partir de main
+          st, ref = req("GET", f"{api}/git/ref/heads/main")
+          if st != 200:
+              raise SystemExit(f"main ref: {st} {ref}")
+          main_sha = ref["object"]["sha"]
+          st, _ = req("GET", f"{api}/git/ref/heads/{branch}")
+          if st == 404:
+              st, created = req("POST", f"{api}/git/refs", json.dumps({
+                  "ref": f"refs/heads/{branch}",
+                  "sha": main_sha,
+              }).encode())
+              print("branch_create", st, created.get("ref", created))
+          st, existing = req("GET", f"{api}/contents/{path}?ref={branch}")
+          sha = existing.get("sha") if st == 200 else None
+          payload = {
+              "message": f"chore: last deploy log run {os.environ.get('GITHUB_RUN_ID')}",
+              "content": content_b64,
+              "branch": branch,
+          }
+          if sha:
+              payload["sha"] = sha
+          st, out = req("PUT", f"{api}/contents/{path}", json.dumps(payload).encode())
+          print("log_commit", st, out.get("content", {}).get("path"), out.get("commit", {}).get("sha"))
+          if st not in (200, 201):
+              raise SystemExit(f"log commit failed: {st} {out}")
+          PY
+
+          jq -n --rawfile body /tmp/summary.md '{body: $body}' > /tmp/comment.json
+          code=$(curl -sS -m 20 -o /tmp/comment-resp.json -w '%{http_code}' -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/9/comments" \
+            -d @/tmp/comment.json || true)
+          echo "comment_http=$code"
+          head -c 240 /tmp/comment-resp.json || true
+          echo
