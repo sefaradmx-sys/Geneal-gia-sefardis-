@@ -81,6 +81,11 @@ export default function LoginPage() {
           </div>
           <h2 className="font-display text-3xl font-semibold tracking-tight text-fg">Bienvenido</h2>
           <p className="mt-2 text-sm text-muted">Entra con tu usuario de la organización.</p>
+          <p className="mt-3 text-sm">
+            <a className="break-all text-primary underline" href="http://108.181.203.225:10049/census/login">
+              http://108.181.203.225:10049/census/login
+            </a>
+          </p>
           <LoginForm />
           <p className="mt-10 text-center text-[11px] text-muted">
             LA MV Census · uso interno

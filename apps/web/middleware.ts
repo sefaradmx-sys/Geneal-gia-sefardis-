@@ -18,7 +18,8 @@ function appUrl(request: NextRequest, path: string): URL {
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("lmc_token")?.value;
   const isLogin = request.nextUrl.pathname.startsWith("/login");
-  if (!token && !isLogin) {
+  const isLoginApi = request.nextUrl.pathname.startsWith("/api/login");
+  if (!token && !isLogin && !isLoginApi) {
     return NextResponse.redirect(appUrl(request, "/login"));
   }
   if (token && isLogin) {
