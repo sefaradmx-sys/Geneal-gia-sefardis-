@@ -31,7 +31,7 @@ docker compose up --build
 - Tablero: http://localhost:3000
 - API: http://localhost:8000/api/v1/health
 
-El usuario inicial sale de `BOOTSTRAP_ADMIN_USER` y `BOOTSTRAP_ADMIN_PASSWORD`. En local, el ejemplo trae un superadmin para el primer login. En producción hay que cambiar esas variables. La contraseña no se imprime en logs ni en la API.
+El usuario inicial sale de `BOOTSTRAP_ADMIN_USER` y `BOOTSTRAP_ADMIN_PASSWORD`. En el ejemplo local el acceso es el correo `pmccoahuila@gmail.com`. En producción hay que cambiar esas variables. La contraseña no se imprime en logs ni en la API.
 
 `DEMO_SEED=true` carga el estudio «Sentimiento Gobierno de Coahuila — 30 días» con 2,000 menciones sintéticas.
 

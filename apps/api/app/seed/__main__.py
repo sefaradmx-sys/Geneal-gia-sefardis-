@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 
 from app.core.config import get_settings
 from app.core.db import SessionLocal
@@ -38,12 +38,30 @@ SOURCE_STATUS = {
 }
 
 
+_PREVIOUS_BOOTSTRAP = ("admin", "admin@localhost")
+
+
 def ensure_admin(session, settings) -> User:
-    existing = session.scalar(select(User).where(User.username == settings.bootstrap_admin_user))
+    username = settings.bootstrap_admin_user.strip()
+    email = settings.bootstrap_admin_email.strip()
+    if not username or not email or not settings.bootstrap_admin_password:
+        raise RuntimeError("BOOTSTRAP_ADMIN_USER, BOOTSTRAP_ADMIN_EMAIL y BOOTSTRAP_ADMIN_PASSWORD son obligatorios")
+    existing = session.scalar(select(User).where(or_(User.username == username, User.email == email)))
+    if existing is None:
+        existing = session.scalar(
+            select(User).where(
+                or_(User.username == _PREVIOUS_BOOTSTRAP[0], User.email == _PREVIOUS_BOOTSTRAP[1])
+            )
+        )
     if existing:
+        existing.username = username
+        existing.email = email
+        existing.password_hash = hash_password(settings.bootstrap_admin_password)
+        existing.role = "superadmin"
+        existing.is_active = True
+        session.flush()
+        log.info("usuario inicial actualizado")
         return existing
-    if not settings.bootstrap_admin_password:
-        raise RuntimeError("BOOTSTRAP_ADMIN_PASSWORD vacío")
     org = session.scalar(select(Organization).where(Organization.slug == "la-mv-census"))
     if org is None:
         org = Organization(name="Casa matriz", slug="la-mv-census")
@@ -51,8 +69,8 @@ def ensure_admin(session, settings) -> User:
         session.flush()
     user = User(
         organization_id=org.id,
-        email=settings.bootstrap_admin_email,
-        username=settings.bootstrap_admin_user,
+        email=email,
+        username=username,
         password_hash=hash_password(settings.bootstrap_admin_password),
         role="superadmin",
     )
