@@ -124,9 +124,9 @@ echo "USING:${DC[*]}"
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 echo ">> build api $(date -u +%H:%M:%S)"
-"${DC[@]}" build --progress=plain api
+"${DC[@]}" --progress=plain build api
 echo ">> build web $(date -u +%H:%M:%S)"
-"${DC[@]}" build --progress=plain web
+"${DC[@]}" --progress=plain build web
 echo ">> up $(date -u +%H:%M:%S)"
 "${DC[@]}" up -d --force-recreate --remove-orphans api web
 echo ">> wait api $(date -u +%H:%M:%S)"
