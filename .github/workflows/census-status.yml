@@ -1,0 +1,35 @@
+name: census-status
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - cursor/database-mart-acceso-a5bc
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Comprobar el tablero público
+        run: |
+          python3 - << 'PY'
+          import socket
+          host = "108.181.203.225"
+          for port in (10049, 10050, 10048, 80):
+              sock = socket.socket()
+              sock.settimeout(8)
+              try:
+                  sock.connect((host, port))
+                  print(f"{port} open")
+              except Exception as exc:
+                  print(f"{port} {type(exc).__name__}")
+              finally:
+                  sock.close()
+          PY
+          curl -sS -m 20 -D /tmp/census.hdr -o /tmp/census.body -w "http:%{http_code}\n" http://108.181.203.225:10049/census/login || true
+          echo "--- headers ---"
+          head -n 20 /tmp/census.hdr || true
+          echo "--- body ---"
+          head -c 180 /tmp/census.body || true
+          echo
