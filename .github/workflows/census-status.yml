@@ -34,6 +34,11 @@ jobs:
               finally:
                   sock.close()
           PY
+            for path in / /census /census/login; do
+              code=$(curl -sS -m 15 -o /tmp/one.body -w '%{http_code}' "http://108.181.203.225:10049${path}" || echo fail)
+              title=$(python3 -c 'import re,pathlib; t=pathlib.Path("/tmp/one.body").read_text(errors="ignore"); m=re.search(r"<title>(.*?)</title>", t); print(m.group(1) if m else t[:80].replace("\n"," "))')
+              echo "GET ${path} -> ${code} | ${title}"
+            done
             echo "http:$(curl -sS -m 20 -D /tmp/census.hdr -o /tmp/census.body -w '%{http_code}' http://108.181.203.225:10049/census/login)"
             echo "--- headers ---"
             head -n 15 /tmp/census.hdr
