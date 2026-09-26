@@ -1,7 +1,7 @@
 import time
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import or_, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
 from app.core.config import Settings, get_settings
@@ -45,7 +45,10 @@ def login(
     if _limited(identity):
         raise HTTPException(status_code=429, detail="Demasiados intentos. Espera unos minutos.")
     identifier = body.username.strip()
-    user = session.scalar(select(User).where(or_(User.username == identifier, User.email == identifier)))
+    needle = identifier.casefold()
+    user = session.scalar(
+        select(User).where(or_(func.lower(User.username) == needle, func.lower(User.email) == needle))
+    )
     if user is None or not user.is_active or not verify_password(body.password, user.password_hash):
         _register_failure(identity)
         raise HTTPException(status_code=401, detail="Credenciales inválidas")

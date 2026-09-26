@@ -11,15 +11,23 @@ export async function apiFetch(path: string, init?: RequestInit): Promise<Respon
   if (!token) {
     redirect("/login");
   }
-  const response = await fetch(`${apiBase()}/api/v1${path}`, {
-    ...init,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      ...(init?.headers || {}),
-    },
-    cache: "no-store",
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${apiBase()}/api/v1${path}`, {
+      ...init,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        ...(init?.headers || {}),
+      },
+      cache: "no-store",
+    });
+  } catch {
+    return new Response(JSON.stringify({ detail: "servicio no disponible" }), {
+      status: 503,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   if (response.status === 401) {
     redirect("/login");
   }

@@ -6,6 +6,13 @@ import type { StudyListItem } from "@/lib/types";
 
 export default async function EstudiosPage() {
   const response = await apiFetch("/studies");
+  if (!response.ok) {
+    return (
+      <Shell>
+        <p className="text-neg">No se pudo cargar la lista de estudios.</p>
+      </Shell>
+    );
+  }
   const studies = (await response.json()) as StudyListItem[];
   return (
     <Shell>

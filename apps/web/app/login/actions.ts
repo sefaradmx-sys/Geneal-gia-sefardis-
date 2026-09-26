@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
@@ -14,12 +14,17 @@ export async function loginAction(
 ): Promise<{ error: string }> {
   const username = String(formData.get("username") || "").trim();
   const password = String(formData.get("password") || "");
-  const response = await fetch(`${apiBase()}/api/v1/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
-    cache: "no-store",
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${apiBase()}/api/v1/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+      cache: "no-store",
+    });
+  } catch {
+    return { error: "No se pudo contactar el servicio. Intenta de nuevo." };
+  }
   if (response.status === 429) {
     return { error: "Demasiados intentos. Espera unos minutos." };
   }
@@ -27,10 +32,13 @@ export async function loginAction(
     return { error: "Credenciales inválidas" };
   }
   const data = (await response.json()) as { access_token: string };
+  const incoming = await headers();
+  const proto = incoming.get("x-forwarded-proto")?.split(",")[0]?.trim();
   const jar = await cookies();
   jar.set("lmc_token", data.access_token, {
     httpOnly: true,
     sameSite: "lax",
+    secure: proto === "https",
     path: "/",
     maxAge: 60 * 60 * 12,
   });
