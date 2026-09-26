@@ -11,6 +11,7 @@ from collector.manual import parse_csv, parse_upload
 from collector.reddit import parse_listing
 from collector.rss import RssConnector, parse_feed
 from collector.web_public import host_allowed, robots_allowed
+from collector.wordpress import civic_count, is_civic, parse_wp_posts, strip_html
 from collector.x_api import XConnector, parse_recent_search
 from collector.youtube import YoutubeConnector, parse_comment_threads
 
@@ -114,6 +115,30 @@ def test_x_sin_token():
     query = HarvestQuery(phrases=["agua"], since=datetime.now(timezone.utc), until=datetime.now(timezone.utc))
     with pytest.raises(ConnectorNotConfigured):
         asyncio.run(connector.harvest(query))
+
+
+def test_wordpress_no_inventa_notas_civicas():
+    payload = [
+        {
+            "id": 8,
+            "date_gmt": "2026-09-22T10:59:21",
+            "link": "https://nuevaexpresion.online/tecnologia-en-la-vida-cotidiana-tendencias-que-estan-cambiando-el-futuro/",
+            "title": {"rendered": "Tecnología en la vida cotidiana"},
+            "content": {"rendered": "<p>La inteligencia artificial y la automatización.</p>"},
+        },
+        {
+            "id": 1,
+            "date_gmt": "2026-09-11T05:25:58",
+            "link": "https://nuevaexpresion.online/hello-world/",
+            "title": {"rendered": "Hello world!"},
+            "content": {"rendered": "<p>Welcome to WordPress.</p>"},
+        },
+    ]
+    items = parse_wp_posts(payload, author="Nueva Expresión Nuevo León")
+    assert len(items) == 2
+    assert civic_count(items) == 0
+    assert is_civic("Juan Morton en Anáhuac, Nuevo León") is True
+    assert "inteligencia" in strip_html("<p>La inteligencia artificial</p>").casefold()
 
 
 def test_robots_y_tope():
