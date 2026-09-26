@@ -1,6 +1,6 @@
 import time
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
@@ -15,29 +15,41 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 _failures: dict[str, list[float]] = {}
 
 
-def _limited(ip: str) -> bool:
+def _identity_key(username: str) -> str:
+    return username.strip().casefold() or "-"
+
+
+def _limited(identity: str) -> bool:
     now = time.time()
-    recent = [stamp for stamp in _failures.get(ip, []) if now - stamp < 600]
-    _failures[ip] = recent
+    recent = [stamp for stamp in _failures.get(identity, []) if now - stamp < 600]
+    _failures[identity] = recent
     return len(recent) >= 10
+
+
+def _register_failure(identity: str) -> None:
+    _limited(identity)
+    _failures.setdefault(identity, []).append(time.time())
+
+
+def _clear_failures(identity: str) -> None:
+    _failures.pop(identity, None)
 
 
 @router.post("/login", response_model=TokenResponse)
 def login(
     body: LoginRequest,
-    request: Request,
     session: Session = Depends(get_db),
     settings: Settings = Depends(get_settings),
 ):
-    ip = request.client.host if request.client else "local"
-    if _limited(ip):
+    identity = _identity_key(body.username)
+    if _limited(identity):
         raise HTTPException(status_code=429, detail="Demasiados intentos. Espera unos minutos.")
     identifier = body.username.strip()
     user = session.scalar(select(User).where(or_(User.username == identifier, User.email == identifier)))
     if user is None or not user.is_active or not verify_password(body.password, user.password_hash):
-        _failures.setdefault(ip, []).append(time.time())
+        _register_failure(identity)
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    _failures[ip] = []
+    _clear_failures(identity)
     session.add(
         AuditLog(
             organization_id=user.organization_id,

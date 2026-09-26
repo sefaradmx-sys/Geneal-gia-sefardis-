@@ -30,7 +30,7 @@ export default async function MencionesPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ source?: string; sentiment?: string; offset?: string }>;
+  searchParams: Promise<{ source?: string; sentiment?: string; stance?: string; offset?: string }>;
 }) {
   const { id } = await params;
   const query = await searchParams;
@@ -41,6 +41,9 @@ export default async function MencionesPage({
   }
   if (query.sentiment) {
     filters.set("sentiment", query.sentiment);
+  }
+  if (query.stance) {
+    filters.set("stance", query.stance);
   }
   const response = await apiFetch(`/mentions?${filters.toString()}`);
   const page = response.ok ? ((await response.json()) as { items: MentionRow[]; total: number }) : { items: [], total: 0 };
@@ -66,6 +69,13 @@ export default async function MencionesPage({
           <option value="negative">Negativo</option>
           <option value="neutral">Neutro</option>
         </select>
+        <select name="stance" defaultValue={query.stance || ""} className="rounded-md border border-line bg-ink px-2 py-1.5">
+          <option value="">Cualquier postura</option>
+          <option value="in_favor">A favor</option>
+          <option value="against">En contra</option>
+          <option value="mixed">Mixto</option>
+          <option value="not_applicable">No aplica</option>
+        </select>
         <button className="rounded-md bg-brass px-3 py-1.5 text-ink" type="submit">
           Filtrar
         </button>
@@ -86,12 +96,12 @@ export default async function MencionesPage({
       </ul>
       <div className="mt-4 flex gap-3 text-sm">
         {prevOffset !== null ? (
-          <a className="text-brass" href={`/estudios/${id}/menciones?source=${query.source || ""}&sentiment=${query.sentiment || ""}&offset=${prevOffset}`}>
+          <a className="text-brass" href={`/estudios/${id}/menciones?source=${query.source || ""}&sentiment=${query.sentiment || ""}&stance=${query.stance || ""}&offset=${prevOffset}`}>
             Anteriores
           </a>
         ) : null}
         {nextOffset !== null ? (
-          <a className="text-brass" href={`/estudios/${id}/menciones?source=${query.source || ""}&sentiment=${query.sentiment || ""}&offset=${nextOffset}`}>
+          <a className="text-brass" href={`/estudios/${id}/menciones?source=${query.source || ""}&sentiment=${query.sentiment || ""}&stance=${query.stance || ""}&offset=${nextOffset}`}>
             Siguientes
           </a>
         ) : null}

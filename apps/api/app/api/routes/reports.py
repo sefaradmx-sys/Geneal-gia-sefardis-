@@ -20,7 +20,7 @@ from app.services.summary import build_summary
 router = APIRouter(tags=["reports"])
 
 _SENTIMENT = {"positive": "positivo", "negative": "negativo", "neutral": "neutro"}
-_STANCE = {"in_favor": "a favor", "against": "en contra", "not_applicable": "no aplica"}
+_STANCE = {"in_favor": "a favor", "against": "en contra", "mixed": "mixto", "not_applicable": "no aplica"}
 
 
 def _latin(text: str) -> str:

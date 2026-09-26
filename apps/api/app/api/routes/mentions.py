@@ -34,6 +34,40 @@ def _to_out(mention: Mention) -> MentionOut:
     )
 
 
+def mentions_statement(
+    study_id: UUID,
+    *,
+    source: str | None = None,
+    sentiment: str | None = None,
+    stance: str | None = None,
+    geo_state: str | None = None,
+    date_from: datetime | None = None,
+    date_to: datetime | None = None,
+):
+    filters = [Mention.study_id == study_id]
+    if source:
+        filters.append(Mention.source_kind == source)
+    if geo_state:
+        filters.append(Mention.geo_state == geo_state)
+    if date_from:
+        filters.append(Mention.published_at >= date_from)
+    if date_to:
+        filters.append(Mention.published_at <= date_to)
+    stmt = (
+        select(Mention)
+        .where(*filters)
+        .options(selectinload(Mention.classification))
+        .order_by(Mention.published_at.desc())
+    )
+    if sentiment or stance:
+        stmt = stmt.join(Mention.classification)
+        if sentiment:
+            stmt = stmt.where(Classification.sentiment == sentiment)
+        if stance:
+            stmt = stmt.where(Classification.stance == stance)
+    return stmt
+
+
 @router.get("/mentions", response_model=MentionPage)
 def list_mentions(
     study_id: UUID,
@@ -51,20 +85,15 @@ def list_mentions(
     study = session.get(Study, study_id)
     if study is None or (user.role != "superadmin" and study.organization_id != user.organization_id):
         raise HTTPException(status_code=404, detail="Estudio no encontrado")
-    filters = [Mention.study_id == study_id]
-    if source:
-        filters.append(Mention.source_kind == source)
-    if geo_state:
-        filters.append(Mention.geo_state == geo_state)
-    if date_from:
-        filters.append(Mention.published_at >= date_from)
-    if date_to:
-        filters.append(Mention.published_at <= date_to)
-    stmt = select(Mention).where(*filters).options(selectinload(Mention.classification)).order_by(Mention.published_at.desc())
-    if sentiment:
-        stmt = stmt.join(Classification).where(Classification.sentiment == sentiment)
-    if stance:
-        stmt = stmt.join(Classification).where(Classification.stance == stance)
+    stmt = mentions_statement(
+        study_id,
+        source=source,
+        sentiment=sentiment,
+        stance=stance,
+        geo_state=geo_state,
+        date_from=date_from,
+        date_to=date_to,
+    )
     total = session.scalar(select(func.count()).select_from(stmt.order_by(None).subquery())) or 0
     rows = session.scalars(stmt.limit(min(limit, 100)).offset(offset)).unique().all()
     return MentionPage(items=[_to_out(row) for row in rows], total=int(total))

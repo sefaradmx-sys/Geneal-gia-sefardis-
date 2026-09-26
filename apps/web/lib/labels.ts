@@ -118,7 +118,7 @@ export function targetKindLabel(kind: string): string {
   }
 }
 
-const STANCES = ["in_favor", "against", "not_applicable"] as const;
+const STANCES = ["in_favor", "against", "mixed", "not_applicable"] as const;
 type Stance = (typeof STANCES)[number];
 
 function isStance(value: string): value is Stance {
@@ -134,6 +134,8 @@ export function stanceLabel(value: string): string {
       return "A favor";
     case "against":
       return "En contra";
+    case "mixed":
+      return "Mixto";
     case "not_applicable":
       return "No aplica";
     default: {
@@ -144,5 +146,9 @@ export function stanceLabel(value: string): string {
 }
 
 export function formatDate(value: string): string {
-  return new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(value));
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  const date = dateOnly
+    ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+    : new Date(value);
+  return new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(date);
 }

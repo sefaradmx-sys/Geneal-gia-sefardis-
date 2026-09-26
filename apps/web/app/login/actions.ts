@@ -20,6 +20,9 @@ export async function loginAction(
     body: JSON.stringify({ username, password }),
     cache: "no-store",
   });
+  if (response.status === 429) {
+    return { error: "Demasiados intentos. Espera unos minutos." };
+  }
   if (!response.ok) {
     return { error: "Credenciales inválidas" };
   }
