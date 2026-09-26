@@ -2,13 +2,17 @@ name: deploy-vps
 
 on:
   workflow_dispatch:
-    inputs:
-      ref:
-        description: "Git ref to deploy"
-        required: false
-        default: "cursor/database-mart-acceso-a5bc"
   repository_dispatch:
     types: [deploy-lmc]
+  push:
+    branches:
+      - cursor/database-mart-acceso-a5bc
+    paths:
+      - "apps/**"
+      - "deploy/vps/**"
+      - ".env.example"
+      - "docker-compose.yml"
+      - ".github/workflows/deploy-vps.yml"
 
 concurrency:
   group: deploy-vps
@@ -19,16 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Resolver ref
-        id: ref
-        run: |
-          set -euo pipefail
-          REF="${{ github.event.client_payload.ref || github.event.inputs.ref || 'cursor/database-mart-acceso-a5bc' }}"
-          echo "ref=$REF" >> "$GITHUB_OUTPUT"
-
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.ref.outputs.ref }}
 
       - name: Instalar sshpass y rsync
         run: sudo apt-get update -qq && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq sshpass rsync
@@ -44,16 +39,17 @@ jobs:
           set -euo pipefail
           VPS_SSH_PASS="${SECRET_PASS:-${DISPATCH_PASS:-}}"
           if [[ -z "${VPS_SSH_PASS}" ]]; then
-            echo "Falta VPS_SSH_PASS o client_payload.ssh_pass"
+            echo "Falta VPS_SSH_PASS (secreto Actions) o client_payload.ssh_pass."
             exit 1
           fi
           echo "::add-mask::${VPS_SSH_PASS}"
           printf '%s' "$VPS_SSH_PASS" > /tmp/vps-ssh-pass
           chmod 600 /tmp/vps-ssh-pass
           chmod +x deploy/vps/deploy.sh
-          ./deploy/vps/deploy.sh
+          set -o pipefail
+          ./deploy/vps/deploy.sh 2>&1 | tee /tmp/deploy-out.txt
 
-      - name: Comprobar URL pública y login
+      - name: Comprobar URL pública y login nuevo
         env:
           BOOTSTRAP_ADMIN_USER: pmccoahuila@gmail.com
           BOOTSTRAP_ADMIN_PASSWORD: tachy8507
@@ -67,7 +63,7 @@ jobs:
             fi
             sleep 5
           done
-          test "${code:-}" = "200"
+          test "$code" = "200"
           pip -q install playwright >/dev/null
           python -m playwright install --with-deps chromium >/dev/null
           python3 - <<'PY'
@@ -83,11 +79,39 @@ jobs:
               page.fill('input[name="username"]', user)
               page.fill('input[name="password"]', password)
               page.click('button[type="submit"]')
-              page.wait_for_timeout(15000)
+              page.wait_for_timeout(12000)
               final = page.url
+              body = page.content()
               browser.close()
           print("final_url", final)
           if "/estudios" not in final:
               raise SystemExit("login no entró a /estudios")
           print("LOGIN_OK")
           PY
+
+      - name: Comentar resultado
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          {
+            echo "### Deploy VPS"
+            echo
+            echo "- conclusion: ${{ job.status }}"
+            echo "- ref: ${{ steps.ref.outputs.ref }}"
+            echo "- url: http://108.181.203.225:10049/census/login"
+            echo
+            echo '```'
+            if [[ -f /tmp/deploy-out.txt ]]; then
+              # strip likely secrets
+              sed -E 's/PASS[^ ]*/PASS_REDACTED/g; s/assword[^ ]*/assword_REDACTED/g' /tmp/deploy-out.txt | tail -n 80
+            else
+              echo "(sin salida de deploy)"
+            fi
+            echo '```'
+          } > /tmp/summary.md
+          # Prefer committing on the deployed ref tip
+          SHA=$(git rev-parse HEAD)
+          jq -n --rawfile body /tmp/summary.md '{body: $body}' > /tmp/comment.json
+          curl -sS -m 20 -X POST             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${SHA}/comments"             -d @/tmp/comment.json >/tmp/comment-res.json || true
