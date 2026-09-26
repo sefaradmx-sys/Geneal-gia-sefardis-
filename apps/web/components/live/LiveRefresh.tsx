@@ -2,7 +2,7 @@
 
 import { RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 
 export function LiveRefresh({ intervalSeconds = 60 }: { intervalSeconds?: number }) {
@@ -10,23 +10,21 @@ export function LiveRefresh({ intervalSeconds = 60 }: { intervalSeconds?: number
   const [seconds, setSeconds] = useState(0);
   const [pending, startTransition] = useTransition();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSeconds((current) => {
-        if (current + 1 >= intervalSeconds) {
-          startTransition(() => router.refresh());
-          return 0;
-        }
-        return current + 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [router, intervalSeconds]);
-
-  function refreshNow() {
+  const refreshNow = useCallback(() => {
     setSeconds(0);
     startTransition(() => router.refresh());
-  }
+  }, [router]);
+
+  useEffect(() => {
+    const timer = setInterval(() => setSeconds((current) => current + 1), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (seconds >= intervalSeconds) {
+      refreshNow();
+    }
+  }, [seconds, intervalSeconds, refreshNow]);
 
   return (
     <button

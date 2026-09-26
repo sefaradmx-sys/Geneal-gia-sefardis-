@@ -31,7 +31,8 @@ export function TrendChart({ data, height = 300 }: { data: SeriesPoint[]; height
           tick={{ fill: "#8b95ab", fontSize: 11 }}
           axisLine={false}
           tickLine={false}
-          domain={[(min: number) => Math.max(-100, Math.floor(min - 10)), (max: number) => Math.min(100, Math.ceil(max + 10))]}
+          allowDecimals={false}
+          domain={[(min: number) => Math.max(-100, Math.floor((min - 5) / 20) * 20), (max: number) => Math.min(100, Math.ceil((max + 5) / 20) * 20)]}
         />
         <YAxis yAxisId="volume" orientation="right" hide />
         <ReferenceLine yAxisId="index" y={0} stroke="#334155" />
