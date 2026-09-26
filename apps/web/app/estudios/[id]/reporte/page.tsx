@@ -1,4 +1,5 @@
 import { FileSpreadsheet, FileText, ShieldCheck } from "lucide-react";
+import { CoveragePanel } from "@/components/CoveragePanel";
 import { LogoMark } from "@/components/Logo";
 import { PrintButton } from "@/components/PrintButton";
 import { apiFetch } from "@/lib/api";
@@ -27,7 +28,7 @@ export default async function ReportePage({ params }: { params: Promise<{ id: st
           icon={FileText}
           tone="from-neg/20 text-neg"
           title="Reporte PDF"
-          detail="Dos páginas: cifras, preferencia, alerta y metodología; luego las menciones que sostienen el número."
+          detail="Informe con portada, Nueva Expresión, prensa excluida, huecos de redes y catálogo de cada nota con URL."
         />
         <ExportCard
           href={withBase(`/estudios/${id}/archivo/xlsx`)}
@@ -65,6 +66,9 @@ export default async function ReportePage({ params }: { params: Promise<{ id: st
             <p className="mt-1 text-sm text-slate-500">{summary.description}</p>
             <p className="mt-3 inline-block rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{summary.disclaimer}</p>
             {summary.is_demo ? <p className="mt-2 text-xs text-amber-700">Las menciones de este corte son sintéticas. No son opiniones de personas reales.</p> : null}
+          </div>
+          <div className="print:hidden">
+            <CoveragePanel coverage={summary.coverage} />
           </div>
 
           {hero ? (

@@ -56,6 +56,21 @@ export type Evidence = {
   municipality: string | null;
 };
 
+export type OutletCoverage = {
+  name: string;
+  url: string | null;
+  kind: string;
+  status: string;
+  civic_items: number;
+  note: string;
+};
+
+export type StudyCoverage = {
+  own_outlets: OutletCoverage[];
+  excluded_outlets: OutletCoverage[];
+  missing_platforms: OutletCoverage[];
+};
+
 export type StudySummary = {
   study_id: string;
   name: string;
@@ -65,6 +80,7 @@ export type StudySummary = {
   disclaimer: string;
   known_biases: string[];
   is_demo: boolean;
+  coverage?: StudyCoverage;
   targets: TargetSummary[];
   preferences: Preference[];
   alerts: { target_id: string; target_name: string; rule: string; message: string; delta_points: number }[];

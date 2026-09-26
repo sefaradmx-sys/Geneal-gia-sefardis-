@@ -118,7 +118,7 @@ export function targetKindLabel(kind: string): string {
   }
 }
 
-const STANCES = ["in_favor", "against", "not_applicable"] as const;
+const STANCES = ["in_favor", "against", "mixed", "not_applicable"] as const;
 type Stance = (typeof STANCES)[number];
 
 function isStance(value: string): value is Stance {
@@ -134,6 +134,8 @@ export function stanceLabel(value: string): string {
       return "A favor";
     case "against":
       return "En contra";
+    case "mixed":
+      return "Mixto";
     case "not_applicable":
       return "No aplica";
     default: {

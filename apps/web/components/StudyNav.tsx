@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, FileText, GitCompareArrows, LayoutDashboard, MessageSquareText, MessagesSquare, Target, UploadCloud } from "lucide-react";
+import { Bell, FileText, GitCompareArrows, LayoutDashboard, MessageSquareText, MessagesSquare, Radio, Target, UploadCloud } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ const LINKS = [
   { suffix: "/comparar", label: "Comparar", icon: GitCompareArrows },
   { suffix: "/preguntar", label: "Preguntar", icon: MessageSquareText },
   { suffix: "/carga", label: "Carga", icon: UploadCloud },
+  { suffix: "/fuentes", label: "Fuentes", icon: Radio },
   { suffix: "/objetivos", label: "Objetivos", icon: Target },
   { suffix: "/alertas", label: "Alertas", icon: Bell },
   { suffix: "/reporte", label: "Reporte", icon: FileText },

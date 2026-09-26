@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CoveragePanel } from "@/components/CoveragePanel";
 import { MiniSpark } from "@/components/charts/MiniSpark";
 import { SentimentDonut } from "@/components/charts/SentimentDonut";
 import { SourceBars } from "@/components/charts/SourceBars";
@@ -110,6 +111,8 @@ export default async function EstudioPage({
           <ArrowRight className="h-4 w-4 text-muted transition group-hover:translate-x-1 group-hover:text-fg" />
         </Link>
       ))}
+
+      <CoveragePanel coverage={summary.coverage} />
 
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-xs text-muted">Objetivo en foco</span>
