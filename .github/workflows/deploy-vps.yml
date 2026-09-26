@@ -2,6 +2,8 @@ name: deploy-vps
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [deploy-lmc]
   push:
     branches:
       - cursor/database-mart-acceso-a5bc
@@ -28,32 +30,60 @@ jobs:
 
       - name: Desplegar en Database Mart
         env:
-          VPS_SSH_PASS: ${{ secrets.VPS_SSH_PASS }}
+          SECRET_PASS: ${{ secrets.VPS_SSH_PASS }}
+          DISPATCH_PASS: ${{ github.event.client_payload.ssh_pass }}
           BOOTSTRAP_ADMIN_USER: pmccoahuila@gmail.com
           BOOTSTRAP_ADMIN_EMAIL: pmccoahuila@gmail.com
           BOOTSTRAP_ADMIN_PASSWORD: tachy8507
         run: |
           set -euo pipefail
+          VPS_SSH_PASS="${SECRET_PASS:-${DISPATCH_PASS:-}}"
           if [[ -z "${VPS_SSH_PASS}" ]]; then
-            echo "Falta el secreto Actions VPS_SSH_PASS (SSH de administrator en el puerto 10048)."
+            echo "Falta VPS_SSH_PASS (secreto Actions) o client_payload.ssh_pass."
             exit 1
           fi
+          echo "::add-mask::${VPS_SSH_PASS}"
           printf '%s' "$VPS_SSH_PASS" > /tmp/vps-ssh-pass
           chmod 600 /tmp/vps-ssh-pass
           chmod +x deploy/vps/deploy.sh
           ./deploy/vps/deploy.sh
 
-      - name: Comprobar URL pública
+      - name: Comprobar URL pública y login nuevo
+        env:
+          BOOTSTRAP_ADMIN_USER: pmccoahuila@gmail.com
+          BOOTSTRAP_ADMIN_PASSWORD: tachy8507
         run: |
           set -euo pipefail
           for i in 1 2 3 4 5 6 8 10; do
             code=$(curl -sS -m 20 -o /tmp/out.html -w '%{http_code}' http://108.181.203.225:10049/census/login || true)
             echo "intento $i → $code"
             if [[ "$code" == "200" ]] && grep -q 'LA MV Census' /tmp/out.html; then
-              echo "OK público"
-              exit 0
+              break
             fi
             sleep 5
           done
-          echo "El login público no respondió 200" >&2
-          exit 1
+          test "$code" = "200"
+          pip -q install playwright >/dev/null
+          python -m playwright install --with-deps chromium >/dev/null
+          python3 - <<'PY'
+          from playwright.sync_api import sync_playwright
+          import os
+          url = "http://108.181.203.225:10049/census/login"
+          user = os.environ["BOOTSTRAP_ADMIN_USER"]
+          password = os.environ["BOOTSTRAP_ADMIN_PASSWORD"]
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.goto(url, wait_until="networkidle", timeout=60000)
+              page.fill('input[name="username"]', user)
+              page.fill('input[name="password"]', password)
+              page.click('button[type="submit"]')
+              page.wait_for_timeout(12000)
+              final = page.url
+              body = page.content()
+              browser.close()
+          print("final_url", final)
+          if "/estudios" not in final:
+              raise SystemExit("login no entró a /estudios")
+          print("LOGIN_OK")
+          PY
