@@ -39,12 +39,24 @@ jobs:
               title=$(python3 -c 'import re,pathlib; t=pathlib.Path("/tmp/one.body").read_text(errors="ignore"); m=re.search(r"<title>(.*?)</title>", t); print(m.group(1) if m else t[:80].replace("\n"," "))')
               echo "GET ${path} -> ${code} | ${title}"
             done
-            echo "http:$(curl -sS -m 20 -D /tmp/census.hdr -o /tmp/census.body -w '%{http_code}' http://108.181.203.225:10049/census/login)"
-            echo "--- headers ---"
-            head -n 15 /tmp/census.hdr
-            echo "--- body ---"
-            head -c 160 /tmp/census.body
-            echo
+            curl -sS -m 20 -D /tmp/census.hdr -o /tmp/census.body -w "login:%{http_code}\n" http://108.181.203.225:10049/census/login
+            echo "--- assets ---"
+            python3 - << 'PY'
+          import re, pathlib, subprocess
+          html = pathlib.Path("/tmp/census.body").read_text(errors="ignore")
+          urls = re.findall(r'(?:src|href)="([^"]+)"', html)
+          seen = []
+          for url in urls:
+              if url.startswith("data:") or url.startswith("#"):
+                  continue
+              if url not in seen:
+                  seen.append(url)
+          for url in seen[:12]:
+              target = url if url.startswith("http") else "http://108.181.203.225:10049" + (url if url.startswith("/") else "/census/" + url)
+              proc = subprocess.run(["curl", "-sS", "-m", "15", "-o", "/dev/null", "-w", "%{http_code}", target], capture_output=True, text=True)
+              print(proc.stdout.strip() or proc.stderr.strip(), target)
+          print("has-form", "form" in html.lower(), "has-entrar", "Entrar" in html or "Bienvenido" in html)
+          PY
           } > "$report" 2>&1
           cat "$report"
           jq -n --rawfile body "$report" '{body: $body, path: ".github/workflows/census-status.yml", line: 1, side: "RIGHT"}' > /tmp/comment.json
