@@ -20,6 +20,8 @@ jobs:
     timeout-minutes: 45
     permissions:
       contents: write
+      issues: write
+      pull-requests: write
     steps:
       - name: Resolver ref
         id: ref
@@ -117,25 +119,95 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           {
             echo "### Deploy VPS"
             echo
             echo "- status: ${{ job.status }}"
             echo "- ref: ${{ steps.ref.outputs.ref }}"
             echo "- url: http://108.181.203.225:10049/census/login"
+            echo "- run: ${{ github.run_id }}"
             echo
             echo '```'
             if [[ -f /tmp/deploy-out.txt ]]; then
-              sed -E 's/(PASS|assword|ssh_pass|tachy8507)[=:]?[^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt | tail -n 120
+              sed -E 's/(PASS|assword|ssh_pass|tachy8507)[=:]?[^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt | tail -n 200
             else
               echo "(sin salida)"
             fi
             echo '```'
           } | tee /tmp/summary.md | tee -a "$GITHUB_STEP_SUMMARY"
+
+          # Log legible en el repo (el agente no puede bajar artefactos de Actions).
+          {
+            echo "# last-deploy-log"
+            echo
+            echo "run=${{ github.run_id }} status=${{ job.status }} ref=${{ steps.ref.outputs.ref }} at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo
+            if [[ -f /tmp/deploy-out.txt ]]; then
+              sed -E 's/(PASS|assword|ssh_pass|tachy8507)[=:]?[^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt
+            else
+              echo "(sin salida)"
+            fi
+          } > /tmp/last-deploy-log.md
+          python3 - <<'PY'
+          import base64, json, os, urllib.request
+          token = os.environ["GH_TOKEN"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          branch = "cursor/deploy-logs-a5bc"
+          path = "deploy/vps/last-deploy-log.md"
+          body = open("/tmp/last-deploy-log.md", "rb").read()
+          content_b64 = base64.b64encode(body).decode()
+          api = f"https://api.github.com/repos/{repo}"
+
+          def req(method, url, data=None):
+              r = urllib.request.Request(url, method=method, data=data)
+              r.add_header("Authorization", f"Bearer {token}")
+              r.add_header("Accept", "application/vnd.github+json")
+              if data is not None:
+                  r.add_header("Content-Type", "application/json")
+              try:
+                  with urllib.request.urlopen(r, timeout=30) as resp:
+                      return resp.status, json.load(resp)
+              except urllib.error.HTTPError as e:
+                  raw = e.read().decode()
+                  try:
+                      return e.code, json.loads(raw)
+                  except Exception:
+                      return e.code, {"message": raw}
+
+          # Asegura rama a partir de main
+          st, ref = req("GET", f"{api}/git/ref/heads/main")
+          if st != 200:
+              raise SystemExit(f"main ref: {st} {ref}")
+          main_sha = ref["object"]["sha"]
+          st, _ = req("GET", f"{api}/git/ref/heads/{branch}")
+          if st == 404:
+              st, created = req("POST", f"{api}/git/refs", json.dumps({
+                  "ref": f"refs/heads/{branch}",
+                  "sha": main_sha,
+              }).encode())
+              print("branch_create", st, created.get("ref", created))
+          st, existing = req("GET", f"{api}/contents/{path}?ref={branch}")
+          sha = existing.get("sha") if st == 200 else None
+          payload = {
+              "message": f"chore: last deploy log run {os.environ.get('GITHUB_RUN_ID')}",
+              "content": content_b64,
+              "branch": branch,
+          }
+          if sha:
+              payload["sha"] = sha
+          st, out = req("PUT", f"{api}/contents/{path}", json.dumps(payload).encode())
+          print("log_commit", st, out.get("content", {}).get("path"), out.get("commit", {}).get("sha"))
+          if st not in (200, 201):
+              raise SystemExit(f"log commit failed: {st} {out}")
+          PY
+
           jq -n --rawfile body /tmp/summary.md '{body: $body}' > /tmp/comment.json
-          curl -sS -m 20 -X POST \
+          code=$(curl -sS -m 20 -o /tmp/comment-resp.json -w '%{http_code}' -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/9/comments" \
-            -d @/tmp/comment.json | head -c 160
+            -d @/tmp/comment.json || true)
+          echo "comment_http=$code"
+          head -c 240 /tmp/comment-resp.json || true
           echo
