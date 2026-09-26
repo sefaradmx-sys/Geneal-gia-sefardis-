@@ -118,7 +118,7 @@ export function targetKindLabel(kind: string): string {
   }
 }
 
-const STANCES = ["in_favor", "against", "not_applicable"] as const;
+const STANCES = ["in_favor", "against", "mixed", "not_applicable"] as const;
 type Stance = (typeof STANCES)[number];
 
 function isStance(value: string): value is Stance {
@@ -134,6 +134,8 @@ export function stanceLabel(value: string): string {
       return "A favor";
     case "against":
       return "En contra";
+    case "mixed":
+      return "Mixto";
     case "not_applicable":
       return "No aplica";
     default: {
@@ -141,6 +143,31 @@ export function stanceLabel(value: string): string {
       return exhaustive;
     }
   }
+}
+
+export function formatCompact(value: number): string {
+  return new Intl.NumberFormat("es-MX", { notation: "compact", maximumFractionDigits: 1 }).format(value);
+}
+
+export function shortDay(value: string): string {
+  return new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(value));
+}
+
+export function timeAgo(value: string, now: Date = new Date()): string {
+  const seconds = Math.max(0, Math.round((now.getTime() - new Date(value).getTime()) / 1000));
+  if (seconds < 60) {
+    return "hace un momento";
+  }
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) {
+    return `hace ${minutes} min`;
+  }
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) {
+    return `hace ${hours} h`;
+  }
+  const days = Math.round(hours / 24);
+  return days === 1 ? "hace 1 día" : `hace ${days} días`;
 }
 
 export function formatDate(value: string): string {

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
@@ -155,7 +156,10 @@ def _compose(index: int, sentiment: str, target_key: str, when: datetime, theme:
     pool = POSITIVE if sentiment == "positive" else NEGATIVE if sentiment == "negative" else NEUTRAL
     template = SARCASM if sarcasm else pool[index % len(pool)]
     text = template.format(muni=MUNICIPALITIES[index % len(MUNICIPALITIES)], actor=ACTORS[target_key], theme=theme)
-    return text
+    return _SENTENCE_START.sub(lambda match: match.group(1) + match.group(2).upper(), text)
+
+
+_SENTENCE_START = re.compile(r"(^|[.!?¡¿]\s+)([a-záéíóúñ])")
 
 
 def _stance(sentiment: str, sarcasm: bool) -> str:
@@ -278,15 +282,27 @@ def build_demo_mentions(now: datetime | None = None) -> list[DemoMention]:
 
     rows: list[DemoMention] = []
     seen: set[str] = set()
+    collisions = 0
     for bucket in groups.values():
         for row in bucket:
             text = row.text
-            if text in seen:
-                text = f"{text} Caso {row.external_id}."
+            while text in seen:
+                text = f"{row.text} {_closing(collisions)}"
+                collisions += 1
+            if text != row.text:
                 row = DemoMention(**{**row.__dict__, "text": text})
             seen.add(text)
             rows.append(row)
     return rows
+
+
+_CLOSINGS = ("Lo escribo a las {hm}.", "Comentario de las {hm}.", "Lo vi hoy a las {hm}.", "Actualizo a las {hm}.")
+
+
+def _closing(position: int) -> str:
+    template = _CLOSINGS[position % len(_CLOSINGS)]
+    minute_of_day = 6 * 60 + (position // len(_CLOSINGS)) * 7 % (17 * 60)
+    return template.format(hm=f"{minute_of_day // 60}:{minute_of_day % 60:02d}")
 
 
 def score_rows(rows: list[DemoMention], as_of: datetime, config: ScoringConfig | None = None):

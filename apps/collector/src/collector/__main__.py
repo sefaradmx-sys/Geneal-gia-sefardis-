@@ -5,6 +5,7 @@ from collector.base import ConnectorDisabled, ConnectorNotConfigured, HarvestQue
 from collector.reddit import RedditConnector
 from collector.rss import RssConnector
 from collector.web_public import PublicWebConnector
+from collector.wordpress import WordpressConnector
 from collector.x_api import XConnector
 from collector.youtube import YoutubeConnector
 
@@ -22,6 +23,7 @@ def build_connectors():
         RedditConnector(settings.reddit_client_id, settings.reddit_client_secret, settings.reddit_user_agent),
         XConnector(settings.x_bearer_token),
         PublicWebConnector(settings.user_agent, settings.web_delay_seconds, settings.web_daily_cap),
+        WordpressConnector("https://nuevaexpresion.online", enabled=True, outlet="Nueva Expresión Nuevo León"),
     ]
 
 

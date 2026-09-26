@@ -215,6 +215,21 @@ class Methodology(BaseModel):
     formula: str
 
 
+class OutletCoverage(BaseModel):
+    name: str
+    url: str | None = None
+    kind: str
+    status: str
+    civic_items: int = 0
+    note: str = ""
+
+
+class StudyCoverage(BaseModel):
+    own_outlets: list[OutletCoverage] = Field(default_factory=list)
+    excluded_outlets: list[OutletCoverage] = Field(default_factory=list)
+    missing_platforms: list[OutletCoverage] = Field(default_factory=list)
+
+
 class StudySummary(BaseModel):
     study_id: UUID
     name: str
@@ -224,6 +239,7 @@ class StudySummary(BaseModel):
     disclaimer: str
     known_biases: list[str]
     is_demo: bool
+    coverage: StudyCoverage = Field(default_factory=StudyCoverage)
     targets: list[TargetSummary]
     preferences: list[Preference]
     alerts: list[AlertView]
@@ -245,6 +261,10 @@ class MentionOut(BaseModel):
     geo_municipality: str | None
     is_synthetic: bool
     confidence: float | None
+    likes: int = 0
+    replies: int = 0
+    shares: int = 0
+    views: int = 0
 
 
 class MentionPage(BaseModel):

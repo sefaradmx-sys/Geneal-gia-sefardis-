@@ -46,7 +46,7 @@ Base: `/api/v1`. Campos JSON en inglés. Textos de error de negocio en español.
 - `GET /studies/{id}/summary`
 - `GET /studies/{id}/targets/{target_id}/series?date_from&date_to&source`
 - `GET /studies/{id}/compare?ids=` UUID separados por coma
-- `GET /mentions?study_id&source&sentiment&stance&geo_state&date_from&date_to&limit&offset`
+- `GET /mentions?study_id&source&sentiment&stance&geo_state&q&date_from&date_to&limit&offset` — `q` busca texto sin distinguir mayúsculas.
 - `POST /studies/{id}/ask` — cuerpo `{ "question": "..." }`. Modo `lexical` mientras no hay un modelo configurado. Cita menciones guardadas; no redacta citas nuevas.
 - `POST /studies/{id}/uploads` — CSV, XLSX o JSON. Si el archivo no trae sentimiento, la mención queda en revisión y fuera del índice.
 

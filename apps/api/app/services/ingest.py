@@ -1,11 +1,33 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
-from app.models.entities import AuditLog, Classification, Mention, Study
+from app.models.entities import AuditLog, Classification, Mention, MentionTarget, MonitoringTarget, Study
 from app.services.textutil import clean_text, normalized_hash
 from collector.base import RawItem
+
+
+def match_target_relevance(haystack: str, name: str, aliases: list[str]) -> float | None:
+    phrases = [name, *aliases]
+    matched = [phrase for phrase in phrases if phrase and phrase.casefold() in haystack.casefold()]
+    if not matched:
+        return None
+    return 0.95 if any(len(phrase) >= 10 for phrase in matched) else 0.72
+
+
+def _link_mention_to_targets(session: Session, study: Study, mention: Mention) -> None:
+    targets = session.scalars(
+        select(MonitoringTarget)
+        .where(MonitoringTarget.study_id == study.id)
+        .options(selectinload(MonitoringTarget.aliases))
+    ).all()
+    haystack = f"{mention.text_clean} {mention.theme or ''}"
+    for target in targets:
+        relevance = match_target_relevance(haystack, target.name, [alias.phrase for alias in target.aliases])
+        if relevance is None:
+            continue
+        session.add(MentionTarget(mention_id=mention.id, target_id=target.id, relevance=relevance))
 
 
 def persist_raw_items(session: Session, study: Study, items: list[RawItem], user_id) -> dict:
@@ -71,6 +93,7 @@ def persist_raw_items(session: Session, study: Study, items: list[RawItem], user
         )
         if needs_review:
             review += 1
+        _link_mention_to_targets(session, study, mention)
         existing_hashes.add(digest)
         existing_external.add(item.external_id)
         created += 1

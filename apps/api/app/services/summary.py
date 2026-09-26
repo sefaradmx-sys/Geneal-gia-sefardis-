@@ -10,9 +10,11 @@ from app.schemas.dto import (
     AlertView,
     EvidenceMention,
     Methodology,
+    OutletCoverage,
     Preference,
     SeriesPoint,
     Slice,
+    StudyCoverage,
     StudySummary,
     TargetSummary,
 )
@@ -319,8 +321,9 @@ def build_summary(session: Session, study: Study) -> StudySummary:
         window_start=study.window_start,
         window_end=study.window_end,
         disclaimer=DISCLAIMER,
-        known_biases=KNOWN_BIASES,
+        known_biases=_declared_biases(study.scoring_config),
         is_demo=study.is_demo,
+        coverage=_coverage_from_config(study.scoring_config),
         targets=targets,
         preferences=preferences,
         alerts=_alerts(grouped, _as_of, config.neutral_factor),
@@ -335,6 +338,48 @@ def build_summary(session: Session, study: Study) -> StudySummary:
             formula="100 * (Wpos - Wneg) / (Wpos + Wneg + Wneu * factor_neutro)",
         ),
     )
+
+
+def _outlet_list(raw: object) -> list[OutletCoverage]:
+    if not isinstance(raw, list):
+        return []
+    outlets: list[OutletCoverage] = []
+    for item in raw:
+        if not isinstance(item, dict) or not item.get("name"):
+            continue
+        outlets.append(
+            OutletCoverage(
+                name=str(item["name"]),
+                url=item.get("url"),
+                kind=str(item.get("kind") or "otro"),
+                status=str(item.get("status") or "desconocido"),
+                civic_items=int(item.get("civic_items") or 0),
+                note=str(item.get("note") or ""),
+            )
+        )
+    return outlets
+
+
+def _coverage_from_config(data: dict | None) -> StudyCoverage:
+    raw = data.get("coverage") if isinstance(data, dict) else None
+    if not isinstance(raw, dict):
+        return StudyCoverage()
+    return StudyCoverage(
+        own_outlets=_outlet_list(raw.get("own_outlets")),
+        excluded_outlets=_outlet_list(raw.get("excluded_outlets")),
+        missing_platforms=_outlet_list(raw.get("missing_platforms")),
+    )
+
+
+def _declared_biases(data: dict | None) -> list[str]:
+    declared: list[str] = []
+    if isinstance(data, dict) and isinstance(data.get("declared_biases"), list):
+        declared = [str(item) for item in data["declared_biases"] if item]
+    merged = [*declared]
+    for bias in KNOWN_BIASES:
+        if bias not in merged:
+            merged.append(bias)
+    return merged
 
 
 def snapshot_study(session: Session, study: Study) -> None:
