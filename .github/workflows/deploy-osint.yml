@@ -1,9 +1,6 @@
 name: deploy-osint
 
 on:
-  push:
-    branches:
-      - cursor/osint-framework-vps-44dc
   workflow_dispatch:
 
 concurrency:
