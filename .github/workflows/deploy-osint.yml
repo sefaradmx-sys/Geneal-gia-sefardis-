@@ -1,0 +1,91 @@
+name: deploy-osint
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-osint
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clonar catálogo OSINT Framework
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/sefaradmx-sys/OSINT-Framework.git /tmp/osint-fw
+          test -f /tmp/osint-fw/public/index.html
+          test -f /tmp/osint-fw/public/arf.json
+          test -f /tmp/osint-fw/public/js/d3.min.js
+          python3 - <<'PY'
+          import json
+          data = json.load(open("/tmp/osint-fw/public/arf.json"))
+          assert data.get("name") == "OSINT Framework"
+          print("catalog", data["name"], "top", len(data.get("children") or []))
+          PY
+
+      - name: Instalar sshpass y rsync
+        run: sudo apt-get update -qq && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq sshpass rsync
+
+      - name: Publicar en el VPS GarGa
+        env:
+          VPS_SSH_PASS: ${{ secrets.VPS_SSH_PASS }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${VPS_SSH_PASS}" ]]; then
+            echo "Falta el secreto VPS_SSH_PASS"
+            exit 1
+          fi
+          echo "::add-mask::${VPS_SSH_PASS}"
+          printf '%s' "$VPS_SSH_PASS" > /tmp/vps-ssh-pass
+          chmod 600 /tmp/vps-ssh-pass
+          HOST=108.181.203.225
+          PORT=10048
+          USER_NAME=administrator
+          APP_DIR=/opt/garga/apps/osint-framework
+          SSH_OPTS=(
+            -o StrictHostKeyChecking=accept-new
+            -o UserKnownHostsFile=/tmp/vps-known
+            -o PreferredAuthentications=password
+            -o PubkeyAuthentication=no
+            -o ConnectTimeout=30
+            -o ServerAliveInterval=15
+            -o ServerAliveCountMax=40
+            -o TCPKeepAlive=yes
+          )
+          export RSYNC_RSH="sshpass -f /tmp/vps-ssh-pass ssh ${SSH_OPTS[*]} -p ${PORT}"
+          sshpass -f /tmp/vps-ssh-pass ssh "${SSH_OPTS[@]}" -p "$PORT" "${USER_NAME}@${HOST}" "mkdir -p ${APP_DIR}/public"
+          rsync -az --delete \
+            /tmp/osint-fw/public/ \
+            "${USER_NAME}@${HOST}:${APP_DIR}/public/"
+          rsync -az \
+            deploy/osint/patch_caddy.py deploy/osint/pick_port.py \
+            deploy/osint/install.sh deploy/osint/nginx.conf \
+            "${USER_NAME}@${HOST}:${APP_DIR}/"
+          sshpass -f /tmp/vps-ssh-pass ssh "${SSH_OPTS[@]}" -p "$PORT" "${USER_NAME}@${HOST}" \
+            "chmod +x ${APP_DIR}/install.sh && bash ${APP_DIR}/install.sh"
+
+      - name: Comprobar URL pública
+        run: |
+          set -euo pipefail
+          url="http://108.181.203.225:10049/osint/"
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -sS -m 20 -o /tmp/osint.html -w '%{http_code}' "$url" || true)
+            echo "intento ${i} → ${code}"
+            if [[ "$code" == "200" ]] && grep -q 'OSINT Framework' /tmp/osint.html; then
+              break
+            fi
+            sleep 3
+          done
+          test "$code" = "200"
+          grep -q 'OSINT Framework' /tmp/osint.html
+          curl -fsS -m 20 -o /tmp/arf.json "http://108.181.203.225:10049/osint/arf.json"
+          python3 -c 'import json; d=json.load(open("/tmp/arf.json")); assert d["name"]=="OSINT Framework"; print("public_arf_ok")'
+          census=$(curl -sS -m 20 -o /dev/null -w '%{http_code}' http://108.181.203.225:10049/census/login || true)
+          echo "census_login=${census}"
+          test "$census" = "200"
+          echo "PUBLIC_OK ${url}"
