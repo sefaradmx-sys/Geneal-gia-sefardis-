@@ -27,12 +27,12 @@ echo ">> ping ssh"
 run_ssh 'echo SSH_OK; hostname; whoami; docker --version'
 
 echo ">> rsync"
+export RSYNC_RSH="sshpass -f ${PASS_FILE} ssh -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/vps-known -o PreferredAuthentications=password -o PubkeyAuthentication=no -o ConnectTimeout=30 -p ${PORT}"
 rsync -az --delete \
   --exclude .git --exclude .venv --exclude node_modules --exclude .next \
   --exclude .env --exclude 'apps/api/.env' --exclude deploy/vps/.env \
   --exclude .ruff_cache --exclude __pycache__ --exclude .pytest_cache \
   --exclude .github \
-  -e "sshpass -f ${PASS_FILE} ssh ${SSH_OPTS[*]} -p ${PORT}" \
   "${REPO_ROOT}/" "${USER_NAME}@${HOST}:${REMOTE_APP}/"
 
 echo ">> escribe scripts remotos"
