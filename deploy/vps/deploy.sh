@@ -35,6 +35,20 @@ git clone --depth 1 https://github.com/sefaradmx-sys/OSINT-Framework.git /tmp/os
 test -f /tmp/osint-fw/public/index.html
 test -f /tmp/osint-fw/public/arf.json
 test -f /tmp/osint-fw/public/js/d3.min.js
+cp "${REPO_ROOT}/deploy/osint/query-search.js" /tmp/osint-fw/public/js/query-search.js
+python3 - <<'PY'
+from pathlib import Path
+path = Path("/tmp/osint-fw/public/index.html")
+html = path.read_text()
+tag = '<script src="js/query-search.js"></script>'
+needle = '<script src="js/arf.js"></script>'
+if tag not in html:
+    if needle not in html:
+        raise SystemExit("index sin arf.js")
+    html = html.replace(needle, needle + "\n    " + tag, 1)
+    path.write_text(html)
+print("query_search_injected")
+PY
 
 echo ">> ping ssh $(date -u +%H:%M:%S)"
 run_ssh 'echo SSH_OK; hostname; whoami'
@@ -62,6 +76,9 @@ grep -q 'OSINT Framework' /tmp/osint-public.html
 curl -fsS -m 20 -o /dev/null -w 'public_arf:%{http_code}\n' "http://${HOST}:10049/osint/arf.json"
 curl -fsS -m 20 -o /dev/null -w 'public_css:%{http_code}\n' "http://${HOST}:10049/osint/css/arf.css"
 curl -fsS -m 20 -o /dev/null -w 'public_js:%{http_code}\n' "http://${HOST}:10049/osint/js/d3.min.js"
+curl -fsS -m 20 -o /tmp/osint-query.js -w 'public_query_js:%{http_code}\n' "http://${HOST}:10049/osint/js/query-search.js"
+grep -q 'toolsForQuery' /tmp/osint-query.js
+grep -q 'query-search.js' /tmp/osint-public.html
 curl -fsS -m 20 -o /dev/null -w 'public_api:%{http_code}\n' "http://${HOST}:10049/api/tool-stats?tool_id=probe"
 census="$(curl -sS -m 20 -o /dev/null -w '%{http_code}' "http://${HOST}:10049/census/login")"
 echo "public_census:${census}"
