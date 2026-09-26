@@ -4,6 +4,14 @@ import type { NextRequest } from "next/server";
 function appUrl(request: NextRequest, path: string): URL {
   const target = request.nextUrl.clone();
   target.pathname = path;
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+  const forwardedProto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
+  if (forwardedHost) {
+    target.host = forwardedHost;
+  }
+  if (forwardedProto) {
+    target.protocol = forwardedProto.endsWith(":") ? forwardedProto : `${forwardedProto}:`;
+  }
   return target;
 }
 
