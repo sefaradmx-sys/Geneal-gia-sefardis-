@@ -1,7 +1,10 @@
 import csv
+import hashlib
 import io
 import json
 from datetime import datetime
+
+from openpyxl import load_workbook
 
 from collector.base import RawItem
 
@@ -34,7 +37,26 @@ def _int(value: str | int | None) -> int:
     return int(value)
 
 
-def _row_to_item(row: dict, index: int) -> RawItem | None:
+def stable_external_id(row: dict, text: str) -> str:
+    raw = row.get("id")
+    if raw in (None, ""):
+        raw = row.get("external_id")
+    explicit = "" if raw in (None, "") else str(raw).strip()
+    if explicit:
+        return explicit[:120]
+    digest = hashlib.sha256(text.casefold().encode("utf-8")).hexdigest()
+    return f"manual-{digest[:32]}"
+
+
+def _target_hint(row: dict) -> str | None:
+    raw = row.get("objetivo") or row.get("target") or row.get("objetivo_nombre")
+    if raw in (None, ""):
+        return None
+    text = str(raw).strip()
+    return text or None
+
+
+def _row_to_item(row: dict) -> RawItem | None:
     text = (row.get("texto") or row.get("text") or "").strip()
     if not text:
         return None
@@ -44,7 +66,7 @@ def _row_to_item(row: dict, index: int) -> RawItem | None:
     relevance = row.get("relevancia") or row.get("relevance")
     return RawItem(
         source=(row.get("fuente") or row.get("source") or "manual_upload").strip() or "manual_upload",
-        external_id=(row.get("id") or f"manual-{index}"),
+        external_id=stable_external_id(row, text),
         text=text,
         url=(row.get("url") or None),
         author_handle=(row.get("autor") or row.get("author") or None),
@@ -61,6 +83,7 @@ def _row_to_item(row: dict, index: int) -> RawItem | None:
         theme=row.get("tema") or row.get("theme"),
         confidence=float(confidence) if confidence not in (None, "") else None,
         relevance=float(relevance) if relevance not in (None, "") else None,
+        target_hint=_target_hint(row),
         license_note="Carga del analista. El estudio declara derecho de uso.",
     )
 
@@ -69,8 +92,8 @@ def parse_csv(content: bytes) -> list[RawItem]:
     text = content.decode("utf-8-sig")
     reader = csv.DictReader(io.StringIO(text))
     items = []
-    for index, row in enumerate(reader, start=1):
-        item = _row_to_item(row, index)
+    for row in reader:
+        item = _row_to_item(row)
         if item:
             items.append(item)
     return items
@@ -80,24 +103,22 @@ def parse_json(content: bytes) -> list[RawItem]:
     payload = json.loads(content.decode("utf-8"))
     rows = payload if isinstance(payload, list) else payload.get("mentions", [])
     items = []
-    for index, row in enumerate(rows, start=1):
-        item = _row_to_item(row, index)
+    for row in rows:
+        item = _row_to_item(row)
         if item:
             items.append(item)
     return items
 
 
 def parse_xlsx(content: bytes) -> list[RawItem]:
-    from openpyxl import load_workbook
-
     workbook = load_workbook(io.BytesIO(content), read_only=True, data_only=True)
     sheet = workbook.active
     rows = sheet.iter_rows(values_only=True)
     headers = [str(cell).strip() if cell is not None else "" for cell in next(rows)]
     items = []
-    for index, values in enumerate(rows, start=1):
+    for values in rows:
         row = {headers[pos]: "" if value is None else str(value) for pos, value in enumerate(values)}
-        item = _row_to_item(row, index)
+        item = _row_to_item(row)
         if item:
             items.append(item)
     return items

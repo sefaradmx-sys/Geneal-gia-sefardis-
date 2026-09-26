@@ -1,11 +1,52 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
-from app.models.entities import AuditLog, Classification, Mention, Study
-from app.services.textutil import clean_text, normalized_hash
+from app.models.entities import AuditLog, Classification, Mention, MentionTarget, MonitoringTarget, Study
+from app.services.textutil import clean_text, contains_phrase, fold_text, normalized_hash
 from collector.base import RawItem
+
+_LABELED = {"positive", "negative", "neutral"}
+
+
+def label_from_upload(sentiment: str | None, confidence: float | None) -> tuple[str, float, bool, str]:
+    if sentiment is None or sentiment not in _LABELED:
+        return "neutral", 0.0, True, "sin_modelo"
+    value = 1.0 if confidence is None else float(confidence)
+    return sentiment, value, value < 0.45, "carga_manual"
+
+
+def matched_targets(text: str, targets: list[MonitoringTarget], hint: str | None) -> list[MonitoringTarget]:
+    hint_key = fold_text(hint or "").strip()
+    chosen: list[MonitoringTarget] = []
+    seen: set = set()
+    for target in targets:
+        phrases = [target.name, *[alias.phrase for alias in target.aliases]]
+        hint_phrases = list(phrases)
+        if target.key:
+            hint_phrases.append(target.key)
+            if len(fold_text(target.key).strip()) >= 3:
+                phrases.append(target.key)
+        hinted = bool(hint_key) and any(fold_text(phrase).strip() == hint_key for phrase in hint_phrases if phrase)
+        mentioned = any(contains_phrase(text, phrase) for phrase in phrases if phrase)
+        if not hinted and not mentioned:
+            continue
+        if target.id in seen:
+            continue
+        seen.add(target.id)
+        chosen.append(target)
+    return chosen
+
+
+def _load_targets(session: Session, study: Study) -> list[MonitoringTarget]:
+    return list(
+        session.scalars(
+            select(MonitoringTarget)
+            .where(MonitoringTarget.study_id == study.id)
+            .options(selectinload(MonitoringTarget.aliases))
+        ).all()
+    )
 
 
 def persist_raw_items(session: Session, study: Study, items: list[RawItem], user_id) -> dict:
@@ -17,11 +58,13 @@ def persist_raw_items(session: Session, study: Study, items: list[RawItem], user
             select(Mention.external_id).where(Mention.study_id == study.id)
         ).all()
     )
+    targets = _load_targets(session, study)
     created = skipped = review = 0
     now = datetime.now(timezone.utc)
     for item in items:
         digest = normalized_hash(item.text)
-        if digest in existing_hashes or item.external_id in existing_external:
+        external_id = (item.external_id or "").strip()[:120] or f"auto-{digest[:32]}"
+        if digest in existing_hashes or external_id in existing_external:
             skipped += 1
             continue
         published = item.published_at or now
@@ -33,7 +76,7 @@ def persist_raw_items(session: Session, study: Study, items: list[RawItem], user
             source_kind=item.source if item.source in {
                 "news", "x", "youtube", "reddit", "facebook", "web_public", "manual_upload"
             } else "manual_upload",
-            external_id=item.external_id[:120],
+            external_id=external_id,
             text_original=item.text,
             text_clean=clean_text(item.text),
             published_at=published,
@@ -54,25 +97,27 @@ def persist_raw_items(session: Session, study: Study, items: list[RawItem], user
         )
         session.add(mention)
         session.flush()
-        has_label = item.sentiment in {"positive", "negative", "neutral"} and item.confidence is not None
-        needs_review = not has_label or (item.confidence or 0) < 0.45
+        sentiment, confidence, needs_review, model_name = label_from_upload(item.sentiment, item.confidence)
         session.add(
             Classification(
                 mention_id=mention.id,
-                sentiment=item.sentiment or "neutral",
+                sentiment=sentiment,
                 stance=item.stance or "not_applicable",
                 emotion="",
                 toxicity=0,
                 irony=0,
-                confidence=item.confidence or 0,
-                model_name="carga_manual" if has_label else "sin_modelo",
+                confidence=confidence,
+                model_name=model_name,
                 needs_review=needs_review,
             )
         )
+        relevance = 1.0 if item.relevance is None else float(item.relevance)
+        for target in matched_targets(item.text, targets, item.target_hint):
+            session.add(MentionTarget(mention_id=mention.id, target_id=target.id, relevance=relevance))
         if needs_review:
             review += 1
         existing_hashes.add(digest)
-        existing_external.add(item.external_id)
+        existing_external.add(external_id)
         created += 1
     session.add(
         AuditLog(

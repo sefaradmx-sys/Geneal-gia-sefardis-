@@ -20,3 +20,18 @@ def slugify(value: str) -> str:
     normalized = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", normalized).strip("-").lower()
     return slug[:80] or "estudio"
+
+
+def fold_text(value: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", (value or "").casefold())
+    return "".join(char for char in decomposed if not unicodedata.combining(char))
+
+
+def contains_phrase(text: str, phrase: str) -> bool:
+    folded_phrase = fold_text(phrase).strip()
+    if not folded_phrase:
+        return False
+    folded_text = fold_text(text)
+    if folded_phrase[0] in {"#", "@"}:
+        return folded_phrase in folded_text
+    return re.search(rf"(?<!\w){re.escape(folded_phrase)}(?!\w)", folded_text) is not None

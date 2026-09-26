@@ -44,6 +44,7 @@ class RawItem:
     theme: str | None = None
     confidence: float | None = None
     relevance: float | None = None
+    target_hint: str | None = None
     license_note: str = "Contenido público o carga del analista."
     raw: dict = field(default_factory=dict)
 
