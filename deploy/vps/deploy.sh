@@ -101,10 +101,10 @@ PY
 
 run_scp "$tmp/update_env.py" "$tmp/patch_caddy.py" "${USER_NAME}@${HOST}:/tmp/"
 run_ssh "REMOTE_APP='${REMOTE_APP}' ADMIN_USER='${ADMIN_USER}' ADMIN_EMAIL='${ADMIN_EMAIL}' ADMIN_PASS='${ADMIN_PASS}' python3 /tmp/update_env.py"
-run_ssh "python3 /tmp/patch_caddy.py"
+run_ssh "python3 /tmp/patch_caddy.py" || echo "WARN caddy patch failed"
 
 echo ">> docker compose"
-run_ssh "cd '${REMOTE_APP}/deploy/vps' && docker compose build && docker compose up -d --force-recreate api web && docker exec garga-caddy-1 caddy reload --config /etc/caddy/Caddyfile && docker compose ps"
+run_ssh "set -e; cd '${REMOTE_APP}/deploy/vps'; if docker compose version >/dev/null 2>&1; then DC='docker compose'; elif sudo docker compose version >/dev/null 2>&1; then DC='sudo docker compose'; else DC='docker-compose'; fi; echo USING:\$DC; \$DC build; \$DC up -d --force-recreate api web; sudo docker exec garga-caddy-1 caddy reload --config /etc/caddy/Caddyfile || docker exec garga-caddy-1 caddy reload --config /etc/caddy/Caddyfile; \$DC ps"
 
 echo ">> smoke local"
 run_ssh "curl -sS -m 25 -o /tmp/lmc-login.body -w 'login:%{http_code}\n' http://127.0.0.1/census/login; python3 -c \"import pathlib; t=pathlib.Path('/tmp/lmc-login.body').read_text(errors='ignore'); print('ok_title', 'LA MV Census' in t)\""
