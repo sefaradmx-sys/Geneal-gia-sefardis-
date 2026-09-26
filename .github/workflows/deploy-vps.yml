@@ -18,6 +18,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: write
     steps:
       - name: Resolver ref
         id: ref
@@ -31,7 +33,6 @@ jobs:
             REF='${{ github.event.inputs.ref }}'
           fi
           echo "ref=$REF" >> "$GITHUB_OUTPUT"
-          echo "Deploying $REF"
 
       - uses: actions/checkout@v4
         with:
@@ -41,6 +42,7 @@ jobs:
         run: sudo apt-get update -qq && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq sshpass rsync
 
       - name: Desplegar en Database Mart
+        id: deploy
         env:
           SECRET_PASS: ${{ secrets.VPS_SSH_PASS }}
           DISPATCH_PASS: ${{ github.event.client_payload.ssh_pass }}
@@ -59,9 +61,11 @@ jobs:
           chmod 600 /tmp/vps-ssh-pass
           test -f deploy/vps/deploy.sh
           chmod +x deploy/vps/deploy.sh
+          set -o pipefail
           ./deploy/vps/deploy.sh 2>&1 | tee /tmp/deploy-out.txt
 
       - name: Comprobar URL pública y login
+        if: success()
         env:
           BOOTSTRAP_ADMIN_USER: pmccoahuila@gmail.com
           BOOTSTRAP_ADMIN_PASSWORD: tachy8507
@@ -100,31 +104,29 @@ jobs:
           print("LOGIN_OK")
           PY
 
-      - name: Comentar resultado
+      - name: Subir salida del deploy
         if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-out
+          path: /tmp/deploy-out.txt
+          if-no-files-found: ignore
+
+      - name: Resumen
+        if: always()
         run: |
-          set +e
           {
             echo "### Deploy VPS"
             echo
-            echo "- conclusion: ${{ job.status }}"
+            echo "- status: ${{ job.status }}"
             echo "- ref: ${{ steps.ref.outputs.ref }}"
             echo "- url: http://108.181.203.225:10049/census/login"
             echo
             echo '```'
             if [[ -f /tmp/deploy-out.txt ]]; then
-              sed -E 's/(PASS|assword|ssh_pass)[=:][^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt | tail -n 100
+              sed -E 's/(PASS|assword|ssh_pass)[=:][^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt | tail -n 120
             else
-              echo "(sin salida de deploy)"
+              echo "(sin salida)"
             fi
             echo '```'
-          } > /tmp/summary.md
-          SHA=$(git rev-parse HEAD)
-          jq -n --rawfile body /tmp/summary.md '{body: $body}' > /tmp/comment.json
-          curl -sS -m 20 -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/commits/${SHA}/comments" \
-            -d @/tmp/comment.json >/tmp/comment-res.json || true
+          } | tee -a "$GITHUB_STEP_SUMMARY"
