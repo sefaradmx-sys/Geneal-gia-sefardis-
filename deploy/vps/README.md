@@ -23,3 +23,5 @@ Base `lmc` en el Postgres 16 existente (`garga-postgres-1`). No se tocan `garga_
 | VM :3092 | Next directo, solo interno |
 
 El API no se publica hacia Internet; el tablero lo llama por la red Docker.
+
+El archivo `deploy/vps/.env` vive solo en el VPS. No se versiona. Un `rsync --delete` desde el repo lo borra: excluir `.env` o copiarlo de nuevo antes de `docker compose up`.
