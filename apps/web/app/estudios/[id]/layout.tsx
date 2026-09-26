@@ -5,6 +5,7 @@ import { Shell } from "@/components/Shell";
 import { StudyNav } from "@/components/StudyNav";
 import { buttonVariants } from "@/components/ui/button";
 import { apiFetch } from "@/lib/api";
+import { withBase } from "@/lib/base-path";
 import { formatDate } from "@/lib/labels";
 
 type StudyHead = { name: string; window_start: string; window_end: string; is_demo: boolean };
@@ -52,11 +53,11 @@ export default async function EstudioLayout({
             ) : null}
           </div>
           <div className="flex w-full flex-wrap items-center gap-2 print:hidden sm:w-auto">
-            <form action={`/estudios/${id}/menciones`} className="relative min-w-0 flex-1 sm:w-72 sm:flex-none">
+            <form action={withBase(`/estudios/${id}/menciones`)} className="relative min-w-0 flex-1 sm:w-72 sm:flex-none">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
               <input name="q" placeholder="Buscar en menciones…" className="input h-10 pl-9" />
             </form>
-            <a href={`/estudios/${id}/archivo/pdf`} className={buttonVariants({ variant: "secondary" })}>
+            <a href={withBase(`/estudios/${id}/archivo/pdf`)} className={buttonVariants({ variant: "secondary" })}>
               <FileDown className="h-4 w-4" />
               PDF
             </a>

@@ -2,6 +2,7 @@ import { FileSpreadsheet, FileText, ShieldCheck } from "lucide-react";
 import { LogoMark } from "@/components/Logo";
 import { PrintButton } from "@/components/PrintButton";
 import { apiFetch } from "@/lib/api";
+import { withBase } from "@/lib/base-path";
 import { formatDate, formatIndex, formatPct, sentimentLabel, sourceLabel } from "@/lib/labels";
 import type { StudySummary, TargetSummary } from "@/lib/types";
 
@@ -22,14 +23,14 @@ export default async function ReportePage({ params }: { params: Promise<{ id: st
     <div className="grid gap-5 xl:grid-cols-[320px_1fr]">
       <aside className="space-y-3 print:hidden">
         <ExportCard
-          href={`/estudios/${id}/archivo/pdf`}
+          href={withBase(`/estudios/${id}/archivo/pdf`)}
           icon={FileText}
           tone="from-neg/20 text-neg"
           title="Reporte PDF"
           detail="Dos páginas: cifras, preferencia, alerta y metodología; luego las menciones que sostienen el número."
         />
         <ExportCard
-          href={`/estudios/${id}/archivo/xlsx`}
+          href={withBase(`/estudios/${id}/archivo/xlsx`)}
           icon={FileSpreadsheet}
           tone="from-pos/20 text-pos"
           title="Menciones en Excel"

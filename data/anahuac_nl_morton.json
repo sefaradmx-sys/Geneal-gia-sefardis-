@@ -1,0 +1,225 @@
+{
+  "study": {
+    "name": "Anáhuac, NL — Juan Manuel Morton González",
+    "slug": "anahuac-nl-morton-2024-2026",
+    "description": "Censo digital del municipio de Anáhuac, Nuevo León, sobre el alcalde Juan Manuel Morton González (periodo 2024-2027). Solo notas públicas con URL. No es encuesta representativa ni aprobación electoral.",
+    "window_start": "2024-09-01",
+    "window_end": "2026-09-26",
+    "scoring_config": {
+      "half_life_days": 365,
+      "neutral_factor": 0.5,
+      "min_confidence": 0.45,
+      "min_relevance": 0.35
+    }
+  },
+  "targets": [
+    {
+      "name": "Juan Manuel Morton González",
+      "kind": "politician",
+      "comparable": true,
+      "description": "Presidente municipal de Anáhuac, NL, periodo 2024-2027.",
+      "aliases": [
+        ["Juan Manuel Morton González", "name"],
+        ["Juan Morton", "nickname"],
+        ["Morton González", "nickname"],
+        ["alcalde Juan Morton", "nickname"]
+      ]
+    },
+    {
+      "name": "Gobierno municipal de Anáhuac",
+      "kind": "government",
+      "comparable": true,
+      "description": "Ayuntamiento de Anáhuac, Nuevo León.",
+      "aliases": [
+        ["gobierno municipal de Anáhuac", "name"],
+        ["Ayuntamiento", "nickname"],
+        ["administración de Morton", "nickname"],
+        ["municipio de Anáhuac", "name"]
+      ]
+    },
+    {
+      "name": "Agua y presa Don Martín",
+      "kind": "topic",
+      "comparable": false,
+      "description": "Abasto, sequía, río Sabinas, presa Venustiano Carranza / Don Martín y Salinillas.",
+      "aliases": [
+        ["presa Don Martín", "name"],
+        ["Venustiano Carranza", "name"],
+        ["río Sabinas", "name"],
+        ["Salinillas", "name"],
+        ["sequía", "nickname"],
+        ["trasvase", "nickname"]
+      ]
+    },
+    {
+      "name": "Seguridad y Fuerza Civil",
+      "kind": "topic",
+      "comparable": false,
+      "description": "Protestas y denuncias públicas contra Fuerza Civil en Anáhuac.",
+      "aliases": [
+        ["Fuerza Civil", "name"],
+        ["terror policiaco", "nickname"],
+        ["manifestación", "nickname"]
+      ]
+    }
+  ],
+  "mentions": [
+    {
+      "id": "liderweb-toma-protesta-2024",
+      "texto": "Juan Manuel Morton González tomó protesta como presidente municipal de Anáhuac, Nuevo León, para el periodo 2024-2027. Dijo que las campañas quedaron atrás y que hay que ser un solo equipo: «Gracias por su apoyo y no les vamos a fallar». Prometió gobierno de puertas abiertas y recorrer calles y ejidos.",
+      "url": "https://liderweb.mx/juan-manuel-morton-gonzalez-asume-la-presidencia-municipal-de-anahuac-para-el-periodo-2024-2027/",
+      "fuente": "news",
+      "autor": "Carlos Figueroa / Líder Web",
+      "fecha": "2024-09-29T12:00:00-06:00",
+      "sentimiento": "positivo",
+      "postura": "a_favor",
+      "confianza": 0.7,
+      "tema": "gobierno",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    },
+    {
+      "id": "6w-ultrasonidos-2025",
+      "texto": "El alcalde Juan Manuel Morton González supervisó en el centro de salud de Anáhuac los ultrasonidos gratuitos. Dijo que el acceso a servicios básicos de salud es prioridad de su gestión y que el programa da diagnósticos oportunos sin costo a las familias.",
+      "url": "https://6w.news/supervisa-alcalde-juan-manuel-morton-servicios-de-salud-en-anahuac/",
+      "fuente": "news",
+      "autor": "6w News",
+      "fecha": "2025-07-08T12:00:00-06:00",
+      "sentimiento": "positivo",
+      "postura": "a_favor",
+      "confianza": 0.68,
+      "tema": "salud",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac",
+      "vistas": 100
+    },
+    {
+      "id": "elmanana-protesta-fc-2025",
+      "texto": "Decenas de habitantes de Anáhuac se manifestaron en la plaza principal contra presuntos abusos de Fuerza Civil. Hablaron de agresiones, amenazas, robos y detenciones arbitrarias. Un vecino dijo: «Tenemos más miedo de la policía que de los criminales». El Comité de Derechos Humanos de Nuevo Laredo ofició al gobernador, a Seguridad Pública, al alcalde Juan Manuel Morton González y a la CEDH para pedir investigación.",
+      "url": "https://elmanana.com.mx/nuevo-laredo/2025/8/27/anahuac-se-manifiesta-contra-presuntos-abusos-de-fuerza-civil-154129.html",
+      "fuente": "news",
+      "autor": "El Mañana de Nuevo Laredo",
+      "fecha": "2025-08-27T13:04:00-06:00",
+      "sentimiento": "negativo",
+      "postura": "no_aplica",
+      "confianza": 0.78,
+      "tema": "seguridad",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    },
+    {
+      "id": "liderweb-acoso-fc-2025",
+      "texto": "Habitantes de Anáhuac denunciaron que agentes de Fuerza Civil fueron a sus casas a hostigar a quienes protestaron. Una mujer relató: «Me empujó la policía, ahora no puedes ni salir a la banqueta». El oficio de queja llegó al gobernador, a Seguridad Pública, al alcalde de Anáhuac y a la CEDH.",
+      "url": "https://liderweb.mx/denuncian-acoso-de-agentes-de-fuerza-civil-a-manifestantes-en-sus-hogares-en-anahuac-nuevo-leon/",
+      "fuente": "news",
+      "autor": "Líder Web",
+      "fecha": "2025-09-08T12:00:00-06:00",
+      "sentimiento": "negativo",
+      "postura": "no_aplica",
+      "confianza": 0.76,
+      "tema": "seguridad",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    },
+    {
+      "id": "liderweb-primer-informe-2025",
+      "texto": "El alcalde Juan Morton rindió su Primer Informe de Actividades en el Centro Cultural de Anáhuac. El cabildo público destacó becas escolares, pago de titulaciones, salud, deporte, obra pública, el DIF que preside Rocío González de Morton y el equipamiento de bomberos. Morton dijo que «lo mejor para Anáhuac está por venir».",
+      "url": "https://liderweb.mx/juan-morton-rinde-su-primer-informe-de-actividades/",
+      "fuente": "news",
+      "autor": "Líder Web",
+      "fecha": "2025-09-29T12:00:00-06:00",
+      "sentimiento": "positivo",
+      "postura": "a_favor",
+      "confianza": 0.66,
+      "tema": "gobierno",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    },
+    {
+      "id": "6w-proteccion-civil-2026",
+      "texto": "El gobierno municipal de Anáhuac, encabezado por Juan Manuel Morton González, entregó a Protección Civil una ambulancia equipada y una unidad Transit para 18 pasajeros, para emergencias y traslados.",
+      "url": "https://6w.news/anahuac-fortalece-proteccion-civil-con-ambulancia-y-unidad-de-traslado/",
+      "fuente": "news",
+      "autor": "6w News",
+      "fecha": "2026-03-23T12:00:00-06:00",
+      "sentimiento": "positivo",
+      "postura": "a_favor",
+      "confianza": 0.7,
+      "tema": "salud",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac",
+      "vistas": 3800
+    },
+    {
+      "id": "6w-canal-30km-2026",
+      "texto": "El gobierno municipal de Anáhuac, encabezado por el alcalde Juan Manuel Morton González, limpió más de 30 kilómetros de canal para mejorar el trasvase de la presa Don Martín a la laguna de Salinillas y reducir pérdidas de agua.",
+      "url": "https://6w.news/anahuac-limpia-mas-de-30-km-de-canal-para-mejorar-trasvase-de-agua/",
+      "fuente": "news",
+      "autor": "6w News",
+      "fecha": "2026-03-25T12:00:00-06:00",
+      "sentimiento": "positivo",
+      "postura": "a_favor",
+      "confianza": 0.67,
+      "tema": "agua",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac",
+      "vistas": 3800
+    },
+    {
+      "id": "rincon-rio-sabinas-2026",
+      "texto": "El alcalde Juan Manuel Morton González se sumó con ciudadanos y productores de Anáhuac a la movilización regional en defensa del río Sabinas, principal aportador de la presa Venustiano Carranza (Don Martín). Pidió coordinación regional porque el embalse está bajo y hay menos lluvia.",
+      "url": "https://elrincondemaquiavelo.com/juan-morton-se-suma-a-defensa-del-rio-sabinas-y-llama-a-fortalecer-coordinacion-regional/",
+      "fuente": "news",
+      "autor": "El Rincón de Maquiavelo",
+      "fecha": "2026-08-21T12:00:00-06:00",
+      "sentimiento": "neutro",
+      "postura": "a_favor",
+      "confianza": 0.6,
+      "tema": "agua",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    },
+    {
+      "id": "factor-don-martin-2026",
+      "texto": "Juan Morton advirtió que Anáhuac teme desabasto de agua para unos 20 mil habitantes por el bajo nivel de la presa Venustiano Carranza (Don Martín) tras sequía de año y medio. Habitantes reportan extracciones y posible contaminación en el río Sabinas. El alcalde dijo: «Tenemos en riesgo la existencia de nuestro municipio».",
+      "url": "https://factorcoahuila.com/teme-anahuac-falta-de-abasto-de-agua-por-bajo-nivel-de-don-martin/",
+      "fuente": "news",
+      "autor": "Factor Coahuila",
+      "fecha": "2026-08-22T12:00:00-06:00",
+      "sentimiento": "negativo",
+      "postura": "mixto",
+      "confianza": 0.74,
+      "tema": "agua",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    },
+    {
+      "id": "voz-sequia-2026",
+      "texto": "Juan Manuel Morton González describió como crítica la sequía en Anáhuac: la presa Venustiano Carranza tenía 76 millones de m³, 6.11% de su capacidad. Alertó por contaminación cuando el nivel es bajo y dijo que pedirán a CONAGUA inspecciones. La falta de agua ya desplazó agricultura y ganadería hacia maquilas.",
+      "url": "https://periodicolavoz.com.mx/coahuila/sabinas/situacion-critica-por-sequia-en-anahuac-nuevo-leon/379914",
+      "fuente": "news",
+      "autor": "Periódico La Voz",
+      "fecha": "2026-08-23T12:00:00-06:00",
+      "sentimiento": "negativo",
+      "postura": "mixto",
+      "confianza": 0.73,
+      "tema": "agua",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    },
+    {
+      "id": "rincon-tercera-ambulancia-2026",
+      "texto": "Juan Manuel Morton González entregó la tercera ambulancia de su administración, antes del desfile del 16 de septiembre. La unidad va climatizada y equipada para traslados. Con ello el municipio suma tres ambulancias en el periodo 2024-2027.",
+      "url": "https://elrincondemaquiavelo.com/juan-manuel-morton-entrega-tercera-ambulancia-para-fortalecer-la-salud-en-anahuac/",
+      "fuente": "news",
+      "autor": "El Rincón de Maquiavelo",
+      "fecha": "2026-09-17T12:00:00-06:00",
+      "sentimiento": "positivo",
+      "postura": "a_favor",
+      "confianza": 0.69,
+      "tema": "salud",
+      "estado": "Nuevo León",
+      "municipio": "Anáhuac"
+    }
+  ]
+}

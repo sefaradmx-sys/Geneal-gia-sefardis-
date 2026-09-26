@@ -1,9 +1,10 @@
-import { ChevronLeft, ChevronRight, Eye, Filter, Heart, MapPin, MessageCircle, Repeat2, Search, SearchX } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, ExternalLink, Filter, Heart, MapPin, MessageCircle, Repeat2, Search, SearchX } from "lucide-react";
 import Link from "next/link";
 import { Avatar, SentimentBadge, SourceBadge } from "@/components/ui/badges";
 import { buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/card";
 import { apiFetch } from "@/lib/api";
+import { withBase } from "@/lib/base-path";
 import { formatCompact, stanceLabel, timeAgo } from "@/lib/labels";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ type MentionRow = {
   geo_municipality: string | null;
   confidence: number | null;
   is_synthetic: boolean;
+  url: string | null;
   likes: number;
   replies: number;
   shares: number;
@@ -76,7 +78,7 @@ export default async function MencionesPage({ params, searchParams }: { params: 
   return (
     <div className="space-y-4">
       <div className="card p-4">
-        <form action={`/estudios/${id}/menciones`} className="flex flex-col gap-3 lg:flex-row lg:items-center">
+        <form action={withBase(`/estudios/${id}/menciones`)} className="flex flex-col gap-3 lg:flex-row lg:items-center">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <input name="q" defaultValue={query.q || ""} placeholder="Buscar palabra, municipio, tema…" className="input pl-9" />
@@ -145,6 +147,17 @@ export default async function MencionesPage({ params, searchParams }: { params: 
                     {item.is_synthetic ? <span className="ml-auto rounded bg-warn/10 px-1.5 py-0.5 text-[10px] text-warn">sintética</span> : null}
                   </div>
                   <p className="mt-1.5 text-sm leading-relaxed text-fg/90">{item.text_original}</p>
+                  {item.url ? (
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                      Fuente original
+                    </a>
+                  ) : null}
                   <div className="mt-3 flex flex-wrap items-center gap-1.5">
                     <SentimentBadge value={item.sentiment} />
                     <SourceBadge value={item.source_kind} />

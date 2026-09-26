@@ -4,6 +4,7 @@ import { IndexGauge } from "@/components/charts/IndexGauge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardHeader, EmptyState } from "@/components/ui/card";
 import { apiFetch } from "@/lib/api";
+import { withBase } from "@/lib/base-path";
 import { formatIndex, formatPct, targetKindLabel } from "@/lib/labels";
 import type { StudySummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -50,7 +51,7 @@ export default async function CompararPage({
           title="Elige qué comparar"
           subtitle="La diferencia es de índice de sentimiento digital. El intervalo de estabilidad no es un margen de encuesta."
         />
-        <form action={`/estudios/${id}/comparar`}>
+        <form action={withBase(`/estudios/${id}/comparar`)}>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             {summary.targets.map((target) => (
               <label key={target.id} className="group relative cursor-pointer">

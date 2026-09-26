@@ -10,6 +10,8 @@ DISCLAIMER = "Sentimiento digital observado. No es encuesta representativa."
 
 KNOWN_BIASES = [
     "En política mexicana, X suele concentrar más negatividad que los medios nacionales o que una carga de censo. El índice no corrige ese sesgo: lo muestra por fuente.",
+    "La prensa local del norte a menudo reproduce boletines municipales. Eso empuja el índice hacia lo positivo sin ser una encuesta de calle.",
+    "No se leen Facebook, Instagram ni TikTok: esas plataformas no tienen API usable aquí. El número es sentimiento digital observado, no aprobación electoral.",
 ]
 
 DEFAULT_SOURCE_WEIGHTS: dict[str, float] = {
