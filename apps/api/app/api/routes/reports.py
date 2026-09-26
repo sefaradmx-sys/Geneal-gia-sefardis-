@@ -14,6 +14,7 @@ from app.core.db import get_db
 from app.core.deps import get_current_user, require_writer
 from app.models.entities import Alert, AuditLog, Mention, MonitoringTarget, Report, User
 from app.schemas.dto import AlertRecord
+from app.services.brief_pdf import build_brief_pdf
 from app.services.scoring import DISCLAIMER
 from app.services.summary import build_summary
 
@@ -196,37 +197,18 @@ def export_pdf(
 ):
     study = _study_or_404(session, user, study_id)
     summary = build_summary(session, study)
-    hero = next((item for item in summary.targets if item.kind == "government"), None)
-    if hero is None and summary.targets:
-        hero = summary.targets[0]
-    first = [
-        DISCLAIMER,
-        summary.name,
-        summary.description or "Sin descripción.",
-        f"Ventana {summary.window_start.isoformat()} a {summary.window_end.isoformat()}.",
-    ]
-    if hero is not None and hero.favorability_index is not None:
-        first.append(
-            f"{hero.name}: índice {hero.favorability_index:.0f}. "
-            f"Positivo {hero.pct_positive:.1f}%, negativo {hero.pct_negative:.1f}%, neutro {hero.pct_neutral:.1f}%. "
-            f"Volumen {hero.volume}."
-        )
-    if summary.preferences:
-        first.append(summary.preferences[0].headline)
-    if summary.alerts:
-        first.append(summary.alerts[0].message)
-    first.append(summary.methodology.formula)
-    second = ["Menciones que sostienen la lectura."]
-    if not summary.evidence:
-        second.append("No hay menciones clasificadas en esta ventana.")
-    for item in summary.evidence[:12]:
-        second.append(f"{item.sentiment} · {item.source} · {item.text}")
-    for bias in summary.known_biases:
-        second.append(bias)
-    second.append(DISCLAIMER)
+    mentions = list(
+        session.scalars(
+            select(Mention)
+            .where(Mention.study_id == study.id)
+            .options(selectinload(Mention.classification))
+            .order_by(Mention.published_at.asc())
+            .limit(500)
+        ).all()
+    )
     _record(session, user, study.id, "pdf")
     session.commit()
-    payload = study_pdf("LA MV Census", first, second)
+    payload = build_brief_pdf(summary, mentions)
     return Response(
         content=payload,
         media_type="application/pdf",
