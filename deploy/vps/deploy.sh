@@ -19,15 +19,25 @@ fi
 command -v sshpass >/dev/null
 command -v rsync >/dev/null
 
-SSH_OPTS=(-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/vps-known -o PreferredAuthentications=password -o PubkeyAuthentication=no -o ConnectTimeout=30)
+# Keepalives: el NAT de Database Mart corta SSH idle ~3–4 min durante docker build.
+SSH_OPTS=(
+  -o StrictHostKeyChecking=accept-new
+  -o UserKnownHostsFile=/tmp/vps-known
+  -o PreferredAuthentications=password
+  -o PubkeyAuthentication=no
+  -o ConnectTimeout=30
+  -o ServerAliveInterval=15
+  -o ServerAliveCountMax=240
+  -o TCPKeepAlive=yes
+)
 run_ssh() { sshpass -f "$PASS_FILE" ssh "${SSH_OPTS[@]}" -p "$PORT" "${USER_NAME}@${HOST}" "$@"; }
 run_scp() { sshpass -f "$PASS_FILE" scp "${SSH_OPTS[@]}" -P "$PORT" "$@"; }
 
-echo ">> ping ssh"
-run_ssh 'echo SSH_OK; hostname; whoami; docker --version'
+echo ">> ping ssh $(date -u +%H:%M:%S)"
+run_ssh 'echo SSH_OK; hostname; whoami; (docker --version || sudo docker --version); df -h / | tail -1; free -m | head -2'
 
-echo ">> rsync"
-export RSYNC_RSH="sshpass -f ${PASS_FILE} ssh -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/vps-known -o PreferredAuthentications=password -o PubkeyAuthentication=no -o ConnectTimeout=30 -p ${PORT}"
+echo ">> rsync $(date -u +%H:%M:%S)"
+export RSYNC_RSH="sshpass -f ${PASS_FILE} ssh -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/vps-known -o PreferredAuthentications=password -o PubkeyAuthentication=no -o ConnectTimeout=30 -o ServerAliveInterval=15 -o ServerAliveCountMax=240 -o TCPKeepAlive=yes -p ${PORT}"
 rsync -az --delete \
   --exclude .git --exclude .venv --exclude node_modules --exclude .next \
   --exclude .env --exclude 'apps/api/.env' --exclude deploy/vps/.env \
@@ -35,7 +45,7 @@ rsync -az --delete \
   --exclude .github \
   "${REPO_ROOT}/" "${USER_NAME}@${HOST}:${REMOTE_APP}/"
 
-echo ">> escribe scripts remotos"
+echo ">> escribe scripts remotos $(date -u +%H:%M:%S)"
 tmp=$(mktemp -d)
 cat >"$tmp/update_env.py" <<'PY'
 import os
@@ -99,15 +109,54 @@ else:
     print("caddy_unchanged")
 PY
 
-run_scp "$tmp/update_env.py" "$tmp/patch_caddy.py" "${USER_NAME}@${HOST}:/tmp/"
+cat >"$tmp/remote_compose.sh" <<'REMOTE'
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$REMOTE_APP/deploy/vps"
+if docker compose version >/dev/null 2>&1; then
+  DC=(docker compose)
+elif sudo docker compose version >/dev/null 2>&1; then
+  DC=(sudo docker compose)
+else
+  DC=(docker-compose)
+fi
+echo "USING:${DC[*]}"
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+echo ">> build api $(date -u +%H:%M:%S)"
+"${DC[@]}" build --progress=plain api
+echo ">> build web $(date -u +%H:%M:%S)"
+"${DC[@]}" build --progress=plain web
+echo ">> up $(date -u +%H:%M:%S)"
+"${DC[@]}" up -d --force-recreate --remove-orphans api web
+echo ">> wait api $(date -u +%H:%M:%S)"
+for i in $(seq 1 36); do
+  if curl -sf -m 3 http://127.0.0.1:3092/census/login >/dev/null 2>&1 \
+    || curl -sf -m 3 http://127.0.0.1/census/login >/dev/null 2>&1; then
+    echo "web_ready_$i"
+    break
+  fi
+  sleep 5
+done
+echo ">> caddy reload $(date -u +%H:%M:%S)"
+if sudo docker exec garga-caddy-1 caddy reload --config /etc/caddy/Caddyfile 2>/tmp/caddy-reload.err; then
+  echo caddy_reload_ok
+elif docker exec garga-caddy-1 caddy reload --config /etc/caddy/Caddyfile 2>>/tmp/caddy-reload.err; then
+  echo caddy_reload_ok
+else
+  echo "WARN caddy reload failed"
+  cat /tmp/caddy-reload.err || true
+fi
+"${DC[@]}" ps
+REMOTE
+
+run_scp "$tmp/update_env.py" "$tmp/patch_caddy.py" "$tmp/remote_compose.sh" "${USER_NAME}@${HOST}:/tmp/"
 run_ssh "REMOTE_APP='${REMOTE_APP}' ADMIN_USER='${ADMIN_USER}' ADMIN_EMAIL='${ADMIN_EMAIL}' ADMIN_PASS='${ADMIN_PASS}' python3 /tmp/update_env.py"
 run_ssh "python3 /tmp/patch_caddy.py" || echo "WARN caddy patch failed"
+run_ssh "chmod +x /tmp/remote_compose.sh; REMOTE_APP='${REMOTE_APP}' bash /tmp/remote_compose.sh"
 
-echo ">> docker compose"
-run_ssh "set -e; cd '${REMOTE_APP}/deploy/vps'; if docker compose version >/dev/null 2>&1; then DC='docker compose'; elif sudo docker compose version >/dev/null 2>&1; then DC='sudo docker compose'; else DC='docker-compose'; fi; echo USING:\$DC; \$DC build; \$DC up -d --force-recreate api web; sudo docker exec garga-caddy-1 caddy reload --config /etc/caddy/Caddyfile || docker exec garga-caddy-1 caddy reload --config /etc/caddy/Caddyfile; \$DC ps"
-
-echo ">> smoke local"
-run_ssh "curl -sS -m 25 -o /tmp/lmc-login.body -w 'login:%{http_code}\n' http://127.0.0.1/census/login; python3 -c \"import pathlib; t=pathlib.Path('/tmp/lmc-login.body').read_text(errors='ignore'); print('ok_title', 'LA MV Census' in t)\""
+echo ">> smoke local $(date -u +%H:%M:%S)"
+run_ssh "curl -sS -m 25 -o /tmp/lmc-login.body -w 'login:%{http_code}\n' http://127.0.0.1/census/login || curl -sS -m 25 -o /tmp/lmc-login.body -w 'login_direct:%{http_code}\n' http://127.0.0.1:3092/census/login; python3 -c \"import pathlib; t=pathlib.Path('/tmp/lmc-login.body').read_text(errors='ignore'); print('ok_title', 'LA MV Census' in t); print('bytes', len(t))\""
 
 rm -rf "$tmp"
 echo "LISTO http://${HOST}:10049/census/login"
