@@ -14,7 +14,7 @@ export default async function CargaPage({
       <p className="text-xs uppercase tracking-[0.18em] text-brass">Ingesta</p>
       <h1 className="font-serif text-3xl text-white">Cargar menciones</h1>
       <p className="mt-2 max-w-2xl text-sm text-mist">
-        CSV, XLSX o JSON de hasta 5 MB. Si el archivo no trae sentimiento, la mención queda en revisión y fuera del índice.
+        CSV, XLSX o JSON de hasta 5 MB. Si trae sentimiento, entra al índice de los objetivos cuyo nombre o alias aparece en el texto, o el de la columna objetivo. Si no trae sentimiento, queda en revisión.
       </p>
       <form className="mt-4 space-y-3" action={uploadAction.bind(null, id)}>
         <input
