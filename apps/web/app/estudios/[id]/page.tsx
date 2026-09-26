@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Shell } from "@/components/Shell";
 import { Sparkline } from "@/components/Sparkline";
 import { apiFetch } from "@/lib/api";
 import { formatDate, formatIndex, formatPct, sentimentLabel, sourceLabel } from "@/lib/labels";
@@ -16,16 +15,12 @@ export default async function EstudioPage({ params }: { params: Promise<{ id: st
     notFound();
   }
   if (!response.ok) {
-    return (
-      <Shell>
-        <p className="text-neg">No se pudo cargar el estudio.</p>
-      </Shell>
-    );
+    return <p className="text-neg">No se pudo cargar el estudio.</p>;
   }
   const summary = (await response.json()) as StudySummary;
   const hero = heroOf(summary);
   return (
-    <Shell>
+    <>
       <p className="text-xs uppercase tracking-[0.18em] text-brass">Resumen</p>
       <h1 className="max-w-3xl font-serif text-3xl text-white md:text-4xl">{summary.name}</h1>
       <p className="mt-2 max-w-3xl text-sm text-mist">
@@ -126,7 +121,7 @@ export default async function EstudioPage({ params }: { params: Promise<{ id: st
           {summary.methodology.neutral_factor} · confianza mínima {summary.methodology.min_confidence} · {summary.methodology.formula}
         </p>
       </section>
-    </Shell>
+    </>
   );
 }
 

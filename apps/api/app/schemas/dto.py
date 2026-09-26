@@ -267,3 +267,13 @@ class UploadResult(BaseModel):
     created: int
     skipped: int
     review: int
+
+
+class AlertRecord(BaseModel):
+    id: UUID
+    target_name: str
+    rule: str
+    message: str
+    delta_points: float
+    triggered_at: datetime
+    acknowledged_at: datetime | None
