@@ -83,7 +83,7 @@ def main() -> None:
         session.refresh(study)
         study.targets = list(session.scalars(select(MonitoringTarget).where(MonitoringTarget.study_id == study.id)).all())
         summary = build_summary(session, study)
-        snapshot_study(session, study, summary)
+        snapshot_study(session, study)
         session.commit()
         mayor = next((target for target in summary.targets if target.kind == "politician"), None)
         print(f"estudio={study.id}")
