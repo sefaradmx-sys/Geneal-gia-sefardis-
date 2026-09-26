@@ -24,6 +24,14 @@ _OLD_BLOCKS = (
         r"^[ \t]*handle /osint\* \{\n[ \t]*reverse_proxy osint-framework:80\n[ \t]*\}\n",
         re.M,
     ),
+    re.compile(
+        r"^[ \t]*@osint_api path /api/tool-stats\* /api/vote\* /api/report\*\n",
+        re.M,
+    ),
+    re.compile(
+        r"^[ \t]*handle @osint_api \{\n[ \t]*reverse_proxy osint-framework:80\n[ \t]*\}\n",
+        re.M,
+    ),
 )
 
 
@@ -37,6 +45,10 @@ def _block(indent: str) -> str:
     inner = indent + "\t"
     return (
         f"{indent}handle /osint* {{\n"
+        f"{inner}reverse_proxy osint-framework:80\n"
+        f"{indent}}}\n"
+        f"{indent}@osint_api path /api/tool-stats* /api/vote* /api/report*\n"
+        f"{indent}handle @osint_api {{\n"
         f"{inner}reverse_proxy osint-framework:80\n"
         f"{indent}}}\n"
     )

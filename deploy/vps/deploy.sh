@@ -45,10 +45,25 @@ export RSYNC_RSH="sshpass -f ${PASS_FILE} ssh -o StrictHostKeyChecking=accept-ne
 rsync -az --delete /tmp/osint-fw/public/ "${USER_NAME}@${HOST}:${APP_DIR}/public/"
 rsync -az \
   "${REPO_ROOT}/deploy/osint/patch_caddy.py" \
+  "${REPO_ROOT}/deploy/osint/pick_port.py" \
   "${REPO_ROOT}/deploy/osint/install.sh" \
   "${REPO_ROOT}/deploy/osint/nginx.conf" \
   "${USER_NAME}@${HOST}:${APP_DIR}/"
 
 echo ">> instalar $(date -u +%H:%M:%S)"
 run_ssh "chmod +x ${APP_DIR}/install.sh && bash ${APP_DIR}/install.sh"
-echo "LISTO http://${HOST}:10049/osint/"
+
+echo ">> url pública $(date -u +%H:%M:%S)"
+public="http://${HOST}:10049/osint/"
+code="$(curl -sS -m 20 -o /tmp/osint-public.html -w '%{http_code}' "$public")"
+echo "public_index:${code}"
+test "$code" = "200"
+grep -q 'OSINT Framework' /tmp/osint-public.html
+curl -fsS -m 20 -o /dev/null -w 'public_arf:%{http_code}\n' "http://${HOST}:10049/osint/arf.json"
+curl -fsS -m 20 -o /dev/null -w 'public_css:%{http_code}\n' "http://${HOST}:10049/osint/css/arf.css"
+curl -fsS -m 20 -o /dev/null -w 'public_js:%{http_code}\n' "http://${HOST}:10049/osint/js/d3.min.js"
+curl -fsS -m 20 -o /dev/null -w 'public_api:%{http_code}\n' "http://${HOST}:10049/api/tool-stats?tool_id=probe"
+census="$(curl -sS -m 20 -o /dev/null -w '%{http_code}' "http://${HOST}:10049/census/login")"
+echo "public_census:${census}"
+test "$census" = "200"
+echo "LISTO ${public}"

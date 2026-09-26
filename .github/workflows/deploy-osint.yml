@@ -63,7 +63,8 @@ jobs:
             /tmp/osint-fw/public/ \
             "${USER_NAME}@${HOST}:${APP_DIR}/public/"
           rsync -az \
-            deploy/osint/patch_caddy.py deploy/osint/install.sh \
+            deploy/osint/patch_caddy.py deploy/osint/pick_port.py \
+            deploy/osint/install.sh deploy/osint/nginx.conf \
             "${USER_NAME}@${HOST}:${APP_DIR}/"
           sshpass -f /tmp/vps-ssh-pass ssh "${SSH_OPTS[@]}" -p "$PORT" "${USER_NAME}@${HOST}" \
             "chmod +x ${APP_DIR}/install.sh && bash ${APP_DIR}/install.sh"

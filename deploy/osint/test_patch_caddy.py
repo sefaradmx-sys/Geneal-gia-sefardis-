@@ -34,6 +34,7 @@ def test_inserts_beside_census_not_later_catchall() -> None:
     updated, status = patch_caddy.patch(original)
     assert status == "caddy_updated"
     assert updated.index("handle /osint*") < updated.index("handle /census*")
+    assert updated.index("@osint_api") < updated.index("handle /census*")
     assert updated.index("reverse_proxy osint-framework:80") < updated.index("lmc-web:3000")
     assert "handle_path" not in updated
     assert "redir /osint/" not in updated

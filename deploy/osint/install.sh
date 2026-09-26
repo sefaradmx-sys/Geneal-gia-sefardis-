@@ -43,13 +43,46 @@ fi
 echo ">> nginx $(date -u +%H:%M:%S) red=${NET} caddy=${CADDY_NAME}"
 "${DOCKER[@]}" pull nginx:1.27-alpine
 "${DOCKER[@]}" rm -f osint-framework >/dev/null 2>&1 || true
-"${DOCKER[@]}" run -d \
+
+echo ">> puertos $(date -u +%H:%M:%S)"
+if ss -lnt > /tmp/osint-listeners.txt 2>/dev/null; then
+  true
+elif sudo ss -lnt > /tmp/osint-listeners.txt 2>/dev/null; then
+  true
+else
+  echo "no se pudo listar puertos" >&2
+  exit 1
+fi
+cat /tmp/osint-listeners.txt
+HOST_PORT="$(python3 "${APP_DIR}/pick_port.py" < /tmp/osint-listeners.txt)"
+PUBLISH=()
+if [[ "$HOST_PORT" == "none" || -z "$HOST_PORT" ]]; then
+  echo "8000 8001 8088 8888 ocupados; no se publica puerto de host"
+else
+  python3 - "$HOST_PORT" /tmp/osint-listeners.txt "${APP_DIR}" <<'PY'
+import sys
+sys.path.insert(0, sys.argv[3])
+import pick_port
+port = int(sys.argv[1])
+listing = open(sys.argv[2]).read()
+if port in pick_port.listening_ports(listing):
+    raise SystemExit(f"puerto {port} ocupado")
+print(f"puerto {port} libre")
+PY
+  PUBLISH=(-p "127.0.0.1:${HOST_PORT}:80")
+fi
+
+if ! "${DOCKER[@]}" run -d \
   --name osint-framework \
   --restart unless-stopped \
   --network "$NET" \
+  "${PUBLISH[@]}" \
   -v "${APP_DIR}/public:/usr/share/nginx/html:ro" \
   -v "${APP_DIR}/nginx.conf:/etc/nginx/conf.d/default.conf:ro" \
-  nginx:1.27-alpine
+  nginx:1.27-alpine; then
+  echo "no se pudo crear el contenedor; no se reutiliza un puerto ocupado" >&2
+  exit 1
+fi
 
 python3 "${APP_DIR}/patch_caddy.py" "$CADDYFILE"
 
@@ -103,4 +136,9 @@ python3 -c 'import json; d=json.load(open("/tmp/osint-arf.json")); assert d.get(
 curl -fsS -m 15 -o /dev/null -w 'css:%{http_code}\n' http://127.0.0.1/osint/css/arf.css
 curl -fsS -m 15 -o /dev/null -w 'js:%{http_code}\n' http://127.0.0.1/osint/js/d3.min.js
 curl -fsS -m 15 -o /dev/null -w 'census:%{http_code}\n' http://127.0.0.1/census/login
+curl -fsS -m 15 -o /dev/null -w 'api:%{http_code}\n' 'http://127.0.0.1/api/tool-stats?tool_id=probe'
+if [[ -n "${HOST_PORT:-}" && "$HOST_PORT" != "none" ]]; then
+  curl -fsS -m 10 -o /tmp/osint-local-port.html -w "local_port:${HOST_PORT}:%{http_code}\n" "http://127.0.0.1:${HOST_PORT}/"
+  grep -q 'OSINT Framework' /tmp/osint-local-port.html
+fi
 echo "OSINT_OK http://127.0.0.1/osint/"
