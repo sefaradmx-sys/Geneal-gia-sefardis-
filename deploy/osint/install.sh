@@ -19,6 +19,10 @@ if [[ ! -f "${APP_DIR}/public/index.html" || ! -f "${APP_DIR}/public/arf.json" ]
   echo "faltan ${APP_DIR}/public/index.html o arf.json" >&2
   exit 1
 fi
+if [[ ! -f "${APP_DIR}/nginx.conf" ]]; then
+  echo "falta ${APP_DIR}/nginx.conf" >&2
+  exit 1
+fi
 if [[ ! -f "$CADDYFILE" ]]; then
   echo "no está $CADDYFILE" >&2
   exit 1
@@ -44,6 +48,7 @@ echo ">> nginx $(date -u +%H:%M:%S) red=${NET} caddy=${CADDY_NAME}"
   --restart unless-stopped \
   --network "$NET" \
   -v "${APP_DIR}/public:/usr/share/nginx/html:ro" \
+  -v "${APP_DIR}/nginx.conf:/etc/nginx/conf.d/default.conf:ro" \
   nginx:1.27-alpine
 
 python3 "${APP_DIR}/patch_caddy.py" "$CADDYFILE"
@@ -71,14 +76,26 @@ if ! "${DOCKER[@]}" exec "$CADDY_NAME" caddy reload --config /etc/caddy/Caddyfil
 fi
 
 echo ">> smoke $(date -u +%H:%M:%S)"
+IP="$("${DOCKER[@]}" inspect osint-framework --format '{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' | awk '{print $1}')"
+echo "container_ip=${IP}"
+curl -sS -m 10 -D- -o /tmp/osint-direct.html -w 'direct_root:%{http_code}\n' "http://${IP}/" | head -n 15 || true
+curl -sS -m 10 -o /dev/null -w 'direct_osint:%{http_code}\n' "http://${IP}/osint/" || true
 for i in 1 2 3 4 5 6; do
-  code=$(curl -sS -m 15 -o /tmp/osint-index.html -w '%{http_code}' http://127.0.0.1/osint/ || true)
+  code=$(curl -sS -m 15 -D /tmp/osint-headers.txt -o /tmp/osint-index.html -w '%{http_code}' http://127.0.0.1/osint/ || true)
   echo "intento ${i} → ${code}"
   if [[ "$code" == "200" ]] && grep -q 'OSINT Framework' /tmp/osint-index.html; then
     break
   fi
   sleep 2
 done
+if [[ "$code" != "200" ]]; then
+  echo "---- headers ----"
+  cat /tmp/osint-headers.txt || true
+  echo "---- caddy osint/census ----"
+  grep -n -E 'osint|census|handle' "$CADDYFILE" || true
+  echo "---- nginx log ----"
+  "${DOCKER[@]}" logs --tail 40 osint-framework || true
+fi
 test "$code" = "200"
 grep -q 'OSINT Framework' /tmp/osint-index.html
 curl -fsS -m 20 -o /tmp/osint-arf.json http://127.0.0.1/osint/arf.json

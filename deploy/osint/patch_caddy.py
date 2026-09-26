@@ -1,6 +1,7 @@
-"""Insert an /osint reverse proxy into the GarGa Caddyfile.
+"""Insert an /osint reverse proxy into the same Caddy site as /census.
 
-Leaves /census, /crm and the rest of the site untouched. Idempotent.
+Nginx keeps the /osint prefix, so Caddy only forwards the original path.
+A previous block parked on the first catch-all `handle` is moved next to /census.
 """
 
 from __future__ import annotations
@@ -10,29 +11,49 @@ import shutil
 import sys
 from pathlib import Path
 
+_OLD_BLOCKS = (
+    re.compile(
+        r"^[ \t]*handle /osint \{\n[ \t]*redir /osint/ 302\n[ \t]*\}\n",
+        re.M,
+    ),
+    re.compile(
+        r"^[ \t]*handle_path /osint/\* \{\n[ \t]*reverse_proxy osint-framework:80\n[ \t]*\}\n",
+        re.M,
+    ),
+    re.compile(
+        r"^[ \t]*handle /osint\* \{\n[ \t]*reverse_proxy osint-framework:80\n[ \t]*\}\n",
+        re.M,
+    ),
+)
 
-def patch(text: str) -> tuple[str, str]:
-    if "osint-framework:80" in text:
-        return text, "caddy_unchanged"
 
-    match = re.search(r"^([ \t]*)handle \{", text, re.M)
-    if match is None:
-        match = re.search(r"^([ \t]*)handle /census", text, re.M)
-    if match is None:
-        raise SystemExit("caddy_no_anchor")
+def _strip_old(text: str) -> str:
+    for pattern in _OLD_BLOCKS:
+        text = pattern.sub("", text)
+    return text
 
-    indent = match.group(1)
+
+def _block(indent: str) -> str:
     inner = indent + "\t"
-    anchor = match.group(0)
-    block = (
-        f"{indent}handle /osint {{\n"
-        f"{inner}redir /osint/ 302\n"
-        f"{indent}}}\n"
-        f"{indent}handle_path /osint/* {{\n"
+    return (
+        f"{indent}handle /osint* {{\n"
         f"{inner}reverse_proxy osint-framework:80\n"
         f"{indent}}}\n"
     )
-    return text.replace(anchor, block + anchor, 1), "caddy_updated"
+
+
+def patch(text: str) -> tuple[str, str]:
+    stripped = _strip_old(text)
+    match = re.search(r"^([ \t]*)handle /census", stripped, re.M)
+    if match is None:
+        match = re.search(r"^([ \t]*)handle \{", stripped, re.M)
+    if match is None:
+        raise SystemExit("caddy_no_anchor")
+    anchor = match.group(0)
+    updated = stripped.replace(anchor, _block(match.group(1)) + anchor, 1)
+    if updated == text:
+        return text, "caddy_unchanged"
+    return updated, "caddy_updated"
 
 
 def main() -> None:
@@ -41,7 +62,8 @@ def main() -> None:
     updated, status = patch(original)
     if status == "caddy_updated":
         backup = Path(str(path) + ".bak-osint")
-        shutil.copy(path, backup)
+        if not backup.exists():
+            shutil.copy(path, backup)
         path.write_text(updated)
     print(status)
 

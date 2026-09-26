@@ -43,7 +43,11 @@ echo ">> rsync $(date -u +%H:%M:%S)"
 run_ssh "mkdir -p ${APP_DIR}/public"
 export RSYNC_RSH="sshpass -f ${PASS_FILE} ssh -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/vps-known -o PreferredAuthentications=password -o PubkeyAuthentication=no -o ConnectTimeout=30 -o ServerAliveInterval=15 -o ServerAliveCountMax=240 -o TCPKeepAlive=yes -p ${PORT}"
 rsync -az --delete /tmp/osint-fw/public/ "${USER_NAME}@${HOST}:${APP_DIR}/public/"
-rsync -az "${REPO_ROOT}/deploy/osint/patch_caddy.py" "${REPO_ROOT}/deploy/osint/install.sh" "${USER_NAME}@${HOST}:${APP_DIR}/"
+rsync -az \
+  "${REPO_ROOT}/deploy/osint/patch_caddy.py" \
+  "${REPO_ROOT}/deploy/osint/install.sh" \
+  "${REPO_ROOT}/deploy/osint/nginx.conf" \
+  "${USER_NAME}@${HOST}:${APP_DIR}/"
 
 echo ">> instalar $(date -u +%H:%M:%S)"
 run_ssh "chmod +x ${APP_DIR}/install.sh && bash ${APP_DIR}/install.sh"
