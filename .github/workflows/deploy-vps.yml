@@ -20,8 +20,6 @@ jobs:
     timeout-minutes: 45
     permissions:
       contents: write
-      issues: write
-      pull-requests: write
     steps:
       - name: Resolver ref
         id: ref
@@ -116,6 +114,8 @@ jobs:
 
       - name: Resumen
         if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           {
             echo "### Deploy VPS"
@@ -126,9 +126,16 @@ jobs:
             echo
             echo '```'
             if [[ -f /tmp/deploy-out.txt ]]; then
-              sed -E 's/(PASS|assword|ssh_pass)[=:][^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt | tail -n 120
+              sed -E 's/(PASS|assword|ssh_pass|tachy8507)[=:]?[^[:space:]]*/\1=REDACTED/Ig' /tmp/deploy-out.txt | tail -n 120
             else
               echo "(sin salida)"
             fi
             echo '```'
-          } | tee -a "$GITHUB_STEP_SUMMARY"
+          } | tee /tmp/summary.md | tee -a "$GITHUB_STEP_SUMMARY"
+          jq -n --rawfile body /tmp/summary.md '{body: $body}' > /tmp/comment.json
+          curl -sS -m 20 -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/9/comments" \
+            -d @/tmp/comment.json | head -c 160
+          echo
