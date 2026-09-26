@@ -31,6 +31,10 @@ def _to_out(mention: Mention) -> MentionOut:
         geo_municipality=mention.geo_municipality,
         is_synthetic=mention.is_synthetic,
         confidence=classification.confidence if classification else None,
+        likes=mention.likes or 0,
+        replies=mention.replies or 0,
+        shares=mention.shares or 0,
+        views=mention.views or 0,
     )
 
 
@@ -41,6 +45,7 @@ def list_mentions(
     sentiment: str | None = None,
     stance: str | None = None,
     geo_state: str | None = None,
+    q: str | None = None,
     date_from: datetime | None = None,
     date_to: datetime | None = None,
     limit: int = 50,
@@ -56,6 +61,9 @@ def list_mentions(
         filters.append(Mention.source_kind == source)
     if geo_state:
         filters.append(Mention.geo_state == geo_state)
+    if q and q.strip():
+        pattern = "%" + q.strip()[:120].replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
+        filters.append(Mention.text_original.ilike(pattern, escape="\\"))
     if date_from:
         filters.append(Mention.published_at >= date_from)
     if date_to:

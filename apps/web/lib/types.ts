@@ -67,7 +67,7 @@ export type StudySummary = {
   is_demo: boolean;
   targets: TargetSummary[];
   preferences: Preference[];
-  alerts: { target_name: string; message: string; delta_points: number }[];
+  alerts: { target_id: string; target_name: string; rule: string; message: string; delta_points: number }[];
   evidence: Evidence[];
   methodology: {
     n: number;

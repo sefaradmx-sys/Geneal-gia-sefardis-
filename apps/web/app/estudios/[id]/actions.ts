@@ -9,10 +9,12 @@ function apiBase(): string {
   return process.env.API_INTERNAL_URL || "http://127.0.0.1:8000";
 }
 
+type AskEvidence = { id: string; text: string; source: string; sentiment: string; municipality: string | null };
+
 export async function askAction(
   studyId: string,
   question: string,
-): Promise<{ answer: string; disclaimer: string; evidence: { id: string; text: string; source: string }[] } | { error: string }> {
+): Promise<{ answer: string; disclaimer: string; evidence: AskEvidence[] } | { error: string }> {
   const response = await apiFetch(`/studies/${studyId}/ask`, {
     method: "POST",
     body: JSON.stringify({ question }),
@@ -20,11 +22,7 @@ export async function askAction(
   if (!response.ok) {
     return { error: "No se pudo responder con las menciones guardadas." };
   }
-  const data = (await response.json()) as {
-    answer: string;
-    disclaimer: string;
-    evidence: { id: string; text: string; source: string }[];
-  };
+  const data = (await response.json()) as { answer: string; disclaimer: string; evidence: AskEvidence[] };
   return data;
 }
 

@@ -245,6 +245,10 @@ class MentionOut(BaseModel):
     geo_municipality: str | None
     is_synthetic: bool
     confidence: float | None
+    likes: int = 0
+    replies: int = 0
+    shares: int = 0
+    views: int = 0
 
 
 class MentionPage(BaseModel):
