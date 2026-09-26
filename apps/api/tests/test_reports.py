@@ -111,7 +111,7 @@ def test_pdf_nombra_nueva_expresion_y_excluye_prensa_pagada():
     )
     blob = build_brief_pdf(summary, [])
     assert blob.startswith(b"%PDF")
-    assert b"/Count 4" in blob
+    assert b"/Count 5" in blob
 
 
 def test_pdf_informe_tiene_portada_y_catalogo():
