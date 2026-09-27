@@ -447,6 +447,63 @@ function fileRows(text) {
   }
 }
 
+async function readRemote(session, dir, file) {
+  const read = await uapi(
+    session,
+    `/execute/Fileman/get_file_content?dir=${encodeURIComponent(dir)}&file=${encodeURIComponent(file)}`,
+  );
+  const content = read.json?.data?.content;
+  return typeof content === "string" ? content : "";
+}
+
+async function volcarSitio(session) {
+  const base = "/home2/irvinjos/genealogiasefardi.site";
+  const out = path.join(root, "hostgator", "vivo");
+  fs.rmSync(out, { recursive: true, force: true });
+  fs.mkdirSync(out, { recursive: true });
+  const files = [
+    [`${base}/views`, "layout.php"],
+    [`${base}/views`, "search.php"],
+    [`${base}/views`, "dashboard.php"],
+    [base, "index.php"],
+    [base, "helpers.php"],
+  ];
+  for (const folder of ["home", "partials", "sources"]) {
+    const listed = await uapi(
+      session,
+      `/execute/Fileman/list_files?dir=${encodeURIComponent(`${base}/views/${folder}`)}&limit=40`,
+    );
+    const names = fileNames(listed.text);
+    note(`vista ${folder} ${names.slice(0, 24).join(" ") || "-"}`);
+    for (const name of names) {
+      if (/\.(php|html|css|js)$/i.test(name)) files.push([`${base}/views/${folder}`, name]);
+    }
+  }
+  for (const [dir, file] of files) {
+    const content = await readRemote(session, dir, file);
+    if (!content) {
+      note(`VACIO ${file}`);
+      continue;
+    }
+    const folder = dir.split("/").pop() || "raiz";
+    const destDir = path.join(out, folder);
+    fs.mkdirSync(destDir, { recursive: true });
+    fs.writeFileSync(path.join(destDir, file), content);
+    note(`VOLCADO ${folder}/${file} ${content.length}`);
+  }
+  try {
+    const response = await fetch(`https://${site}/`, {
+      headers: { "User-Agent": "genealogia" },
+      signal: AbortSignal.timeout(20000),
+    });
+    const text = await response.text();
+    fs.writeFileSync(path.join(out, "portada.html"), text.slice(0, 120000));
+    note(`PORTADA ${response.status} ${text.length}`);
+  } catch (error) {
+    note(`PORTADA_ERR ${error.name}`);
+  }
+}
+
 async function linkEntrada(session) {
   const home = "/home2/irvinjos/genealogiasefardi.site";
   const dirs = ["genealogiasefardi.site/views", "genealogiasefardi.site/public", "genealogiasefardi.site"];
@@ -539,6 +596,7 @@ async function main() {
   if (session) {
     await publishTree(session);
     await publishArchivo(session);
+    await volcarSitio(session);
   } else {
     note("API_DIRECTA_NO_ENTRO");
     const entered = await sshInside(users);
