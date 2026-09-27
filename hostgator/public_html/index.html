@@ -5,31 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Genealogía Sefardí</title>
     <meta name="description" content="Archivo genealógico sefardí en HostGator: búsqueda, fuentes y el árbol sefarad-mx." />
-    <link rel="stylesheet" href="./estilos.css" />
+    <link rel="stylesheet" href="/archivo-estilos.css" />
   </head>
   <body>
     <a class="skip" href="#contenido">Saltar al contenido</a>
     <header class="site-header">
-      <a class="brand" href="./">
+      <a class="brand" href="/archivo.html">
         <span class="brand-mark">GS</span>
         <span><strong>Genealogía Sefardí</strong><small>Archivo de familias</small></span>
       </a>
       <nav>
-        <a class="active" href="./">Inicio</a>
-        <a href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
+        <a class="active" href="/archivo.html">Inicio</a>
+        <a href="https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
         <a href="#lugares">Lugares</a>
         <a href="#fuentes">Fuentes</a>
       </nav>
     </header>
     <main id="contenido">
       <section class="hero-search">
-        <p class="kicker">Sitio principal · HostGator</p>
+        <p class="kicker">Archivo nuevo · genealogiasefardi.site/archivo.html</p>
         <h1>Busca una persona, un registro o un lugar</h1>
-        <p class="lede">Esta portada vive en el mismo HostGator que el árbol. La búsqueda abre FamilySearch, los censos del INEGI, el Archivo Histórico Nacional, el Archivo General de Indias, Historypin, WikiTree y VIAF, y lleva al árbol publicado en sefarad-mx.</p>
+        <p class="lede">Entras a esta portada por genealogiasefardi.site/archivo.html. El inicio que ya estaba sigue en la raíz y el árbol sefarad-mx sigue en su carpeta. Desde aquí la misma búsqueda abre FamilySearch, los censos del INEGI, el Archivo Histórico Nacional, el Archivo General de Indias, Historypin, WikiTree y VIAF.</p>
         <ol class="flow">
           <li><a href="#busqueda"><span>1</span> Búsqueda</a></li>
           <li><a href="#fuentes"><span>2</span> Fuentes</a></li>
-          <li><a href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad"><span>3</span> Árbol Sefarad</a></li>
+          <li><a href="https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad"><span>3</span> Árbol Sefarad</a></li>
           <li><a href="#lugares"><span>4</span> Lugares</a></li>
           <li><a href="https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad"><span>5</span> Subdominio</a></li>
         </ol>
@@ -42,10 +42,10 @@
         </form>
         <div class="source-links" id="fuentes-lista" aria-label="Fuentes conectadas"></div>
         <p class="actions">
-          <a class="button" href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Abrir el árbol Sefarad</a>
+          <a class="button" href="https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Abrir el árbol Sefarad</a>
         </p>
         <aside class="callout">
-          <strong>arbol.genealogiasefardi.site</strong> abre el árbol que ya está en <code>public_html/sefarad-mx</code>.
+          <strong>arbol.genealogiasefardi.site</strong> abre el mismo árbol que ya está en genealogiasefardi.site/sefarad-mx. Esta portada no lo reemplaza.
         </aside>
         <div id="resultado" class="stack"></div>
       </section>
@@ -87,14 +87,14 @@
       for (const [nombre, ano, lugar] of personas) {
         const row = document.createElement("a");
         row.className = "person-row";
-        row.href = "./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
+        row.href = "https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
         row.innerHTML = "<span><strong></strong> <em class=\"demo\">demostración</em></span><small></small>";
         row.querySelector("strong").textContent = nombre;
         row.querySelector("small").textContent = ano + " · " + lugar;
         caja.appendChild(row);
       }
 
-      const arbol = "./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
+      const arbol = "https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
       const fuentes = [
         ["Árbol Sefarad", () => arbol],
         ["FamilySearch", (v) => {

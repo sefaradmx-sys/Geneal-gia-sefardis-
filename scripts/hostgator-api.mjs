@@ -437,6 +437,38 @@ async function publishTree(session) {
   }
 }
 
+async function publishArchivo(session) {
+  const home = "/home2/irvinjos/genealogiasefardi.site";
+  const rules = await uapi(
+    session,
+    `/execute/Fileman/get_file_content?dir=${encodeURIComponent(home)}&file=.htaccess`,
+  );
+  const rulesText = rules.json?.data?.content || rules.json?.data?.filecontent || "";
+  if (rulesText) note(`htaccess ${snippet(rulesText)}`);
+  const mkdirPath = `/json-api/cpanel?cpanel_jsonapi_apiversion=2&cpanel_jsonapi_module=Fileman&cpanel_jsonapi_func=mkdir&cpanel_jsonapi_user=${encodeURIComponent(session.accountUser)}&path=${encodeURIComponent(home)}&name=archivo`;
+  await uapi(session, mkdirPath);
+  const html = fs.readFileSync(path.join(root, "hostgator", "public_html", "index.html"), "utf8");
+  const css = fs.readFileSync(path.join(root, "hostgator", "public_html", "estilos.css"), "utf8");
+  const folderHtml = html
+    .replaceAll('href="/archivo.html"', 'href="/archivo/"')
+    .replaceAll("genealogiasefardi.site/archivo.html", "genealogiasefardi.site/archivo/");
+  const files = [
+    [home, "archivo.html", html],
+    [home, "archivo-estilos.css", css],
+    [`${home}/archivo`, "index.html", folderHtml],
+    [`${home}/archivo`, "estilos.css", css],
+  ];
+  for (const [dir, file, content] of files) {
+    const saved = await uapi(
+      session,
+      "/execute/Fileman/save_file_content",
+      new URLSearchParams({ dir, file, content }),
+    );
+    const savedPath = saved.json?.data?.path || "";
+    note(`ARCHIVO ${saved.json?.status ?? saved.status} ${savedPath || file}`);
+  }
+}
+
 async function main() {
   const discovered = await discoverUsers();
   if (discovered.length) note(`usuarios_en_pagina=${discovered.join(",")}`);
@@ -453,6 +485,7 @@ async function main() {
   const session = await findSession(users);
   if (session) {
     await publishTree(session);
+    await publishArchivo(session);
   } else {
     note("API_DIRECTA_NO_ENTRO");
     const entered = await sshInside(users);
@@ -469,6 +502,9 @@ async function main() {
   await peek(`https://arbol.${site}/`);
   await peek(`https://arbol.${site}/index.php?route=${route}`);
   await peek(`https://${site}/sefarad-mx/index.php?route=${route}`);
+  await peek(`https://${site}/archivo.html`);
+  await peek(`https://${site}/archivo/`);
+  await peek(`https://${site}/archivo/index.html`);
 
   fs.mkdirSync(path.dirname(statePath), { recursive: true });
   fs.writeFileSync(statePath, `${lines.join("\n")}\n`);
