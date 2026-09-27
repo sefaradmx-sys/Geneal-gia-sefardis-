@@ -1,7 +1,159 @@
-fecha=2026-09-27T06:26:31.855Z
+fecha=2026-09-27T16:18:51.141Z
 web 500 https://arbol.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 500 Internal Server Error <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> <html><head> <title>500 Internal Server Error</title> </head><body> <h1>Internal Server E
 web 404 https://arbol.genealogiasefardi.site/ 
 web 403 https://tree.genealogiasefardi.site/ 403 - FORBIDDEN <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
 web 200 https://genealogiasefardi.site/ Inicio — Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Inicio — Genealogía Sefardí</title> <meta
 panel 200 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-SIN_TOKEN
+activos https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Fwebmanifest.json https://genealogiasefardi.site/sefarad-mx/public/css/vendor.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/css/webtrees.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/js/vendor.min.js?v=2.2.6
+mx18.hostgator.mx:2083 cpanel nuevaexp HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel genealog HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel sefarad HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel geneal HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel sefaradm HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel sefaradmx HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel edgarpue HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel cardenas HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel juanmanu HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel sefardi HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel sefardis HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel gsefardi HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel genealogi HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel puente85 HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel edgar850 HTTP 403 Access denied 
+mx18.hostgator.mx:2083 cpanel jmcarden HTTP 403 Access denied 
+mx18.hostgator.mx:2083 basic nuevaexp HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic genealog HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic sefarad HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic geneal HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic sefaradm HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic sefaradmx HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic edgarpue HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic cardenas HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic juanmanu HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic sefardi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic sefardis HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic gsefardi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic genealogi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic puente85 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic edgar850 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2083 basic jmcarden HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 cpanel nuevaexp HTTP 403 Access denied 
+108.179.194.59:2083 cpanel genealog HTTP 403 Access denied 
+108.179.194.59:2083 cpanel sefarad HTTP 403 Access denied 
+108.179.194.59:2083 cpanel geneal HTTP 403 Access denied 
+108.179.194.59:2083 cpanel sefaradm HTTP 403 Access denied 
+108.179.194.59:2083 cpanel sefaradmx HTTP 403 Access denied 
+108.179.194.59:2083 cpanel edgarpue HTTP 403 Access denied 
+108.179.194.59:2083 cpanel cardenas HTTP 403 Access denied 
+108.179.194.59:2083 cpanel juanmanu HTTP 403 Access denied 
+108.179.194.59:2083 cpanel sefardi HTTP 403 Access denied 
+108.179.194.59:2083 cpanel sefardis HTTP 403 Access denied 
+108.179.194.59:2083 cpanel gsefardi HTTP 403 Access denied 
+108.179.194.59:2083 cpanel genealogi HTTP 403 Access denied 
+108.179.194.59:2083 cpanel puente85 HTTP 403 Access denied 
+108.179.194.59:2083 cpanel edgar850 HTTP 403 Access denied 
+108.179.194.59:2083 cpanel jmcarden HTTP 403 Access denied 
+108.179.194.59:2083 basic nuevaexp HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic genealog HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic sefarad HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic geneal HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic sefaradm HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic sefaradmx HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic edgarpue HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic cardenas HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic juanmanu HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic sefardi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic sefardis HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic gsefardi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic genealogi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic puente85 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic edgar850 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+108.179.194.59:2083 basic jmcarden HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 cpanel nuevaexp HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel genealog HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel sefarad HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel geneal HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel sefaradm HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel sefaradmx HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel edgarpue HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel cardenas HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel juanmanu HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel sefardi HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel sefardis HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel gsefardi HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel genealogi HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel puente85 HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel edgar850 HTTP 403 Access denied 
+genealogiasefardi.site:2083 cpanel jmcarden HTTP 403 Access denied 
+genealogiasefardi.site:2083 basic nuevaexp HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic genealog HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic sefarad HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic geneal HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic sefaradm HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic sefaradmx HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic edgarpue HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic cardenas HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic juanmanu HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic sefardi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic sefardis HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic gsefardi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic genealogi HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic puente85 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic edgar850 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+genealogiasefardi.site:2083 basic jmcarden HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
+mx18.hostgator.mx:2087 whm nuevaexp HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm genealog HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm sefarad HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm geneal HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm sefaradm HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm sefaradmx HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm edgarpue HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm cardenas HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm juanmanu HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm sefardi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm sefardis HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm gsefardi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm genealogi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm puente85 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm edgar850 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+mx18.hostgator.mx:2087 whm jmcarden HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm nuevaexp HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm genealog HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm sefarad HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm geneal HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm sefaradm HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm sefaradmx HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm edgarpue HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm cardenas HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm juanmanu HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm sefardi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm sefardis HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm gsefardi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm genealogi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm puente85 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm edgar850 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+108.179.194.59:2087 whm jmcarden HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm nuevaexp HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm genealog HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm sefarad HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm geneal HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm sefaradm HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm sefaradmx HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm edgarpue HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm cardenas HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm juanmanu HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm sefardi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm sefardis HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm gsefardi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm genealogi HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm puente85 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm edgar850 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+genealogiasefardi.site:2087 whm jmcarden HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
+API_DIRECTA_NO_ENTRO
+SSH_SIN_LLAVE
+API_NO_ENTRO
+web 403 https://tree.genealogiasefardi.site/ 403 - FORBIDDEN <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
+web 404 https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 404 - PAGE NOT FOUND <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
+web 404 https://arbol.genealogiasefardi.site/ 
+web 200 https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="l6u8mkCIxRQG3bsjqjlBEnlpHEvFJpJB"> <meta name="viewport" 
+web 200 https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="x7BVTW3GDFWiZZdQHSj9CZx8RR9DirBE"> <meta name="viewport" 
