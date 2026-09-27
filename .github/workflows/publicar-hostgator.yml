@@ -23,34 +23,18 @@ jobs:
   comprobar:
     if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: cursor/hostgator-subdominio-766c
-      - name: Ver el subdominio
+
+      - name: Entrar a cPanel con el token
+        env:
+          CPANEL_TOKEN: "VVXE2X59Y3POB5DFL8VH9ZR53JAGGO1L"
+          CPANEL_USER: ""
         run: |
-          python3 - << 'PY'
-          import urllib.request
-          urls = [
-            "https://tree.genealogiasefardi.site/",
-            "https://arbol.genealogiasefardi.site/",
-            "https://genealogiasefardi.site/",
-            "https://tree.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad",
-            "https://arbol.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad",
-            "https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad",
-          ]
-          lines = []
-          for url in urls:
-              req = urllib.request.Request(url, headers={"User-Agent": "genealogia"})
-              try:
-                  with urllib.request.urlopen(req, timeout=25) as res:
-                      body = res.read(400).decode("utf-8", "replace").replace("\n", " ")
-                      lines.append(f"{res.status} {url} {body[:160]}")
-              except Exception as error:
-                  lines.append(f"ERR {getattr(error, 'code', type(error).__name__)} {url}")
-          open("hostgator/estado.txt", "w").write("\n".join(lines) + "\n")
-          print("\n".join(lines))
-          PY
+          echo "::add-mask::${CPANEL_TOKEN}"
+          node scripts/hostgator-api.mjs
+
       - name: Guardar el resultado
         run: |
           git config user.name "cursor"
@@ -59,26 +43,23 @@ jobs:
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Estado del subdominio [skip ci]"
+          git commit -m "Estado de la API de cPanel [skip ci]"
+          git pull --rebase origin cursor/hostgator-subdominio-766c
           git push
 
   hostgator:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: cursor/hostgator-subdominio-766c
-
-      - name: Crear el subdominio y subir la portada
+      - name: Entrar a cPanel con el token
         env:
           CPANEL_USER: ${{ inputs.cpanel_user }}
           CPANEL_TOKEN: ${{ inputs.cpanel_token }}
         run: |
           echo "::add-mask::${CPANEL_TOKEN}"
           node scripts/hostgator-api.mjs
-          dig +short A tree.genealogiasefardi.site @8.8.8.8 | tee -a hostgator/estado.txt
-
       - name: Guardar el resultado
         run: |
           git config user.name "cursor"
@@ -87,5 +68,6 @@ jobs:
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Estado de la API de HostGator [skip ci]"
+          git commit -m "Estado de la API de cPanel [skip ci]"
+          git pull --rebase origin cursor/hostgator-subdominio-766c
           git push
