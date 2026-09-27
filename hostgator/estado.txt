@@ -1,10 +1,6 @@
-fecha=2026-09-27T05:20:31Z
-host=mx18.hostgator.mx
-puerto_pedido=2222
-BANNER mx18.hostgator.mx:2222 SSH-2.0-OpenSSH_9.9
-BANNER genealogiasefardi.site:2222 SSH-2.0-OpenSSH_9.9
-BANNER mx18.hostgator.mx:2222 SSH-2.0-OpenSSH_9.9
-BANNER genealogiasefardi.site:2222 SSH-2.0-OpenSSH_9.9
-BANNER mx18.hostgator.mx:22 SSH-2.0-OpenSSH_9.9
-BANNER genealogiasefardi.site:22 SSH-2.0-OpenSSH_9.9
-SSH_SIN_CLAVE
+ERR 403 https://tree.genealogiasefardi.site/
+ERR 404 https://arbol.genealogiasefardi.site/
+200 https://genealogiasefardi.site/ <!DOCTYPE html> <html lang="es"> <head>   <meta charset="utf-8">   <meta name="viewport" content="width=device-width, initial-scale=1">   <title>Inicio — Geneal
+ERR 404 https://tree.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad
+ERR 500 https://arbol.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad
+ERR 404 https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad
