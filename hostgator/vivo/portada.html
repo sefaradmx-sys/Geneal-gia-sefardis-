@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="Inicio — Genealogía Sefardí">
   <meta name="twitter:description" content="Archivo genealógico sefardí con biografías documentadas, fuentes y pruebas. Genealogía Sefardí.">
     <link rel="stylesheet" href="/public/assets/app.css">
-  <link rel="stylesheet" href="/public/assets/investigar.css?v=pdf">
+  <link rel="stylesheet" href="/public/assets/investigar.css?v=tramite">
 </head>
 <body class="public-body">
 <header class="site-header">
@@ -41,18 +41,20 @@
 <main class="wrap wrap-landing">
       <div class="investigar" id="investigar">
   <p class="kicker">Genealogía Sefardí</p>
-  <h1>Busca una persona y el censo de su municipio</h1>
-  <form class="consulta" id="busqueda-viva">
-    <label>Nombre <input id="nombre" name="nombre" autocomplete="given-name"></label>
-    <label>Apellido <input id="apellido" name="apellido" autocomplete="family-name"></label>
-    <label>Lugar <input id="lugar" name="lugar" placeholder="Municipio, estado"></label>
-    <label>Año <input id="ano" name="ano" inputmode="numeric" maxlength="4" placeholder="1930"></label>
-    <button type="submit">Buscar</button>
-  </form>
-  <div class="resultados" id="resultados"></div>
+  <h1>Sefarad MX</h1>
 
-  <section id="censos">
-    <h2>Censo del municipio</h2>
+  <section class="bloque-busqueda" id="archivo">
+    <h2>Búsqueda de archivos en el Archivo Histórico de Saltillo</h2>
+    <form class="consulta corta" id="busqueda-archivo">
+      <label>Nombre <input id="nombre-archivo" name="nombre" autocomplete="given-name"></label>
+      <label>Apellido <input id="apellido-archivo" name="apellido" autocomplete="family-name"></label>
+      <button type="submit">Buscar en el archivo</button>
+    </form>
+    <div class="resultados" id="resultados-archivo"></div>
+  </section>
+
+  <section class="bloque-busqueda" id="censos">
+    <h2>Búsqueda de censos del INEGI</h2>
     <div class="panel-censo">
       <div class="censo-busqueda">
         <label>Municipio <input id="municipio" placeholder="Monterrey"></label>
@@ -63,6 +65,24 @@
         <iframe id="ficha-censo" title="Censo del municipio" src="about:blank"></iframe>
       </div>
     </div>
+  </section>
+
+  <section class="bloque-busqueda" id="general">
+    <h2>Búsqueda general de actas y demás</h2>
+    <form class="consulta" id="busqueda-general">
+      <label>Nombre <input id="nombre" name="nombre" autocomplete="given-name"></label>
+      <label>Apellido <input id="apellido" name="apellido" autocomplete="family-name"></label>
+      <label>Lugar <input id="lugar" name="lugar" placeholder="Municipio, estado"></label>
+      <label>Año <input id="ano" name="ano" inputmode="numeric" maxlength="4" placeholder="1930"></label>
+      <button type="submit">Buscar</button>
+    </form>
+    <div class="resultados" id="resultados-general"></div>
+  </section>
+
+  <section class="tramitar" id="tramitar">
+    <h2>Tramitar documentos certificados ante el archivo</h2>
+    <p>No puedes venir hasta el archivo de Saltillo, no te preocupes, nosotros lo tramitamos por ti y te lo enviamos.</p>
+    <p class="telefono">Contáctanos <a href="tel:+528442195952">+52 844 219 5952</a></p>
   </section>
 </div>
 
@@ -100,6 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-<script src="/public/assets/investigar.js?v=pdf" defer></script>
+<script src="/public/assets/investigar.js?v=tramite" defer></script>
 </body>
 </html>
