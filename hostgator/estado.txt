@@ -1,41 +1,55 @@
-fecha=2026-09-27T16:28:51.940Z
+fecha=2026-09-27T16:44:55.399Z
 web 500 https://arbol.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 500 Internal Server Error <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> <html><head> <title>500 Internal Server Error</title> </head><body> <h1>Internal Server E
 web 404 https://arbol.genealogiasefardi.site/ 
-web 403 https://tree.genealogiasefardi.site/ 403 - FORBIDDEN <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
+web 404 https://tree.genealogiasefardi.site/ 
 web 200 https://genealogiasefardi.site/ Inicio — Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Inicio — Genealogía Sefardí</title> <meta
 panel 200 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
 activos https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Fwebmanifest.json https://genealogiasefardi.site/sefarad-mx/public/css/vendor.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/css/webtrees.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/js/vendor.min.js?v=2.2.6
-garga.com.mx:2083 cpanel irvinjos HTTP 200 {"data":{"addon_domains":["capacitate.pro","frentecardenista.org","genealogiasefardi.site","irvinjosuearellanolu1789512146000.0590009.misitiohostgator.com","pulsociudadano.sbs","pu
+garga.com.mx:2083 cpanel irvinjos HTTP 200 {"errors":null,"data":{"sub_domains":["arbol.genealogiasefardi.site","app.frentecardenista.org","pulso.frentecardenista.org","capacitate.frentecardenista.org","capacitate-pro.frent
 SESION cpanel irvinjos cuenta irvinjos garga.com.mx:2083
-/execute/DomainInfo/list_domains HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"addon_domains":["capacitate.pro","frentecardenista.org","genealogiasefardi.site","irvinjosuearellanolu1789512146000
+/execute/DomainInfo/list_domains HTTP 200 {"warnings":null,"errors":null,"data":{"main_domain":"garga.com.mx","sub_domains":["arbol.genealogiasefardi.site","app.frentecardenista.org","pulso.frentecardenista.org","capacitat
 main=garga.com.mx
 sub_domains=arbol.genealogiasefardi.site app.frentecardenista.org pulso.frentecardenista.org capacitate.frentecardenista.org capacitate-pro.frentecardenista.org capacitate.garga.com.mx app.garga.com.mx tree.genealogiasefardi.site
 addon_domains=capacitate.pro frentecardenista.org genealogiasefardi.site irvinjosuearellanolu1789512146000.0590009.misitiohostgator.com pulsociudadano.sbs pulsonacional.sbs
 parked_domains=-
-/execute/DomainInfo/single_domain_data HTTP 200 {"warnings":null,"errors":null,"data":{"port":"80","user":"irvinjos","serveralias":"www.garga.com.mx mail.garga.com.mx","homedir":"/home2/irvinjos","type":"main_domain","customlog"
-/execute/DomainInfo/single_domain_data HTTP 200 {"errors":null,"data":{"owner":"root","servername":"genealogiasefardi.site.garga.com.mx","hascgi":"0","no_cache_update":"0","status":"not redirected","group":"irvinjos","documentro
-/execute/DomainInfo/single_domain_data HTTP 200 {"data":{"domain":"tree.genealogiasefardi.site","phpopenbasedirprotect":"1","usecanonicalname":"Off","ip":"10.53.34.70","serveradmin":"webmaster@tree.genealogiasefardi.site","group
-/execute/DomainInfo/single_domain_data HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"status":"not redirected","serveradmin":"webmaster@arbol.genealogiasefardi.site","documentroot":"/home2/irvinjos/gen
+/execute/DomainInfo/single_domain_data HTTP 200 {"errors":null,"data":{"serveralias":"www.garga.com.mx mail.garga.com.mx","user":"irvinjos","type":"main_domain","homedir":"/home2/irvinjos","port":"80","usecanonicalname":"Off","i
+/execute/DomainInfo/single_domain_data HTTP 200 {"data":{"domain":"genealogiasefardi.site","phpopenbasedirprotect":"1","ip":"10.53.34.70","usecanonicalname":"Off","status":"not redirected","group":"irvinjos","documentroot":"/hom
+/execute/DomainInfo/single_domain_data HTTP 200 {"warnings":null,"errors":null,"data":{"owner":"root","no_cache_update":"0","hascgi":"0","servername":"tree.genealogiasefardi.site","serveradmin":"webmaster@tree.genealogiasefardi.
+/execute/DomainInfo/single_domain_data HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"usecanonicalname":"Off","ip":"10.53.34.70","phpopenbasedirprotect":"1","domain":"arbol.genealogiase
 raiz garga.com.mx /home2/irvinjos/public_html
 raiz genealogiasefardi.site /home2/irvinjos/genealogiasefardi.site
 raiz tree.genealogiasefardi.site /home2/irvinjos/genealogiasefardi.site/sefarad-mx
 raiz arbol.genealogiasefardi.site /home2/irvinjos/genealogiasefardi.site/sefarad-mx
-/execute/Fileman/list_files HTTP 200 {"metadata":{"transformed":1},"status":1,"messages":null,"warnings":null,"data":[{"mtime":1789601307,"mode":16877,"ctime":1789601308,"absdir":"/home2/irvinjos/genealogiasefardi.sit
+/execute/Fileman/list_files HTTP 200 {"warnings":null,"data":[{"ctime":1789601308,"mode":16877,"mtime":1789601307,"absdir":"/home2/irvinjos/genealogiasefardi.site","nicemode":"0755","path":"/home2/irvinjos/genealogias
 carpeta genealogiasefardi.site docs public sql src storage views _chk_mod.php _mk_sefarad_link.php _probe_bio.php _wt_boot.php _wt_clean.php _wt_fix.php _wt_mod.php _wt_tree.php _wt_unzip.php app.css ArchiveController.php config.php config.sample.php dashboard.php DashboardController.php diag_sources.php error_log helpers.php
-/execute/Fileman/list_files HTTP 200 {"metadata":{"transformed":1},"status":1,"messages":null,"warnings":null,"data":[{"exists":1,"uid":1827,"size":"4096","humansize":"4 KB","file":"app","fullpath":"/home2/irvinjos/ar
+/execute/Fileman/list_files HTTP 200 {"status":1,"messages":null,"metadata":{"transformed":1},"data":[{"ctime":1789603683,"mode":16877,"mtime":1789603681,"absdir":"/home2/irvinjos/arbol.genealogiasefardi.site","nicemo
 CARPETA_ARBOL genealogiasefardi.site/sefarad-mx app data modules_v4 public resources vendor webtrees apple-touch-icon.png CONTRIBUTING.md error_log favicon.ico gs-marca.txt index.php LICENSE.md README.md SECURITY.md
 /execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"to_charset":"utf-8","path":"/home2/irvinjos/arbol.genealogiasefardi.site/gs-marca.txt","from_charset":"utf-8"},"errors":null,"metadata":{},"status":1,"mes
-/execute/Fileman/mkdir HTTP 200 {"status":0,"messages":null,"metadata":{},"data":null,"errors":["The system could not find the function “mkdir” in the module “Fileman”."],"warnings":null} 
-/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"path":"/home2/irvinjos/tree.genealogiasefardi.site/index.php","from_charset":"utf-8","to_charset":"utf-8"},"warning
-/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"status":0,"messages":null,"warnings":null,"data":null,"errors":["The file “index.php” does not exist for the account."]} 
-/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"errors":null,"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/public_html/sefarad-mx/index.php"},"metadata":{},"messages":null,"status"
-/execute/SubDomain/changedocroot HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx"},"errors":null} 
-/execute/SubDomain/changedocroot HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx"},"warnings":null} 
-web 302 https://tree.genealogiasefardi.site/ 
-web 404 https://tree.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 404 - PAGE NOT FOUND <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
-web 302 https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 
-web 404 https://tree.genealogiasefardi.site/gs-marca.txt 404 - PAGE NOT FOUND <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
+/execute/Fileman/mkdir HTTP 200 {"metadata":{},"status":0,"messages":null,"warnings":null,"data":null,"errors":["The system could not find the function “mkdir” in the module “Fileman”."]} 
+/execute/Fileman/save_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"path":"/home2/irvinjos/tree.genealogiasefardi.site/index.php","from_charset":"utf-8","to_charset":"utf-8"},"errors":null,"warning
+/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":0,"metadata":{},"errors":["The file “index.php” does not exist for the account."],"data":null,"warnings":null} 
+/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/public_html/sefarad-mx/index.php
+/execute/SubDomain/changedocroot HTTP 200 {"warnings":null,"errors":null,"data":{"documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx"},"metadata":{},"messages":null,"status":1} 
+/execute/SubDomain/changedocroot HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx"},"errors":null,"warnings":null} 
+/execute/Fileman/get_file_content HTTP 200 {"warnings":null,"errors":null,"data":{"filename":".htaccess","content":"RewriteEngine On\nRewriteBase /\n\n# SEO sitemap\nRewriteRule ^sitemap\\.xml$ sitemap.php [L]\n\n\n# Deny d
+htaccess RewriteEngine On RewriteBase / # SEO sitemap RewriteRule ^sitemap\.xml$ sitemap.php [L] # Deny direct access to sensitive paths (including uploads — serve via /media/ only) Rewrite
+/json-api/cpanel HTTP 200 {"cpanelresult":{"postevent":{"result":1},"apiversion":2,"event":{"result":1},"module":"Fileman","preevent":{"result":1},"data":[{"path":"/home2/irvinjos/genealogiasefardi.site","p
+/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo.html"},"errors":null,"metadata":{},"status":1,"messages"
+ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo.html
+/execute/Fileman/save_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"path":"/home2/irvinjos/genealogiasefardi.site/archivo-estilos.css","from_charset":"utf-8","to_charset":"utf-8"},"errors":null,"wa
+ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo-estilos.css
+/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo/index.html","to_charset":"utf-8"},"metadata":{},"messages":null
+ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo/index.html
+/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"path":"/home2/irvinjos/genealogiasefardi.site/archivo/estilos.css","from_charset":"utf-8","to_chars
+ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo/estilos.css
+web 404 https://tree.genealogiasefardi.site/ 
+web 500 https://tree.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 500 Internal Server Error <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> <html><head> <title>500 Internal Server Error</title> </head><body> <h1>Internal Server E
+web 200 https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="rdwV0vXXN8zxTBTPJseqNkoc3mq0dnxG"> <meta name="viewport" 
+web 200 https://tree.genealogiasefardi.site/gs-marca.txt marca-sefard
 web 200 https://arbol.genealogiasefardi.site/gs-marca.txt marca-sefard
 web 404 https://arbol.genealogiasefardi.site/ 
-web 200 https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="PAnHb78ibbUu0lSAYLle7bOMFYLhcISg"> <meta name="viewport" 
-web 200 https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="jmgRGBXH3vbBCQc7zZVtmSiliNNOn9Ut"> <meta name="viewport" 
+web 200 https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="7myTxA8qLbmRBvXY3UiNMtya552xjll3"> <meta name="viewport" 
+web 200 https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="qtyNHZ4xfhYXYkeSOErB9mnW4zhUdsvL"> <meta name="viewport" 
+web 200 https://genealogiasefardi.site/archivo.html Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>Genealogía Sefardí</title> <meta name
+web 200 https://genealogiasefardi.site/archivo/ Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>Genealogía Sefardí</title> <meta name
+web 200 https://genealogiasefardi.site/archivo/index.html Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>Genealogía Sefardí</title> <meta name
