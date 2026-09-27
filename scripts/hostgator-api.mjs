@@ -104,6 +104,8 @@ async function peek(url) {
     const text = await response.text();
     const title = text.match(/<title>([^<]{0,80})/i)?.[1]?.trim() || "";
     note(`web ${response.status} ${url} ${title} ${snippet(text)}`);
+    const homes = [...text.matchAll(/\/home\/([a-z][a-z0-9]{2,16})\//gi)].map((match) => match[1]);
+    if (homes.length) note(`home ${[...new Set(homes)].join(",")}`);
     return text;
   } catch (error) {
     note(`web ERR ${error.name} ${url}`);
@@ -123,6 +125,15 @@ async function discoverUsers() {
     const text = await peek(url);
     for (const match of text.matchAll(/\/home\/([a-z][a-z0-9]{2,16})\//g)) found.push(match[1]);
     for (const match of text.matchAll(/~([a-z][a-z0-9]{2,16})\//g)) found.push(match[1]);
+  }
+  try {
+    const response = await fetch("https://mx18.hostgator.mx:2083/", { signal: AbortSignal.timeout(8000) });
+    const text = await response.text();
+    const preset = text.match(/name="user"[^>]*value="([^"]+)"/i)?.[1] || "";
+    note(`panel ${response.status} ${preset ? `usuario=${preset} ` : ""}${snippet(text)}`);
+    if (preset) found.push(preset);
+  } catch (error) {
+    note(`panel red ${error.name}`);
   }
   return [...new Set(found)];
 }

@@ -11,7 +11,7 @@ if (form) {
 
   const urls = {
     sefarad() {
-      return "https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
+      return "https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
     },
     familysearch(values) {
       const url = new URL("https://www.familysearch.org/search/record/results");

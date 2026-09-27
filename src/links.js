@@ -1,7 +1,9 @@
 export const APEX_ORIGIN = "https://genealogiasefardi.site";
 export const TREE_SUBDOMAIN = "tree.genealogiasefardi.site";
+export const ARBOL_ORIGIN = "https://arbol.genealogiasefardi.site";
 export const SEFARAD_ROUTE = "/sefarad-mx/tree/sefarad";
 export const SEFARAD_TREE_URL = `${APEX_ORIGIN}/sefarad-mx/index.php?route=${encodeURIComponent(SEFARAD_ROUTE)}`;
+export const ARBOL_TREE_URL = `${ARBOL_ORIGIN}/index.php?route=${encodeURIComponent(SEFARAD_ROUTE)}`;
 export const SEFARAD_DIR = "public_html/sefarad-mx";
 
 function textOf(query) {
@@ -29,7 +31,7 @@ export function sourceLinks(query = {}) {
   viaf.searchParams.set("query", `local.personalNames all "${text || surname || "sefardi"}"`);
 
   return [
-    { id: "sefarad", label: "Árbol Sefarad", href: SEFARAD_TREE_URL },
+    { id: "sefarad", label: "Árbol Sefarad", href: ARBOL_TREE_URL },
     { id: "familysearch", label: "FamilySearch", href: familySearch.toString() },
     {
       id: "inegi",

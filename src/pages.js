@@ -1,5 +1,5 @@
 import { listPersons, recordsForPerson, spousesOf } from "./db.js";
-import { SEFARAD_TREE_URL, sourceLinks, TREE_SUBDOMAIN } from "./links.js";
+import { ARBOL_TREE_URL, SEFARAD_TREE_URL, sourceLinks, TREE_SUBDOMAIN } from "./links.js";
 import { sourceCatalog } from "./sources.js";
 import { ancestorNode, descendantTree, earliestAncestor, generationColumns } from "./tree.js";
 
@@ -134,11 +134,11 @@ export function pageHome({ treeHost, stats, people, places }) {
         ${sources}
       </div>
       <p class="actions">
-        <a class="button" href="${esc(SEFARAD_TREE_URL)}">Abrir el árbol Sefarad</a>
+        <a class="button" href="${esc(ARBOL_TREE_URL)}">Abrir el árbol Sefarad</a>
         <a class="button button-quiet" href="${archiveTree}">Árbol del archivo</a>
       </p>
       <aside class="callout">
-        <strong>${esc(TREE_SUBDOMAIN)}</strong> se asigna en cPanel de HostGator a la carpeta <code>public_html/sefarad-mx</code>, la misma donde ya está el árbol.
+        El árbol abre en <a href="${esc(ARBOL_TREE_URL)}">arbol.genealogiasefardi.site</a>. La misma página sigue en <a href="${esc(SEFARAD_TREE_URL)}">genealogiasefardi.site/sefarad-mx</a>.
       </aside>
       <dl class="stats">
         <div><dt>Personas</dt><dd>${stats.persons}</dd></div>
@@ -400,7 +400,7 @@ export function pageTree(db, focusId, { treeHost }) {
     <section class="panel">
       <p class="kicker">${treeHost ? TREE_SUBDOMAIN : "Árbol del archivo"}</p>
       <h1>Árbol genealógico</h1>
-      <p class="tree-banner">El árbol publicado en HostGator es <a href="${esc(SEFARAD_TREE_URL)}">sefarad-mx / sefarad</a>. Esta vista es la del archivo local, con las personas y parentescos guardados aquí. El subdominio ${esc(TREE_SUBDOMAIN)} corresponde a la carpeta <code>public_html/sefarad-mx</code>.</p>
+      <p class="tree-banner">El árbol publicado en HostGator abre en <a href="${esc(ARBOL_TREE_URL)}">arbol.genealogiasefardi.site</a>. Esta vista es la del archivo local, con las personas y parentescos guardados aquí.</p>
       <form class="inline-form" method="get" action="${action}">
         <label>Persona de referencia
           <select name="persona">${options}</select>

@@ -152,7 +152,7 @@ test("el inicio, el árbol del subdominio y una ficha responden", async () => {
     assert.match(homeHtml, /Archivo Histórico Nacional/);
     assert.match(homeHtml, /Historypin/);
     assert.match(homeHtml, /HostGator/);
-    assert.match(homeHtml, /tree\.genealogiasefardi\.site/);
+    assert.match(homeHtml, /arbol\.genealogiasefardi\.site/);
     assert.match(homeHtml, /sefarad-mx%2Ftree%2Fsefarad/);
     assert.match(homeHtml, /WikiTree/);
 
