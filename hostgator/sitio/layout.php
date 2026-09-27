@@ -73,7 +73,6 @@ $isPublic = !empty($public) || $isPublicAuth;
       <?php else: ?>
         <a href="/">Inicio</a>
         <a href="/#censos">Censos</a>
-        <a href="/#fuentes">Fuentes</a>
         <a href="https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
         <a href="/archivo">Archivo</a>
         <a href="/biografias">Biografías</a>

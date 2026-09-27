@@ -195,7 +195,7 @@ foreach (array_slice($viaf['result'] ?? [], 0, 6) as $fila) {
     if ($titulo === '') {
         continue;
     }
-    $registros[] = registro($titulo, 'Ficha de autoridad devuelta por VIAF.', '', (string) ($fila['nametype'] ?? ''));
+    $registros[] = registro($titulo, '', '', '');
 }
 if (isset($respuestas['viaf'])) {
     $fuentes[] = fuente('viaf', 'VIAF', $respuestas['viaf']['ok'], $registros);
@@ -212,7 +212,7 @@ foreach (array_slice($wikiData['results']['bindings'] ?? [], 0, 6) as $fila) {
         continue;
     }
     $nacimiento = (string) ($fila['birth']['value'] ?? '');
-    $registros[] = registro($titulo, 'Persona devuelta por Wikidata.', substr($nacimiento, 0, 4), (string) ($fila['birthPlaceLabel']['value'] ?? ''));
+    $registros[] = registro($titulo, '', substr($nacimiento, 0, 4), (string) ($fila['birthPlaceLabel']['value'] ?? ''));
 }
 if (isset($respuestas['wikidata'])) {
     $fuentes[] = fuente('wikidata', 'Wikidata', $respuestas['wikidata']['ok'], $registros);
@@ -233,7 +233,7 @@ if (is_array($coincidencias)) {
         if ($titulo === '') {
             continue;
         }
-        $registros[] = registro($titulo, 'Perfil devuelto por la API de WikiTree.', (string) ($fila['BirthDate'] ?? $fila['BirthYear'] ?? ''), (string) ($fila['BirthLocation'] ?? ''));
+        $registros[] = registro($titulo, '', (string) ($fila['BirthDate'] ?? $fila['BirthYear'] ?? ''), (string) ($fila['BirthLocation'] ?? ''));
     }
 }
 if (isset($respuestas['wikitree'])) {
@@ -252,7 +252,7 @@ if (is_array($filasLoc)) {
         if ($titulo === '') {
             continue;
         }
-        $detalle = is_array($fila['description'] ?? null) ? (string) ($fila['description'][0] ?? '') : (string) ($fila['description'] ?? 'Registro del catálogo de la Library of Congress.');
+        $detalle = is_array($fila['description'] ?? null) ? (string) ($fila['description'][0] ?? '') : (string) ($fila['description'] ?? '');
         $registros[] = registro($titulo, $detalle, is_string($fila['date'] ?? null) ? $fila['date'] : '');
     }
 }
@@ -273,7 +273,7 @@ if (is_array($filasNara)) {
         if ($titulo === '') {
             continue;
         }
-        $registros[] = registro($titulo, 'Expediente devuelto por la API de NARA.');
+        $registros[] = registro($titulo, '');
     }
 }
 $fuentes[] = fuente('nara', 'Archivos Nacionales de EE. UU.', $respuestas['nara']['ok'] ?? false, $registros);
@@ -289,7 +289,7 @@ foreach (array_slice($datos['result']['results'] ?? [], 0, 5) as $fila) {
         continue;
     }
     $notas = trim(strip_tags((string) ($fila['notes'] ?? '')));
-    $registros[] = registro($titulo, $notas !== '' ? $notas : 'Conjunto de datos devuelto por datos.gob.mx.', '', 'México');
+    $registros[] = registro($titulo, $notas, '', '');
 }
 $fuentes[] = fuente('datos', 'datos.gob.mx', $respuestas['datos']['ok'] ?? false, $registros);
 
@@ -300,7 +300,7 @@ if (isset($respuestas['mapa']) && array_keys($mapa) === range(0, count($mapa) - 
         if (!is_array($fila) || empty($fila['display_name'])) {
             continue;
         }
-        $registros[] = registro((string) $fila['display_name'], 'Lugar devuelto por OpenHistoricalMap.', '', (string) ($fila['display_name'] ?? ''));
+        $registros[] = registro((string) $fila['display_name'], '', '', '');
     }
     $fuentes[] = fuente('mapa', 'OpenHistoricalMap', $respuestas['mapa']['ok'], $registros);
 }

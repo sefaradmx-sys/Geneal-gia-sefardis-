@@ -631,8 +631,8 @@ async function main() {
   await peek(`https://arbol.${site}/index.php?route=${route}`);
   await peek(`https://${site}/sefarad-mx/index.php?route=${route}`);
   const portada = await peek(`https://${site}/`);
-  note(portada.includes("Censo histórico por municipio") ? "PORTADA_NUEVA" : "PORTADA_VIEJA");
-  note(portada.includes("familysearch.org") ? "FAMILYSEARCH_EN_PORTADA" : "FAMILYSEARCH_AUSENTE");
+  note(portada.includes("Censo del municipio") ? "PORTADA_NUEVA" : "PORTADA_VIEJA");
+  note(portada.includes("este servidor") || portada.includes("familysearch.org") || portada.includes("VIAF") ? "TEXTO_DE_MAS" : "SIN_TEXTO_DE_MAS");
   const consulta = await peek(`https://${site}/consulta.php?apellido=Toledano&lugar=Monterrey`);
   note(consulta.includes('"conectadas":') ? "API_CONSULTA" : "API_SIN_CONSULTA");
   const conectadas = consulta.match(/"conectadas":\s*(\d+)/);
