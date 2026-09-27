@@ -1,0 +1,97 @@
+body.public-body {
+  background:
+    radial-gradient(900px 320px at 0% -8%, rgba(196, 161, 90, 0.2), transparent 55%),
+    #f3efe6;
+  color: #1c1915;
+}
+
+body.public-body .site-header {
+  background: #142f3d;
+  border-bottom: 3px solid #c4a15a;
+}
+
+body.public-body .site-footer {
+  background: #142f3d;
+  color: #f6f1e7;
+}
+
+body.public-body .site-footer a { color: #f6f1e7; }
+
+.investigar { max-width: 1100px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
+.investigar h1, .investigar h2 { font-family: Palatino, Georgia, serif; color: #142f3d; }
+.investigar .kicker { color: #8d342c; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78rem; }
+.investigar .lede { font-size: 1.12rem; max-width: 44rem; }
+
+.consulta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #fffdf8;
+  border: 1px solid #e0d5c4;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(20, 47, 61, 0.07);
+}
+
+.consulta label, .censo-busqueda label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem; color: #5c564c; }
+.consulta input, .censo-busqueda input {
+  border: 1px solid #e0d5c4;
+  border-radius: 10px;
+  padding: 0.65rem 0.7rem;
+  font: inherit;
+  color: #1c1915;
+  background: #fff;
+}
+.consulta button, .lista-municipios button, .investigar .accion {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  background: #142f3d;
+  color: #f6f1e7;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.consulta button { grid-column: 1 / -1; justify-self: start; }
+.investigar .accion.secundaria { background: #8d342c; }
+
+.fuentes-vivas, .anios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.8rem 0 1.2rem;
+}
+.fuentes-vivas a, .anios a {
+  text-decoration: none;
+  color: #142f3d;
+  background: #fffdf8;
+  border: 1px solid #e0d5c4;
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+}
+.fuentes-vivas a:hover, .anios a:hover { border-color: #c4a15a; }
+
+.panel-censo {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.censo-busqueda, .visor {
+  background: #fffdf8;
+  border: 1px solid #e0d5c4;
+  border-radius: 16px;
+  padding: 1rem;
+}
+.lista-municipios { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.8rem; }
+.lista-municipios button { text-align: left; background: #f3efe6; color: #142f3d; border-radius: 10px; }
+.lista-municipios button:hover { background: #142f3d; color: #f6f1e7; }
+.visor iframe { width: 100%; height: 720px; border: 1px solid #e0d5c4; border-radius: 12px; background: white; }
+.ficha-meta { color: #5c564c; }
+
+@media (max-width: 800px) {
+  .consulta, .panel-censo { grid-template-columns: 1fr; }
+  .visor iframe { height: 70vh; }
+}

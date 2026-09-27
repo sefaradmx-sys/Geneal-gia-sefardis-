@@ -576,7 +576,23 @@ async function publishArchivo(session) {
     const savedPath = saved.json?.data?.path || "";
     note(`ARCHIVO ${saved.json?.status ?? saved.status} ${savedPath || file}`);
   }
-  await linkEntrada(session);
+  await subirInvestigacion(session);
+}
+
+async function subirInvestigacion(session) {
+  const home = "/home2/irvinjos/genealogiasefardi.site";
+  const files = [
+    [home, "censo.php", "censo.php"],
+    [`${home}/views/home`, "landing.php", "landing.php"],
+    [`${home}/views`, "layout.php", "layout.php"],
+    [`${home}/public/assets`, "investigar.css", "investigar.css"],
+    [`${home}/public/assets`, "investigar.js", "investigar.js"],
+  ];
+  for (const [dir, file, localName] of files) {
+    const content = fs.readFileSync(path.join(root, "hostgator", "sitio", localName), "utf8");
+    const saved = await uapi(session, "/execute/Fileman/save_file_content", new URLSearchParams({ dir, file, content }));
+    note(`SITIO ${saved.json?.status ?? saved.status} ${saved.json?.data?.path || file}`);
+  }
 }
 
 async function main() {
@@ -614,7 +630,10 @@ async function main() {
   await peek(`https://arbol.${site}/index.php?route=${route}`);
   await peek(`https://${site}/sefarad-mx/index.php?route=${route}`);
   const portada = await peek(`https://${site}/`);
-  note(portada.includes("/archivo.html") ? "ENTRADA_VISIBLE" : "ENTRADA_NO_VISIBLE");
+  note(portada.includes("Censo histórico por municipio") ? "PORTADA_NUEVA" : "PORTADA_VIEJA");
+  note(portada.includes("familysearch.org") ? "FAMILYSEARCH_EN_PORTADA" : "FAMILYSEARCH_AUSENTE");
+  await peek(`https://${site}/censo.php?accion=municipios&q=monterrey`);
+  await peek(`https://${site}/censo.php?accion=ficha&cve=190390001`);
   await peek(`https://${site}/archivo.html`);
   await peek(`https://${site}/archivo/`);
   await peek(`https://${site}/archivo/index.html`);
