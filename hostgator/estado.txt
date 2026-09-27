@@ -1,98 +1,100 @@
-fecha=2026-09-27T20:16:17.157Z
+fecha=2026-09-27T20:22:53.662Z
 web 500 https://arbol.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 500 Internal Server Error <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> <html><head> <title>500 Internal Server Error</title> </head><body> <h1>Internal Server E
 web 404 https://arbol.genealogiasefardi.site/ 
 web 404 https://tree.genealogiasefardi.site/ 
 web 200 https://genealogiasefardi.site/ Inicio — Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head><meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Inicio — Genealogía Sefardí</title> <meta 
 panel 200 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
 activos https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Fwebmanifest.json https://genealogiasefardi.site/sefarad-mx/public/css/vendor.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/css/webtrees.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/js/vendor.min.js?v=2.2.6
-garga.com.mx:2083 cpanel irvinjos HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"main_domain":"garga.com.mx","parked_domains":[],"sub_domains":["arbol.genealogiasefardi.site","app.frentecardenista
+garga.com.mx:2083 cpanel irvinjos HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"addon_domains":["capacitate.pro","frentecardenista.org","genealogiasefardi.site","irvinjosuearellanolu1789512146000
 SESION cpanel irvinjos cuenta irvinjos garga.com.mx:2083
-/execute/DomainInfo/list_domains HTTP 200 {"warnings":null,"errors":null,"data":{"addon_domains":["capacitate.pro","frentecardenista.org","genealogiasefardi.site","irvinjosuearellanolu1789512146000.0590009.misitiohostgator
+/execute/DomainInfo/list_domains HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"parked_domains":[],"sub_domains":["arbol.genealogiasefardi.site","app.frentecardenista.org","pulso.
 main=garga.com.mx
 sub_domains=arbol.genealogiasefardi.site app.frentecardenista.org pulso.frentecardenista.org capacitate.frentecardenista.org capacitate-pro.frentecardenista.org capacitate.garga.com.mx app.garga.com.mx tree.genealogiasefardi.site
 addon_domains=capacitate.pro frentecardenista.org genealogiasefardi.site irvinjosuearellanolu1789512146000.0590009.misitiohostgator.com pulsociudadano.sbs pulsonacional.sbs
 parked_domains=-
-/execute/DomainInfo/single_domain_data HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"homedir":"/home2/irvinjos","type":"main_domain","user":"irvinjos","serveralias":"www.garga.com.mx mail.garga.com.
-/execute/DomainInfo/single_domain_data HTTP 200 {"errors":null,"data":{"owner":"root","servername":"genealogiasefardi.site.garga.com.mx","hascgi":"0","no_cache_update":"0","status":"not redirected","serveradmin":"webmaster@genea
-/execute/DomainInfo/single_domain_data HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"status":"not redirected","documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx","server
-/execute/DomainInfo/single_domain_data HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"ipv6":null,"userdirprotect":"","homedir":"/home2/irvinjos","type":"sub_domain","user":"irvinjos","serveralias":"www.arbol.genealo
+/execute/DomainInfo/single_domain_data HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"type":"main_domain","homedir":"/home2/irvinjos","user":"irvinjos","serveralias":"www.garga.com.mx mail.garga.com.
+/execute/DomainInfo/single_domain_data HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"homedir":"/home2/irvinjos","type":"addon_domain","userdirprotect":"","serveralias":"genealogiasefar
+/execute/DomainInfo/single_domain_data HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"owner":"root","no_cache_update":"0","hascgi":"0","servername":"tree.genealogiasefardi.site","group":"irvinjos","documentroot":"/h
+/execute/DomainInfo/single_domain_data HTTP 200 {"warnings":null,"errors":null,"data":{"ipv6":null,"user":"irvinjos","serveralias":"www.arbol.genealogiasefardi.site","userdirprotect":"","type":"sub_domain","homedir":"/home2/irvi
 raiz garga.com.mx /home2/irvinjos/public_html
 raiz genealogiasefardi.site /home2/irvinjos/genealogiasefardi.site
 raiz tree.genealogiasefardi.site /home2/irvinjos/genealogiasefardi.site/sefarad-mx
 raiz arbol.genealogiasefardi.site /home2/irvinjos/genealogiasefardi.site/sefarad-mx
-/execute/Fileman/list_files HTTP 200 {"errors":null,"data":[{"mtime":1790539836,"mode":16877,"ctime":1790539836,"nicemode":"0755","absdir":"/home2/irvinjos/genealogiasefardi.site","type":"dir","gid":1824,"path":"/home
+/execute/Fileman/list_files HTTP 200 {"messages":null,"status":1,"metadata":{"transformed":1},"errors":null,"data":[{"uid":1827,"exists":1,"file":"archivo","humansize":"4 KB","size":"4096","fullpath":"/home2/irvinjos/
 carpeta genealogiasefardi.site archivo docs public sql src storage views _chk_mod.php _mk_sefarad_link.php _probe_bio.php _wt_boot.php _wt_clean.php _wt_fix.php _wt_mod.php _wt_tree.php _wt_unzip.php app.css ArchiveController.php archivo-estilos.css archivo.html censo.php certificado.php config.php config.sample.php
-/execute/Fileman/list_files HTTP 200 {"warnings":null,"errors":null,"data":[{"file":"app","humansize":"4 KB","size":"4096","exists":1,"uid":1827,"fullpath":"/home2/irvinjos/arbol.genealogiasefardi.site/app","gid":1824
+/execute/Fileman/list_files HTTP 200 {"status":1,"messages":null,"metadata":{"transformed":1},"data":[{"mode":16877,"ctime":1789603683,"mtime":1789603681,"absdir":"/home2/irvinjos/arbol.genealogiasefardi.site","nicemo
 CARPETA_ARBOL genealogiasefardi.site/sefarad-mx app data modules_v4 public resources vendor webtrees apple-touch-icon.png CONTRIBUTING.md error_log favicon.ico gs-marca.txt index.php LICENSE.md README.md SECURITY.md
-/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/arbol.genealogiasefardi.site/gs-marca.txt"},"war
-/execute/Fileman/mkdir HTTP 200 {"metadata":{},"status":0,"messages":null,"warnings":null,"data":null,"errors":["The system could not find the function “mkdir” in the module “Fileman”."]} 
-/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/tree.genealogiasefardi.site/index.php","to_charset":"utf-8"},"metadata":{},"messages":null,"st
-/execute/Fileman/save_file_content HTTP 200 {"data":null,"errors":["The file “index.php” does not exist for the account."],"warnings":null,"status":0,"messages":null,"metadata":{}} 
-/execute/Fileman/save_file_content HTTP 200 {"data":{"to_charset":"utf-8","path":"/home2/irvinjos/public_html/sefarad-mx/index.php","from_charset":"utf-8"},"errors":null,"warnings":null,"status":1,"messages":null,"metadata":
+/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"path":"/home2/irvinjos/arbol.genealogiasefardi.site/gs-marca.txt","from_charset":"utf-8","to_charse
+/execute/Fileman/mkdir HTTP 200 {"status":0,"messages":null,"metadata":{},"data":null,"errors":["The system could not find the function “mkdir” in the module “Fileman”."],"warnings":null} 
+/execute/Fileman/save_file_content HTTP 200 {"data":{"path":"/home2/irvinjos/tree.genealogiasefardi.site/index.php","from_charset":"utf-8","to_charset":"utf-8"},"errors":null,"warnings":null,"status":1,"messages":null,"metad
+/execute/Fileman/save_file_content HTTP 200 {"status":0,"messages":null,"metadata":{},"data":null,"errors":["The file “index.php” does not exist for the account."],"warnings":null} 
+/execute/Fileman/save_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"to_charset":"utf-8","path":"/home2/irvinjos/public_html/sefarad-mx/index.php","from_charset":"utf-8"},"errors":null,"warnings":nu
 /execute/SubDomain/changedocroot HTTP 200 {"errors":null,"data":{"documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx"},"warnings":null,"messages":null,"status":1,"metadata":{}} 
-/execute/SubDomain/changedocroot HTTP 200 {"data":{"documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx"},"errors":null,"warnings":null,"status":1,"messages":null,"metadata":{}} 
-/execute/Fileman/get_file_content HTTP 200 {"warnings":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/.htaccess","to_charset":"utf-8","dir":"/home2/irvinjos/genealogiasefardi.site","conte
+/execute/SubDomain/changedocroot HTTP 200 {"warnings":null,"data":{"documentroot":"/home2/irvinjos/genealogiasefardi.site/sefarad-mx"},"errors":null,"metadata":{},"status":1,"messages":null} 
+/execute/Fileman/get_file_content HTTP 200 {"errors":null,"data":{"dir":"/home2/irvinjos/genealogiasefardi.site","to_charset":"utf-8","filename":".htaccess","content":"RewriteEngine On\nRewriteBase /\n\n# SEO sitemap\nRewri
 htaccess RewriteEngine On RewriteBase / # SEO sitemap RewriteRule ^sitemap\.xml$ sitemap.php [L] # Deny direct access to sensitive paths (including uploads — serve via /media/ only) Rewrite
-/json-api/cpanel HTTP 200 {"cpanelresult":{"postevent":{"result":1},"module":"Fileman","preevent":{"result":1},"error":"Could not create directory \"archivo\" in /home2/irvinjos/genealogiasefardi.site: File
-/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo.html","from_charset":"utf-8"},"errors":null,"metadata":{},"status":1,"messages"
+/json-api/cpanel HTTP 200 {"cpanelresult":{"func":"mkdir","apiversion":2,"event":{"result":1},"preevent":{"result":1},"data":[],"error":"Could not create directory \"archivo\" in /home2/irvinjos/genealogias
+/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo.html","to_charset":"utf-8"},"errors":null,"metadata":{},"status":1,"messages"
 ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo.html
-/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo-estilos.css","to_charset":"utf-8"},"errors":null,"metadata":{},"status":1,"me
+/execute/Fileman/save_file_content HTTP 200 {"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo-estilos.css","to_charset":"utf-8"},"errors":null,"warnings":null,"status":1,"messages":null,"
 ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo-estilos.css
-/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo/index.html","to_charset":"utf-8"},"war
+/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo/index.html","from_charset":"utf-8"},"e
 ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo/index.html
-/execute/Fileman/save_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo/estilos.css"},"errors":null,"wa
+/execute/Fileman/save_file_content HTTP 200 {"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/archivo/estilos.css"},"errors":null,"warnings":null,"status":1,"messages":null,"
 ARCHIVO 1 /home2/irvinjos/genealogiasefardi.site/archivo/estilos.css
-/execute/Fileman/save_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/censo.php","to_charset":"utf-8"},"errors":null,"warnings":nu
+/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/censo.php","from_charset":"utf-8"},"errors":nu
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/censo.php
-/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/consulta.php"},"warnings"
+/execute/Fileman/save_file_content HTTP 200 {"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/consulta.php","to_charset":"utf-8"},"warnings":null,"messages":null,"status":1,"metadat
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/consulta.php
-/execute/Fileman/save_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/saltillo.php","from_charset":"utf-8"},"errors":null,"warnings"
+/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/saltillo.php","to_charset":"utf-8"},"warnings"
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/saltillo.php
-/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/certificado.php","from_charset":"utf-8"},"warnin
+/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/certificado.php"},"erro
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/certificado.php
-/execute/Fileman/save_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/storage/saltillo.json","to_charset":"utf-8"},"errors":null,"
+/execute/Fileman/save_file_content HTTP 200 {"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/storage/saltillo.json","to_charset":"utf-8"},"errors":null,"warnings":null,"status":1,"messages":null
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/storage/saltillo.json
-/execute/Fileman/save_file_content HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/home/landing.php","from_charset":"utf-8"
+/execute/Fileman/save_file_content HTTP 200 {"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/home/landing.php","to_charset":"utf-8"},"warnings":null,"messages":null,"status":
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/views/home/landing.php
-/execute/Fileman/save_file_content HTTP 200 {"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/layout.php","from_charset":"utf-8"},"errors":null,"warnings":null,"status":1,"messages":null,"met
+/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/layout.php","to_charset":"utf-8"},"errors":null,"metadata":{},"status":1,"messa
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/views/layout.php
-/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"path":"/home2/irvinjos/genealogiasefardi.site/public/assets/investigar.css","from_charset":"utf-8","to_charset":"utf-8"},"errors":null,"metadata":{},"stat
+/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"errors":null,"data":{"to_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/public/assets/investigar.css","from_charset":"utf-8"},"metadata":{},"mess
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/public/assets/investigar.css
-/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"path":"/home2/irvinjos/genealogiasefardi.site/public/assets/investigar.js","from_charset":"utf-8","to_charset":"utf
+/execute/Fileman/save_file_content HTTP 200 {"warnings":null,"data":{"to_charset":"utf-8","from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/public/assets/investigar.js"},"errors":null,"metadata":{},"statu
 SITIO 1 /home2/irvinjos/genealogiasefardi.site/public/assets/investigar.js
-/execute/Fileman/list_files HTTP 200 {"status":1,"messages":null,"metadata":{"transformed":1},"data":[{"nicemode":"0644","absdir":"/home2/irvinjos/genealogiasefardi.site/views/home","mtime":1790540185,"mode":33188,"ct
+/execute/Fileman/save_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"path":"/home2/irvinjos/genealogiasefardi.site/public/assets/logo.svg","from_charset":"utf-8","to_charset":"utf-8"},
+SITIO 1 /home2/irvinjos/genealogiasefardi.site/public/assets/logo.svg
+/execute/Fileman/list_files HTTP 200 {"metadata":{"transformed":1},"messages":null,"status":1,"warnings":null,"errors":null,"data":[{"absdir":"/home2/irvinjos/genealogiasefardi.site/views/home","nicemode":"0644","mtim
 vista home landing.php
-/execute/Fileman/list_files HTTP 200 {"metadata":{"transformed":1},"messages":null,"status":1,"warnings":null,"errors":null,"data":[]} 
+/execute/Fileman/list_files HTTP 200 {"errors":null,"data":[],"warnings":null,"messages":null,"status":1,"metadata":{"transformed":1}} 
 vista partials -
-/execute/Fileman/list_files HTTP 200 {"warnings":null,"data":[{"type":"file","gid":1824,"path":"/home2/irvinjos/genealogiasefardi.site/views/sources","fullpath":"/home2/irvinjos/genealogiasefardi.site/views/sources/fo
+/execute/Fileman/list_files HTTP 200 {"data":[{"humansize":"1,69 KB","file":"form.php","size":"1730","uid":1827,"exists":1,"fullpath":"/home2/irvinjos/genealogiasefardi.site/views/sources/form.php","gid":1824,"path":"
 vista sources form.php index.php show.php
-/execute/Fileman/get_file_content HTTP 200 {"warnings":null,"errors":null,"data":{"path":"/home2/irvinjos/genealogiasefardi.site/views/layout.php","to_charset":"utf-8","dir":"/home2/irvinjos/genealogiasefardi.site/views","f
-VOLCADO views/layout.php 5149
-/execute/Fileman/get_file_content HTTP 200 {"data":{"filename":"search.php","content":"<div class=\"archive-hero\">\n <h1>Buscar en todo el sitio</h1>\n <p>Biografías, archivo de pruebas<?= !empty($logged_in) ? ' y personas
+/execute/Fileman/get_file_content HTTP 200 {"data":{"dir":"/home2/irvinjos/genealogiasefardi.site/views","to_charset":"utf-8","content":"<?php\n/** @var string $content */\n/** @var string $title */\n/** @var array|null $cu
+VOLCADO views/layout.php 5346
+/execute/Fileman/get_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/search.php","dir":"/home
 VOLCADO views/search.php 3312
-/execute/Fileman/get_file_content HTTP 200 {"warnings":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/dashboard.php","dir":"/home2/irvinjos/genealogiasefardi.site/views","to_charset
+/execute/Fileman/get_file_content HTTP 200 {"errors":null,"data":{"from_charset":"utf-8","dir":"/home2/irvinjos/genealogiasefardi.site/views","to_charset":"utf-8","filename":"dashboard.php","content":"<h1>Panel</h1>\n<p cla
 VOLCADO views/dashboard.php 2872
-/execute/Fileman/get_file_content HTTP 200 {"data":{"filename":"index.php","content":"<?php\ndeclare(strict_types=1);\n\ndefine('BASE_PATH', __DIR__);\n\n$configFile = BASE_PATH . '/config.php';\nif (!is_file($configFile)) 
+/execute/Fileman/get_file_content HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"from_charset":"utf-8","filename":"index.php","content":"<?php\ndeclare(strict_types=1);\n\ndefine('BASE_PATH', __DI
 VOLCADO genealogiasefardi.site/index.php 5754
-/execute/Fileman/get_file_content HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/helpers.php","dir":"/home2/irvinjos/genealogiasefardi.site",
+/execute/Fileman/get_file_content HTTP 200 {"data":{"path":"/home2/irvinjos/genealogiasefardi.site/helpers.php","dir":"/home2/irvinjos/genealogiasefardi.site","to_charset":"utf-8","filename":"helpers.php","content":"<?php\n
 VOLCADO genealogiasefardi.site/helpers.php 9061
-/execute/Fileman/get_file_content HTTP 200 {"data":{"path":"/home2/irvinjos/genealogiasefardi.site/views/home/landing.php","filename":"landing.php","content":"<div class=\"investigar\" id=\"investigar\">\n <p class=\"kicker
-VOLCADO home/landing.php 2759
-/execute/Fileman/get_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/sources/form.php","filen
+/execute/Fileman/get_file_content HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"path":"/home2/irvinjos/genealogiasefardi.site/views/home/landing.php","filename":"landing.php","content":"<div cl
+VOLCADO home/landing.php 2974
+/execute/Fileman/get_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"from_charset":"utf-8","filename":"form.php","content":"<h1><?= e($title) ?></h1>\n<div class=\"card
 VOLCADO sources/form.php 1725
-/execute/Fileman/get_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/sources/index.php","cont
+/execute/Fileman/get_file_content HTTP 200 {"metadata":{},"messages":null,"status":1,"warnings":null,"errors":null,"data":{"dir":"/home2/irvinjos/genealogiasefardi.site/views/sources","to_charset":"utf-8","filename":"index.
 VOLCADO sources/index.php 1227
-/execute/Fileman/get_file_content HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"path":"/home2/irvinjos/genealogiasefardi.site/views/sources/show.php","content":"<div class=\"toolbar\">\n <h1 st
+/execute/Fileman/get_file_content HTTP 200 {"errors":null,"data":{"from_charset":"utf-8","path":"/home2/irvinjos/genealogiasefardi.site/views/sources/show.php","to_charset":"utf-8","dir":"/home2/irvinjos/genealogiasefardi.s
 VOLCADO sources/show.php 1995
-PORTADA 200 6358
+PORTADA 200 6748
 web 404 https://tree.genealogiasefardi.site/ 
 web 500 https://tree.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 500 Internal Server Error <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> <html><head> <title>500 Internal Server Error</title> </head><body> <h1>Internal Server E
-web 200 https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="sK8kGXnOjglA9rvq13DUNsCNFRTjlupQ"> <meta name="viewport" 
+web 200 https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="VhnqFzzV7OB53ZbidDADUcBjN7r7LV0s"> <meta name="viewport" 
 web 200 https://tree.genealogiasefardi.site/gs-marca.txt marca-sefard
 web 200 https://arbol.genealogiasefardi.site/gs-marca.txt marca-sefard
 web 404 https://arbol.genealogiasefardi.site/ 
-web 200 https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="BxF0fdEJBI0WZSMIfDe3tCxMtkGbSR6c"> <meta name="viewport" 
-web 200 https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="bWq75u7Toq5SOmtGFE3mnPZQ6izx4X22"> <meta name="viewport" 
+web 200 https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="wR2LSFwSacYjhIFAjfNGNyTZ3jVPpUgc"> <meta name="viewport" 
+web 200 https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="EjIqMAgVYbvQqQEIOC3wV4gRcH3UqGa0"> <meta name="viewport" 
 web 200 https://genealogiasefardi.site/ Inicio — Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head><meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Inicio — Genealogía Sefardí</title> <meta 
 PORTADA_NUEVA
 SIN_TEXTO_DE_MAS
