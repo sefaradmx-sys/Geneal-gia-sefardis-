@@ -159,6 +159,9 @@ async function discoverUsers() {
     for (const match of text.matchAll(/\/home\/([a-z][a-z0-9]{2,16})\//g)) found.push(match[1]);
     const assets = [...text.matchAll(/(?:src|href)="([^"]+\.(?:js|css)[^"]*)"/g)].slice(0, 4).map((match) => match[1]);
     note(`activos ${assets.join(" ") || "-"}`);
+    for (const line of text.split(/\n/)) {
+      if (/\/home\/|public_html/i.test(line)) note(`pista ${snippet(line)}`);
+    }
   } catch (error) {
     note(`arbol red ${error.name}`);
   }
