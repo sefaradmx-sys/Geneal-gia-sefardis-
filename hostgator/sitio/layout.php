@@ -38,7 +38,7 @@ $isPublic = !empty($public) || $isPublicAuth;
   <script type="application/ld+json"><?= $jsonLd /* pre-encoded JSON */ ?></script>
   <?php endif; ?>
   <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
-  <link rel="stylesheet" href="/public/assets/investigar.css?v=pdf">
+  <link rel="stylesheet" href="/public/assets/investigar.css?v=tramite">
 </head>
 <body class="<?= $isPublic && !$currentUser ? 'public-body' : '' ?>">
 <?php if ($isPublicAuth): ?>
@@ -100,6 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-<script src="/public/assets/investigar.js?v=pdf" defer></script>
+<script src="/public/assets/investigar.js?v=tramite" defer></script>
 </body>
 </html>

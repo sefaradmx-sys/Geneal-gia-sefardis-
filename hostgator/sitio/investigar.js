@@ -38,7 +38,7 @@ function valor(id) {
 }
 
 function lugarConsulta() {
-  return valor("#lugar") || valor("#municipio");
+  return valor("#lugar");
 }
 
 function pintarFicha(ficha) {
@@ -69,7 +69,6 @@ async function elegirMunicipio(cve) {
   const ficha = await respuesta.json();
   if (!ficha.ficha) return;
   pintarFicha(ficha);
-  consultar();
 }
 
 let reloj = 0;
@@ -223,13 +222,27 @@ function certificado(registro) {
   cargo.textContent = "Fundador de Sefarad MX";
   firma.append(lineaFirma, nombre, cargo);
 
+  const tramite = document.createElement("div");
+  tramite.className = "cert-tramite";
+  const tituloTramite = document.createElement("p");
+  tituloTramite.className = "cert-tramite-titulo";
+  tituloTramite.textContent = "Tramitar documentos certificados ante el archivo";
+  const aviso = document.createElement("p");
+  aviso.textContent = "No puedes venir hasta el archivo de Saltillo, no te preocupes, nosotros lo tramitamos por ti y te lo enviamos.";
+  const contacto = document.createElement("p");
+  const enlace = document.createElement("a");
+  enlace.href = "tel:+528442195952";
+  enlace.textContent = "+52 844 219 5952";
+  contacto.append("Contáctanos ", enlace);
+  tramite.append(tituloTramite, aviso, contacto);
+
   const boton = document.createElement("button");
   boton.type = "button";
   boton.className = "no-imprimir";
   boton.textContent = "Generar PDF";
   boton.addEventListener("click", () => generarPdf(registro, boton));
 
-  article.append(leyenda, firma, boton);
+  article.append(leyenda, firma, tramite, boton);
   return article;
 }
 
@@ -245,15 +258,24 @@ function pintarSaltillo(registros) {
   return seccion;
 }
 
-function pintarResultados(data, saltillo) {
-  const caja = document.querySelector("#resultados");
+function pintarArchivo(registros) {
+  const caja = document.querySelector("#resultados-archivo");
   if (!caja) return;
   caja.replaceChildren();
-  const archivo = pintarSaltillo(saltillo);
-  if (archivo) caja.appendChild(archivo);
-  if (data.inegi) {
-    pintarFicha(data.inegi);
+  const archivo = pintarSaltillo(registros);
+  if (archivo) {
+    caja.appendChild(archivo);
+    return;
   }
+  const vacio = document.createElement("p");
+  vacio.textContent = "No hay expedientes con esos datos en el Archivo Histórico de Saltillo.";
+  caja.appendChild(vacio);
+}
+
+function pintarGeneral(data) {
+  const caja = document.querySelector("#resultados-general");
+  if (!caja) return;
+  caja.replaceChildren();
   const personas = [];
   const documentos = [];
   const lugares = [];
@@ -273,33 +295,36 @@ function pintarResultados(data, saltillo) {
   }
 }
 
-async function consultar() {
-  const caja = document.querySelector("#resultados");
+async function buscarArchivo() {
+  const caja = document.querySelector("#resultados-archivo");
+  const nombre = valor("#nombre-archivo");
+  const apellido = valor("#apellido-archivo");
+  if (!nombre && !apellido) return;
+  if (caja) caja.textContent = "Buscando…";
+  const archivo = new URL("/saltillo.php", location.origin);
+  if (nombre) archivo.searchParams.set("nombre", nombre);
+  if (apellido) archivo.searchParams.set("apellido", apellido);
+  const respuesta = await fetch(archivo);
+  const saltillo = respuesta.ok ? await respuesta.json() : { registros: [] };
+  pintarArchivo(saltillo.registros || []);
+}
+
+async function buscarGeneral() {
+  const caja = document.querySelector("#resultados-general");
   const nombre = valor("#nombre");
   const apellido = valor("#apellido");
   const lugar = lugarConsulta();
-  if (!nombre && !apellido && !lugar) return;
+  const ano = valor("#ano");
+  if (!nombre && !apellido && !lugar && !ano) return;
   if (caja) caja.textContent = "Buscando…";
   const url = new URL("/consulta.php", location.origin);
-  const archivo = new URL("/saltillo.php", location.origin);
-  const ano = valor("#ano");
-  if (nombre) {
-    url.searchParams.set("nombre", nombre);
-    archivo.searchParams.set("nombre", nombre);
-  }
-  if (apellido) {
-    url.searchParams.set("apellido", apellido);
-    archivo.searchParams.set("apellido", apellido);
-  }
-  if (lugar) {
-    url.searchParams.set("lugar", lugar);
-    archivo.searchParams.set("lugar", lugar);
-  }
-  if (ano) archivo.searchParams.set("ano", ano);
-  const [respuesta, saltilloRespuesta] = await Promise.all([fetch(url), fetch(archivo)]);
+  if (nombre) url.searchParams.set("nombre", nombre);
+  if (apellido) url.searchParams.set("apellido", apellido);
+  if (lugar) url.searchParams.set("lugar", lugar);
+  if (ano) url.searchParams.set("ano", ano);
+  const respuesta = await fetch(url);
   const data = respuesta.ok ? await respuesta.json() : { fuentes: [] };
-  const saltillo = saltilloRespuesta.ok ? await saltilloRespuesta.json() : { registros: [] };
-  pintarResultados(data, saltillo.registros || []);
+  pintarGeneral(data);
 }
 
 function iniciar() {
@@ -309,9 +334,13 @@ function iniciar() {
     clearTimeout(reloj);
     reloj = setTimeout(buscarMunicipios, 280);
   });
-  document.querySelector("#busqueda-viva")?.addEventListener("submit", (event) => {
+  document.querySelector("#busqueda-archivo")?.addEventListener("submit", (event) => {
     event.preventDefault();
-    consultar();
+    buscarArchivo();
+  });
+  document.querySelector("#busqueda-general")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    buscarGeneral();
   });
 }
 

@@ -89,6 +89,9 @@ foreach ($datos as $etiqueta => $valor) {
         $bloques[] = [$linea, 'F2', 11, '0.110 0.098 0.082', false, $i === 0 ? 18 : 14];
     }
 }
+foreach (cortar('Tramitar Documentos Certificados ante el Archivo. No puedes venir hasta el Archivo de Saltillo. No te preocupes: nosotros lo tramitamos por ti y te lo enviamos. Contáctanos +52 844 219 5952.', 78) as $linea) {
+    $bloques[] = [$linea, 'F2', 11, '0.078 0.184 0.239', false, 16];
+}
 $cierre = [
     ['Información Consultada de la Plataforma Sefarad MX.', 'F3', 12, '0.078 0.184 0.239', true, 28],
     ['Ante Mí Consta y Doy Fe.', 'F3', 12, '0.078 0.184 0.239', true, 18],

@@ -54,7 +54,33 @@ body.public-body .site-footer a { color: #f6f1e7; }
   text-decoration: none;
   display: inline-block;
 }
+.consulta.corta { grid-template-columns: 1fr 1fr; }
 .consulta button { grid-column: 1 / -1; justify-self: start; }
+.bloque-busqueda { margin: 0.4rem 0 1.8rem; }
+.bloque-busqueda > h2 { margin-bottom: 0.2rem; }
+
+.tramitar {
+  background: #142f3d;
+  color: #f6f1e7;
+  border-radius: 16px;
+  padding: 1.3rem 1.4rem 1.4rem;
+  border-top: 4px solid #c4a15a;
+}
+.tramitar h2 { color: #f6f1e7; margin: 0 0 0.6rem; }
+.tramitar p { margin: 0.45rem 0; max-width: 40rem; line-height: 1.5; }
+.tramitar .telefono { font-size: 1.25rem; margin-top: 0.8rem; }
+.tramitar a { color: #c4a15a; font-weight: 700; }
+
+.cert-tramite {
+  margin-top: 1.1rem;
+  padding: 0.8rem 0.9rem;
+  background: #142f3d;
+  color: #f6f1e7;
+  border-radius: 12px;
+}
+.cert-tramite p { margin: 0.3rem 0; line-height: 1.45; }
+.cert-tramite-titulo { font-family: Palatino, Georgia, serif; font-size: 1.05rem; }
+.cert-tramite a { color: #c4a15a; font-weight: 700; }
 .investigar .accion.secundaria { background: #8d342c; }
 
 .fuentes-vivas, .anios {
@@ -192,6 +218,8 @@ body.public-body .site-footer a { color: #f6f1e7; }
   body.imprimiendo-certificado .site-footer,
   body.imprimiendo-certificado .consulta,
   body.imprimiendo-certificado #censos,
+  body.imprimiendo-certificado #tramitar,
+  body.imprimiendo-certificado #general,
   body.imprimiendo-certificado .kicker,
   body.imprimiendo-certificado h1,
   body.imprimiendo-certificado .no-imprimir,
