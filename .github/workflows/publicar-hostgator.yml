@@ -1,0 +1,88 @@
+name: publicar-hostgator
+
+on:
+  push:
+    branches:
+      - cursor/hostgator-subdominio-766c
+  workflow_dispatch:
+    inputs:
+      cpanel_user:
+        description: Usuario de cPanel
+        required: false
+        default: nuevaexp
+        type: string
+      cpanel_token:
+        description: Token de API de cPanel
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  comprobar:
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip ci]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Entrar a cPanel con el token
+        env:
+          CPANEL_TOKEN: ""
+          CPANEL_USER: "irvinjos"
+          HOSTGATOR_KEY_B64: ""
+          HOSTGATOR_KEY_PASSPHRASE: ""
+        run: |
+          set +x
+          echo "::add-mask::${CPANEL_TOKEN}"
+          echo "::add-mask::${HOSTGATOR_KEY_PASSPHRASE}"
+          if [ -n "$HOSTGATOR_KEY_B64" ]; then
+            printf '%s' "$HOSTGATOR_KEY_B64" | base64 -d > "$RUNNER_TEMP/hgkey"
+            chmod 600 "$RUNNER_TEMP/hgkey"
+            if ssh-keygen -p -P "$HOSTGATOR_KEY_PASSPHRASE" -N "" -f "$RUNNER_TEMP/hgkey"; then
+              export HOSTGATOR_KEY_PATH="$RUNNER_TEMP/hgkey"
+            else
+              echo "LLAVE_NO_ABRIO"
+            fi
+          fi
+          node scripts/hostgator-api.mjs || true
+
+      - name: Guardar el resultado
+        run: |
+          git config user.name "cursor"
+          git config user.email "cursor@users.noreply.github.com"
+          git add hostgator/estado.txt
+          if [ -d hostgator/vivo ]; then git add hostgator/vivo; fi
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Estado de la API de cPanel [skip ci]"
+          git pull --rebase origin cursor/hostgator-subdominio-766c
+          git push
+
+  hostgator:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Entrar a cPanel con el token
+        env:
+          CPANEL_USER: ${{ inputs.cpanel_user }}
+          CPANEL_TOKEN: ${{ inputs.cpanel_token }}
+        run: |
+          echo "::add-mask::${CPANEL_TOKEN}"
+          node scripts/hostgator-api.mjs
+      - name: Guardar el resultado
+        run: |
+          git config user.name "cursor"
+          git config user.email "cursor@users.noreply.github.com"
+          git add hostgator/estado.txt
+          if [ -d hostgator/vivo ]; then git add hostgator/vivo; fi
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Estado de la API de cPanel [skip ci]"
+          git pull --rebase origin cursor/hostgator-subdominio-766c
+          git push

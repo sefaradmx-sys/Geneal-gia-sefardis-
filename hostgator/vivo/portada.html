@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inicio — Genealogía Sefardí</title>
+    <meta name="description" content="Archivo genealógico sefardí con biografías documentadas, fuentes y pruebas. Genealogía Sefardí.">
+  <meta name="robots" content="index,follow">
+    <meta property="og:site_name" content="Genealogía Sefardí">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:title" content="Inicio — Genealogía Sefardí">
+  <meta property="og:description" content="Archivo genealógico sefardí con biografías documentadas, fuentes y pruebas. Genealogía Sefardí.">
+  <meta property="og:type" content="website">
+    <meta property="og:image" content="https://genealogiasefardi.site/public/assets/og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Inicio — Genealogía Sefardí">
+  <meta name="twitter:description" content="Archivo genealógico sefardí con biografías documentadas, fuentes y pruebas. Genealogía Sefardí.">
+    <link rel="stylesheet" href="/public/assets/app.css">
+  <link rel="stylesheet" href="/public/assets/investigar.css?v=portada">
+</head>
+<body class="public-body">
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/">Genealogía Sefardí <span>archivo</span></a>
+    <form class="header-search" method="get" action="/search" role="search">
+      <label class="sr-only" for="header-q">Buscar en todo el sitio</label>
+      <input id="header-q" type="search" name="q" value="" placeholder="Buscar nombre, apellido, año…" autocomplete="off">
+      <button type="submit" class="btn btn-sm" title="Buscar">Buscar</button>
+    </form>
+    <nav class="nav">
+              <a href="/">Inicio</a>
+        <a href="/#censos">Censos</a>
+        <a href="https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
+        <a href="/archivo">Archivo</a>
+        <a href="/biografias">Biografías</a>
+        <a href="/registro">Registro</a>
+        <a href="/login">Entrar</a>
+          </nav>
+  </div>
+</header>
+<main class="wrap wrap-landing">
+      <div class="investigar" id="investigar">
+  <header class="portada">
+    <img class="logo" src="/public/assets/logo.svg" alt="" width="92" height="92">
+    <div>
+      <p class="kicker">Genealogía Sefardí</p>
+      <h1>Sefarad MX</h1>
+    </div>
+  </header>
+
+  <section class="bloque-busqueda" id="archivo">
+    <h2>Búsqueda de archivos en el Archivo Histórico de Saltillo</h2>
+    <form class="consulta corta" id="busqueda-archivo">
+      <label>Nombre <input id="nombre-archivo" name="nombre" autocomplete="given-name"></label>
+      <label>Apellido <input id="apellido-archivo" name="apellido" autocomplete="family-name"></label>
+      <button type="submit">Buscar en el archivo</button>
+    </form>
+    <div class="resultados" id="resultados-archivo"></div>
+  </section>
+
+  <section class="bloque-busqueda" id="censos">
+    <h2>Búsqueda de censos del INEGI</h2>
+    <div class="panel-censo">
+      <div class="censo-busqueda">
+        <label>Municipio <input id="municipio" placeholder="Monterrey"></label>
+        <div class="lista-municipios" id="lista-municipios"></div>
+      </div>
+      <div class="visor">
+        <p class="ficha-meta" id="ficha-meta">Escribe el municipio para ver su censo.</p>
+        <iframe id="ficha-censo" title="Censo del municipio" src="about:blank"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque-busqueda" id="general">
+    <h2>Búsqueda general de actas y demás</h2>
+    <form class="consulta" id="busqueda-general">
+      <label>Nombre <input id="nombre" name="nombre" autocomplete="given-name"></label>
+      <label>Apellido <input id="apellido" name="apellido" autocomplete="family-name"></label>
+      <label>Lugar <input id="lugar" name="lugar" placeholder="Municipio, estado"></label>
+      <label>Año <input id="ano" name="ano" inputmode="numeric" maxlength="4" placeholder="1930"></label>
+      <button type="submit">Buscar</button>
+    </form>
+    <div class="resultados" id="resultados-general"></div>
+  </section>
+
+  <section class="tramitar" id="tramitar">
+    <h2>Si no puedes venir a Saltillo</h2>
+    <p>Solamente en ese caso lo gestionamos nosotros, directamente en el Archivo Municipal de Saltillo. El documento lo expide ese archivo y se envía a cualquier parte del mundo.</p>
+    <p class="telefono">Contáctanos <a href="tel:+528442195952">+52 844 219 5952</a></p>
+  </section>
+</div>
+
+<section class="landing-section">
+  <h2 class="section-title">Biografías destacadas</h2>
+  <div class="bio-cards">
+          <a class="bio-card" href="/biografias/blas-de-la-garza-falcon">
+        <strong>Blas de la Garza Falcón</strong>
+        <span class="meta">1591–1669</span>        <span class="hint">Militar y poblador del noreste novohispano; tronco fundador. Antepasado (13.ª generación) de Francisco Javier García Gaona por ambas líneas …</span>
+      </a>
+          <a class="bio-card" href="/biografias/antonio-garcia-garrido">
+        <strong>Antonio García Garrido</strong>
+        <span class="meta">por confirmar</span>        <span class="hint">Figura del linaje de interés del archivo. Datos en elaboración; no afirmar hechos sin fuente adjunta.…</span>
+      </a>
+          <a class="bio-card" href="/biografias/dionisio-garcia-fuente">
+        <strong>Dionisio García Fuente</strong>
+        <span class="meta">por confirmar</span>        <span class="hint">Ancestro o colateral del trabajo de campo. Biografía abierta a ampliación con evidencias.…</span>
+      </a>
+          <a class="bio-card" href="/biografias/francisco-javier-garcia-gaona">
+        <strong>Francisco Javier García Gaona</strong>
+        <span class="meta">1988–</span>        <span class="hint">Descendiente directo (13.ª generación) del Capitán Blas de la Garza Falcón por ambas líneas parentales. Activista, emprendedor tecnológico y…</span>
+      </a>
+      </div>
+</section>
+</main>
+<footer class="site-footer">
+  <img src="/public/assets/logo.svg" alt="" width="42" height="42">
+  <div>
+    <strong>Genealogía Sefardí · Sefarad MX</strong>
+    <span>Contáctanos <a href="tel:+528442195952">+52 844 219 5952</a></span>
+    <span>Los documentos los expide el Archivo Municipal de Saltillo y se envían a cualquier parte del mundo.</span>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.media-viewer').forEach(function (el) {
+    el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  });
+});
+</script>
+<script src="/public/assets/investigar.js?v=portada" defer></script>
+</body>
+</html>

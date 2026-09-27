@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Genealogía Sefardí">
+  <circle cx="80" cy="80" r="76" fill="#142f3d"/>
+  <circle cx="80" cy="80" r="68" fill="none" stroke="#c4a15a" stroke-width="2"/>
+  <circle cx="80" cy="80" r="58" fill="none" stroke="#c4a15a" stroke-width="0.75"/>
+  <path d="M80 38c8 10 14 16 14 26a14 14 0 0 1-28 0c0-10 6-16 14-26z" fill="none" stroke="#c4a15a" stroke-width="1.6"/>
+  <path d="M80 52v28" stroke="#c4a15a" stroke-width="1.4"/>
+  <path d="M68 92h24M64 100h32M60 108h40" stroke="#f6f1e7" stroke-width="1.4" stroke-linecap="round"/>
+  <text x="80" y="132" text-anchor="middle" fill="#c4a15a" font-family="Palatino, Georgia, serif" font-size="13" letter-spacing="2">SEFARAD</text>
+</svg>

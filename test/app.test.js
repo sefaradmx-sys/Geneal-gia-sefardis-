@@ -29,6 +29,7 @@ import {
   parseWktPoint,
   wantsInegi,
 } from "../src/sources.js";
+import { SEFARAD_DIR, SEFARAD_TREE_URL, sourceLinks } from "../src/links.js";
 import { defaultFocusId, earliestAncestor } from "../src/tree.js";
 
 function tempDb() {
@@ -146,6 +147,14 @@ test("el inicio, el árbol del subdominio y una ficha responden", async () => {
     assert.equal(home.status, 200);
     assert.match(homeHtml, /Busca una persona/);
     assert.match(homeHtml, /Toledano/);
+    assert.match(homeHtml, /FamilySearch/);
+    assert.match(homeHtml, /INEGI/);
+    assert.match(homeHtml, /Archivo Histórico Nacional/);
+    assert.match(homeHtml, /Historypin/);
+    assert.match(homeHtml, /HostGator/);
+    assert.match(homeHtml, /arbol\.genealogiasefardi\.site/);
+    assert.match(homeHtml, /sefarad-mx%2Ftree%2Fsefarad/);
+    assert.match(homeHtml, /WikiTree/);
 
     const treeHtml = await new Promise((resolve, reject) => {
       const req = http.request(
@@ -193,6 +202,18 @@ test("se puede crear una persona y verla en la búsqueda", async () => {
     assert.match(searchHtml, /Ruth/);
     assert.match(searchHtml, /Archivo Histórico Nacional/);
   });
+});
+
+test("las fuentes y el árbol sefarad comparten la consulta", () => {
+  assert.equal(SEFARAD_DIR, "public_html/sefarad-mx");
+  assert.match(SEFARAD_TREE_URL, /https:\/\/genealogiasefardi\.site\/sefarad-mx\/index\.php\?route=%2Fsefarad-mx%2Ftree%2Fsefarad/);
+  const links = sourceLinks({ givenName: "Abraham", surname: "Toledano", place: "Tetuán", year: "1780" });
+  const byId = Object.fromEntries(links.map((link) => [link.id, link.href]));
+  assert.match(byId.familysearch, /q\.surname=Toledano/);
+  assert.match(byId.familysearch, /q\.givenName=Abraham/);
+  assert.match(byId.ahn, /Archivo%20Hist%C3%B3rico%20Nacional|Archivo\+Hist%C3%B3rico\+Nacional/);
+  assert.match(byId.sefarad, /sefarad-mx%2Ftree%2Fsefarad/);
+  assert.match(byId.historypin, /Tetu/);
 });
 
 test("INEGI solo entra en búsquedas de México o de censos", () => {

@@ -51,14 +51,29 @@ Con variable de entorno:
 
 Historypin es la aplicación de pines históricos. El Archivo Histórico Nacional y el Archivo General de Indias se consultan en PARES.
 
-## HostGator
+## Sitio principal en HostGator
 
-El dominio apunta a HostGator. Esta aplicación es un proceso Node, no un PHP de `public_html`. En cPanel, «Setup Node.js App»:
+`genealogiasefardi.site` resuelve en HostGator (`ns18.hostgator.mx`, `ns19.hostgator.mx`, `108.179.194.59`). El árbol ya publicado está en:
+
+`https://genealogiasefardi.site/sefarad-mx/index.php?route=/sefarad-mx/tree/sefarad`
+
+`hostgator/public_html/index.html` es la portada para subir a la raíz de la cuenta, sin reemplazar la carpeta `sefarad-mx`. La búsqueda abre FamilySearch, INEGI, PARES, Historypin, WikiTree y VIAF, y el botón del árbol entra a esa ruta.
+
+`tree.genealogiasefardi.site` se crea por SSH (puerto 2222, y si ese no responde, el 22) en el servidor de HostGator. La carpeta del subdominio es `public_html/sefarad-mx`, donde ya está el árbol. El script sube la portada y no reemplaza esa carpeta:
+
+```bash
+printf '%s' 'CLAVE_SSH' > /tmp/hostgator-ssh-pass
+chmod 600 /tmp/hostgator-ssh-pass
+HOSTGATOR_SSH_USER=usuario HOSTGATOR_SSH_PASS_FILE=/tmp/hostgator-ssh-pass bash scripts/hostgator-ssh.sh
+```
+
+## HostGator y el archivo Node
+
+La aplicación Node guarda personas, parentescos y cada consulta. En cPanel, «Setup Node.js App»:
 
 1. Raíz de la aplicación: este repositorio.
 2. Archivo de arranque: `src/server.js`.
 3. Versión de Node 22.
 4. Variables de `.env.example` en el panel.
-5. Subdominio `tree.genealogiasefardi.site` al mismo directorio, para que el árbol sea la portada.
 
-El directorio `data/` tiene que poder escribir la base. No subas `genealogia.sqlite` a un repositorio público si ya contiene investigación real.
+El directorio `data/` tiene que poder escribir la base. No subas `genealogia.sqlite` a un repositorio público si ya contiene investigación real. `docs/index.html` es la misma portada para GitHub Pages.

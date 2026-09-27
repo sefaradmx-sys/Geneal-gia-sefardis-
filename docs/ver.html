@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Genealogía Sefardí</title>
+    <meta name="description" content="Archivo genealógico sefardí en HostGator: búsqueda, fuentes y el árbol sefarad-mx." />
+    <style>
+:root {
+  --ink: #1c1915;
+  --muted: #5c564c;
+  --paper: #f3efe6;
+  --card: #fffdf8;
+  --line: #e0d5c4;
+  --navy: #142f3d;
+  --navy-2: #1e4d63;
+  --gold: #c4a15a;
+  --seal: #8d342c;
+  --ok: #1f6b45;
+  --warn: #8a4b12;
+  --shadow: 0 16px 40px rgba(20, 47, 61, 0.07);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(900px 320px at 0% -10%, rgba(196, 161, 90, 0.22), transparent 55%),
+    var(--paper);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+h1, h2, h3, .brand strong {
+  font-family: Palatino, "Palatino Linotype", "Iowan Old Style", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+a { color: var(--navy-2); }
+a:hover { color: var(--seal); }
+
+.skip {
+  position: absolute;
+  left: -999px;
+}
+.skip:focus { left: 1rem; top: 1rem; background: white; padding: 0.4rem; }
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.2rem;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  padding: 0.85rem 1.2rem;
+  background: var(--navy);
+  color: #f6f1e7;
+  border-bottom: 3px solid var(--gold);
+  box-shadow: 0 8px 24px rgba(20, 47, 61, 0.18);
+}
+
+.site-header a { color: #f6f1e7; text-decoration: none; }
+.site-header nav { display: flex; flex-wrap: wrap; gap: 0.85rem 1rem; margin-left: auto; }
+.site-header nav a { border-bottom: 2px solid transparent; padding-bottom: 0.1rem; }
+.site-header nav a.active, .site-header nav a:hover { border-color: var(--gold); }
+
+.brand { display: flex; gap: 0.7rem; align-items: center; text-decoration: none; }
+.brand small { display: block; color: #d5c7ae; font-family: "Segoe UI", sans-serif; font-size: 0.78rem; }
+.brand-mark {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e2c48a;
+  color: #e2c48a;
+  font-family: Georgia, serif;
+}
+
+.header-search { display: flex; gap: 0.4rem; }
+.header-search input, .search-grid input, .stack-form input, .stack-form select, .stack-form textarea, .inline-form select {
+  font: inherit;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.45rem 0.55rem;
+}
+.header-search input { min-width: 14rem; }
+
+button, .button {
+  font: inherit;
+  background: var(--seal);
+  color: white;
+  border: 0;
+  border-radius: 2px;
+  padding: 0.55rem 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+}
+button:hover, .button:hover { background: #732922; color: white; }
+.button-quiet {
+  background: transparent;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+}
+.button-quiet:hover { background: var(--navy); color: white; }
+
+main { max-width: 1080px; margin: 0 auto; padding: 1.4rem 1rem 3rem; display: grid; gap: 1rem; }
+
+.hero-search, .panel, .split article {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 1.25rem 1.35rem;
+  box-shadow: var(--shadow);
+}
+
+.hero-search h1 { font-size: 2.3rem; line-height: 1.15; margin: 0.2rem 0 0.6rem; }
+.kicker { margin: 0; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; color: var(--seal); }
+.lede { max-width: 42rem; color: var(--muted); }
+.host { font-variant-numeric: tabular-nums; }
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 0.7rem;
+  align-items: end;
+}
+.search-grid label, .stack-form label, .inline-form label { display: grid; gap: 0.25rem; font-size: 0.92rem; }
+.search-grid.compact { margin-top: 1rem; }
+
+.source-links { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.95rem; }
+.source-link {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--navy);
+  color: var(--navy);
+  text-decoration: none;
+  background: #f7f1e4;
+  font-size: 0.9rem;
+}
+.source-link:hover { background: var(--navy); color: white; }
+.source-link[data-fuente="sefarad"] { border-color: var(--seal); color: var(--seal); background: #fbf3ef; }
+
+.flow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+.flow a {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  min-height: 2.6rem;
+  padding: 0.35rem 0.55rem;
+  background: #f7f1e4;
+  border: 1px solid var(--line);
+  color: var(--navy);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+.flow a:hover { border-color: var(--navy); }
+.flow span {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: #f6f1e7;
+  font-size: 0.75rem;
+  font-family: Georgia, serif;
+}
+.actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin: 1rem 0 0; }
+.callout {
+  margin: 1rem 0 0;
+  padding: 0.75rem 0.85rem;
+  background: #f7f1e4;
+  border-left: 4px solid var(--gold);
+  color: var(--ink);
+}
+.callout code { font-size: 0.88em; }
+.tree-banner { color: var(--muted); max-width: 46rem; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin: 1.2rem 0 0; }
+.stats div { border-top: 2px solid var(--navy); padding-top: 0.35rem; }
+.stats dt { color: var(--muted); font-size: 0.8rem; }
+.stats dd { margin: 0; font-size: 1.5rem; font-family: Georgia, serif; }
+
+.split { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem; }
+.steps { margin: 0; padding-left: 1.1rem; }
+
+.stack { display: grid; gap: 0.45rem; }
+.person-row, .hit, .source {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+.person-row small, .hit p, .source p { margin: 0; color: var(--muted); }
+.demo { font-style: normal; font-size: 0.75rem; color: var(--warn); margin-left: 0.4rem; }
+
+.hit-actions, .inline-form { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+.hit-actions form { margin: 0; }
+.pill { font-size: 0.75rem; border: 1px solid var(--line); padding: 0.1rem 0.4rem; color: var(--muted); }
+.pill.ok { color: var(--ok); border-color: var(--ok); }
+
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1rem; }
+.facts div { margin: 0; }
+.facts dt { color: var(--muted); font-size: 0.8rem; }
+.facts dd { margin: 0; }
+
+.stack-form { display: grid; gap: 0.7rem; max-width: 28rem; }
+.narrow { max-width: 40rem; }
+.warn { color: var(--warn); }
+.ok { color: var(--ok); }
+
+.pedigree { display: flex; gap: 0.8rem; overflow-x: auto; padding: 0.4rem 0 0.8rem; }
+.gen { display: flex; flex-direction: column; justify-content: space-around; gap: 0.45rem; min-width: 11.5rem; }
+.gen-label { margin: 0; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.pcard {
+  display: block;
+  background: white;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--navy);
+  padding: 0.55rem 0.65rem;
+  text-decoration: none;
+  color: inherit;
+}
+.pcard strong, .pcard small { display: block; }
+.pcard small { color: var(--muted); }
+.pcard:hover { border-left-color: var(--seal); }
+.pcard.empty { border-style: dashed; color: var(--muted); border-left-color: var(--line); }
+
+.desc ul { margin: 0.2rem 0 0.2rem 1rem; padding-left: 0.7rem; border-left: 1px solid var(--line); }
+.desc small { display: block; color: var(--muted); }
+
+.map { width: 100%; height: auto; background: #e5eef2; border: 1px solid var(--line); }
+.map rect { fill: #e5eef2; }
+.map circle { fill: var(--seal); }
+.map text { font-size: 11px; fill: var(--navy); }
+.map a { text-decoration: none; }
+
+.plain { list-style: none; padding: 0; }
+.plain li { padding: 0.35rem 0; border-bottom: 1px solid var(--line); }
+.plain small, .reports { color: var(--muted); }
+.reports .bad { color: var(--warn); }
+.reports .ok { color: var(--ok); }
+
+.source-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.2rem; }
+details summary { cursor: pointer; font-weight: 600; }
+
+footer { max-width: 1080px; margin: 0 auto; padding: 0 1rem 2rem; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 860px) {
+  .search-grid, .stats, .split, .source-grid, .facts, .flow { grid-template-columns: 1fr; }
+  .site-header nav { margin-left: 0; }
+  .hero-search h1 { font-size: 1.8rem; }
+  .header-search input { min-width: 0; width: 100%; }
+}
+
+</style>
+  </head>
+  <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <a class="brand" href="./">
+        <span class="brand-mark">GS</span>
+        <span><strong>Genealogía Sefardí</strong><small>Archivo de familias</small></span>
+      </a>
+      <nav>
+        <a class="active" href="./">Inicio</a>
+        <a href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
+        <a href="#lugares">Lugares</a>
+        <a href="#fuentes">Fuentes</a>
+      </nav>
+    </header>
+    <main id="contenido">
+      <section class="hero-search">
+        <p class="kicker">Sitio principal · HostGator</p>
+        <h1>Busca una persona, un registro o un lugar</h1>
+        <p class="lede">Esta portada vive en el mismo HostGator que el árbol. La búsqueda abre FamilySearch, los censos del INEGI, el Archivo Histórico Nacional, el Archivo General de Indias, Historypin, WikiTree y VIAF, y lleva al árbol publicado en sefarad-mx.</p>
+        <ol class="flow">
+          <li><a href="#busqueda"><span>1</span> Búsqueda</a></li>
+          <li><a href="#fuentes"><span>2</span> Fuentes</a></li>
+          <li><a href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad"><span>3</span> Árbol Sefarad</a></li>
+          <li><a href="#lugares"><span>4</span> Lugares</a></li>
+          <li><a href="https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad"><span>5</span> Subdominio</a></li>
+        </ol>
+        <form class="search-grid" id="busqueda">
+          <label>Nombre <input name="nombre" /></label>
+          <label>Apellido <input name="apellido" value="Toledano" /></label>
+          <label>Lugar <input name="lugar" /></label>
+          <label>Año <input name="ano" maxlength="4" /></label>
+          <button type="submit">Buscar en las fuentes</button>
+        </form>
+        <div class="source-links" id="fuentes-lista" aria-label="Fuentes conectadas"></div>
+        <p class="actions">
+          <a class="button" href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Abrir el árbol Sefarad</a>
+        </p>
+        <aside class="callout">
+          <strong>tree.genealogiasefardi.site</strong> se crea en cPanel y su carpeta es <code>public_html/sefarad-mx</code>, donde ya está el árbol.
+        </aside>
+        <div id="resultado" class="stack"></div>
+      </section>
+      <section class="split">
+        <article>
+          <h2>Personas de demostración</h2>
+          <div class="stack" id="personas"></div>
+        </article>
+        <article id="lugares">
+          <h2>Lugares con pin</h2>
+          <svg class="map" viewBox="0 0 800 360" role="img" aria-label="Mapa de lugares">
+            <rect width="800" height="360"></rect>
+            <a href="https://www.historypin.org/en/search?q=Tetu%C3%A1n"><circle cx="388.1" cy="108.8" r="5"></circle><text x="396" y="103">Tetuán</text></a>
+            <a href="https://www.historypin.org/en/search?q=T%C3%A1nger"><circle cx="387.0" cy="108.5" r="5"></circle><text x="395" y="102">Tánger</text></a>
+            <a href="https://www.historypin.org/en/search?q=Gibraltar"><circle cx="388.1" cy="107.7" r="5"></circle><text x="396" y="102">Gibraltar</text></a>
+            <a href="https://www.historypin.org/en/search?q=Buenos%20Aires"><circle cx="270.3" cy="249.2" r="5"></circle><text x="278" y="243">Buenos Aires</text></a>
+            <a href="https://datos.gob.mx/busca/dataset?q=censo%20poblaci%C3%B3n%20Ciudad%20de%20M%C3%A9xico"><circle cx="179.7" cy="141.1" r="5"></circle><text x="188" y="135">Ciudad de México</text></a>
+          </svg>
+        </article>
+      </section>
+    </main>
+    <footer>
+      <p id="fuentes">HostGator sirve esta portada y el árbol sefarad-mx. Los enlaces abren la fuente oficial; no son partidas transcritas aquí.</p>
+    </footer>
+    <script>
+      const personas = [
+        ["Abraham Toledano", "1780", "Tetuán, Marruecos"],
+        ["Miriam Levy", "1784", "Tetuán, Marruecos"],
+        ["Raquel Toledano", "1810", "Tetuán, Marruecos"],
+        ["Isaac Toledano", "1812", "Tetuán, Marruecos"],
+        ["Reina Cohen", "1816", "Tetuán, Marruecos"],
+        ["Ester Benarroch", "1838", "Tánger, Marruecos"],
+        ["David Toledano", "1841", "Gibraltar"],
+        ["Sol Azoulay", "1844", "Gibraltar"],
+        ["Sara Toledano", "1866", "Buenos Aires, Argentina"],
+        ["Jacob Toledano", "1870", "Ciudad de México, México"]
+      ];
+      const caja = document.querySelector("#personas");
+      for (const [nombre, ano, lugar] of personas) {
+        const row = document.createElement("a");
+        row.className = "person-row";
+        row.href = "./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
+        row.innerHTML = "<span><strong></strong> <em class=\"demo\">demostración</em></span><small></small>";
+        row.querySelector("strong").textContent = nombre;
+        row.querySelector("small").textContent = ano + " · " + lugar;
+        caja.appendChild(row);
+      }
+
+      const arbol = "./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
+      const fuentes = [
+        ["Árbol Sefarad", () => arbol],
+        ["FamilySearch", (v) => {
+          const url = new URL("https://www.familysearch.org/search/record/results");
+          if (v.nombre) url.searchParams.set("q.givenName", v.nombre);
+          if (v.apellido) url.searchParams.set("q.surname", v.apellido);
+          if (v.lugar) url.searchParams.set("q.anyPlace", v.lugar);
+          if (v.ano) url.searchParams.set("q.birthLikeDate.from", v.ano);
+          return url.toString();
+        }],
+        ["INEGI censos", (v) => "https://datos.gob.mx/busca/dataset?q=" + encodeURIComponent("censo población " + (v.lugar || "México"))],
+        ["Archivo Histórico Nacional", (v) => "https://pares.mcu.es/ParesBusquedas20/catalogo/search?q=" + encodeURIComponent([v.nombre, v.apellido, v.lugar, "Archivo Histórico Nacional"].filter(Boolean).join(" "))],
+        ["Archivo General de Indias", (v) => "https://pares.mcu.es/ParesBusquedas20/catalogo/search?q=" + encodeURIComponent([v.nombre, v.apellido, v.lugar, "Archivo General de Indias"].filter(Boolean).join(" "))],
+        ["Historypin", (v) => "https://www.historypin.org/en/search?q=" + encodeURIComponent(v.lugar || [v.nombre, v.apellido].filter(Boolean).join(" ") || "sefardi")],
+        ["WikiTree", (v) => {
+          const url = new URL("https://www.wikitree.com/wiki/Special:SearchPerson");
+          if (v.nombre) url.searchParams.set("g", v.nombre);
+          if (v.apellido) url.searchParams.set("s", v.apellido);
+          if (v.lugar) url.searchParams.set("b", v.lugar);
+          return url.toString();
+        }],
+        ["VIAF", (v) => {
+          const url = new URL("https://viaf.org/viaf/search");
+          const texto = [v.nombre, v.apellido, v.lugar, v.ano].filter(Boolean).join(" ") || "sefardi";
+          url.searchParams.set("query", 'local.personalNames all "' + texto + '"');
+          return url.toString();
+        }]
+      ];
+
+      function valores() {
+        const form = document.querySelector("#busqueda");
+        return {
+          nombre: form.nombre.value.trim(),
+          apellido: form.apellido.value.trim(),
+          lugar: form.lugar.value.trim(),
+          ano: form.ano.value.trim()
+        };
+      }
+
+      function pintar() {
+        const v = valores();
+        const lista = document.querySelector("#fuentes-lista");
+        const resultado = document.querySelector("#resultado");
+        lista.replaceChildren();
+        resultado.replaceChildren();
+        const guardadas = JSON.parse(localStorage.getItem("gs-busquedas") || "[]");
+        for (const [nombre, href] of fuentes) {
+          const a = document.createElement("a");
+          a.className = "source-link";
+          a.href = href(v);
+          if (!a.href.includes("sefarad-mx")) {
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+          }
+          a.textContent = nombre;
+          lista.appendChild(a);
+        }
+        if (guardadas.length) {
+          const nota = document.createElement("p");
+          nota.textContent = "Búsquedas guardadas en este navegador: " + guardadas.slice(0, 5).join(" · ");
+          resultado.appendChild(nota);
+        }
+      }
+
+      document.querySelector("#busqueda").addEventListener("input", pintar);
+      document.querySelector("#busqueda").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const v = valores();
+        const texto = [v.nombre, v.apellido, v.lugar, v.ano].filter(Boolean).join(" ");
+        if (!texto) return;
+        const previas = JSON.parse(localStorage.getItem("gs-busquedas") || "[]");
+        localStorage.setItem("gs-busquedas", JSON.stringify([texto, ...previas.filter((item) => item !== texto)].slice(0, 20)));
+        pintar();
+      });
+      pintar();
+    </script>
+  </body>
+</html>
