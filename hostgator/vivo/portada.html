@@ -43,14 +43,15 @@
       <div class="investigar" id="investigar">
   <p class="kicker">Genealogía Sefardí</p>
   <h1>Investiga un nombre y el censo de su municipio</h1>
-  <p class="lede">La misma consulta abre FamilySearch, el Archivo Histórico Nacional, el Archivo General de Indias, Historypin, WikiTree y VIAF. El censo histórico del INEGI se ve aquí, según el municipio.</p>
+  <p class="lede">Al buscar, este servidor le pide la respuesta a VIAF, Wikidata, WikiTree, la Library of Congress, los Archivos Nacionales de Estados Unidos, datos.gob.mx y el catálogo del INEGI. Las fichas aparecen aquí. La ficha censal del municipio se carga desde el INEGI.</p>
   <form class="consulta" id="busqueda-viva">
     <label>Nombre <input id="nombre" name="nombre" autocomplete="given-name"></label>
     <label>Apellido <input id="apellido" name="apellido" autocomplete="family-name"></label>
     <label>Lugar <input id="lugar" name="lugar" placeholder="Municipio, estado"></label>
     <label>Año <input id="ano" name="ano" inputmode="numeric" maxlength="4" placeholder="1930"></label>
-    <button type="submit">Buscar en FamilySearch</button>
+    <button type="submit">Consultar los servidores</button>
   </form>
+  <div class="resultados" id="resultados"></div>
   <div class="fuentes-vivas" id="fuentes">
     <a id="fuente-familysearch" href="https://www.familysearch.org/search/record/results?q.any=sefardi">FamilySearch</a>
     <a id="fuente-inegi" href="#censos">Censo INEGI</a>
