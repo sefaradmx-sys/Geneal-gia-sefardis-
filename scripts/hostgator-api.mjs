@@ -13,26 +13,7 @@ const site = "genealogiasefardi.site";
 const docroot = "public_html/sefarad-mx";
 const treeRoute = "/sefarad-mx/tree/sefarad";
 const hosts = ["mx18.hostgator.mx", "108.179.194.59", site];
-const fallbackUsers = [
-  "irvin",
-  "irving",
-  "irvine",
-  "irvined",
-  "irvinp",
-  "irvins",
-  "irvinse",
-  "irvinmx",
-  "irvinho",
-  "irvin850",
-  "irvin85",
-  "irvinpue",
-  "irvinge",
-  "irvinsef",
-  "irvinc",
-  "irvinm",
-  "irvinpu",
-  "irvin8507",
-];
+const fallbackUsers = ["irvinjos"];
 const lines = [`fecha=${new Date().toISOString()}`];
 
 function redact(text) {
