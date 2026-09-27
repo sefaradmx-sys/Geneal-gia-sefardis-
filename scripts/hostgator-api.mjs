@@ -406,13 +406,13 @@ async function publishTree(session) {
   }
 
   const check = target
-    ? await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(target)}&limit=8`)
+    ? await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(target)}&limit=20`)
     : null;
   if (!target || check?.json?.status !== 1) {
     note(`SIN_CARPETA ${target || "desconocida"}`);
     return;
   }
-  note(`CARPETA_ARBOL ${target}`);
+  note(`CARPETA_ARBOL ${target} ${fileNames(check.text).slice(0, 20).join(" ")}`);
   for (const name of ["tree", "arbol"]) {
     await uapi(
       session,
@@ -443,8 +443,10 @@ async function main() {
     if (!entered) note("API_NO_ENTRO");
   }
 
+  await new Promise((resolve) => setTimeout(resolve, 12000));
   const route = encodeURIComponent(treeRoute);
   await peek(`https://tree.${site}/`);
+  await peek(`https://tree.${site}/sefarad-mx/index.php?route=${route}`);
   await peek(`https://tree.${site}/index.php?route=${route}`);
   await peek(`https://arbol.${site}/`);
   await peek(`https://arbol.${site}/index.php?route=${route}`);
