@@ -633,6 +633,7 @@ async function main() {
   note(portada.includes("Censo histórico por municipio") ? "PORTADA_NUEVA" : "PORTADA_VIEJA");
   note(portada.includes("familysearch.org") ? "FAMILYSEARCH_EN_PORTADA" : "FAMILYSEARCH_AUSENTE");
   await peek(`https://${site}/censo.php?accion=municipios&q=monterrey`);
+  await peek(`https://${site}/censo.php?accion=municipio&cve=19039`);
   await peek(`https://${site}/censo.php?accion=ficha&cve=190390001`);
   await peek(`https://${site}/archivo.html`);
   await peek(`https://${site}/archivo/`);

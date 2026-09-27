@@ -22,6 +22,7 @@ function traer(string $url): array
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_MAXREDIRS => 3,
         CURLOPT_TIMEOUT => 25,
+        CURLOPT_ENCODING => '',
         CURLOPT_USERAGENT => 'GenealogiaSefardi/1.0',
     ]);
     $body = curl_exec($curl);
@@ -127,14 +128,16 @@ if ($accion === 'ficha') {
         exit;
     }
     $respuesta = traer('https://www.inegi.org.mx/app/geo2/ahl/hacerPDF.do?cveGeo=' . $cve);
-    if (!$respuesta['ok'] || strncmp($respuesta['body'], '%PDF', 4) !== 0) {
+    $documento = ltrim($respuesta['body'], "\xEF\xBB\xBF \t\r\n");
+    $esPdf = $respuesta['ok'] && (strncmp($documento, '%PDF', 4) === 0 || str_contains($respuesta['type'], 'pdf'));
+    if (!$esPdf) {
         header('Location: https://www.inegi.org.mx/app/geo2/ahl/hacerPDF.do?cveGeo=' . $cve, true, 302);
         exit;
     }
     header('Content-Type: application/pdf');
     header('Content-Disposition: inline; filename="censo-' . $cve . '.pdf"');
     header('Cache-Control: public, max-age=86400');
-    echo $respuesta['body'];
+    echo $documento;
     exit;
 }
 
