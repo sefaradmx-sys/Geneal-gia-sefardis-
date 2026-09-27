@@ -61,9 +61,11 @@ function isDown(error) {
   return /timeout|abort|ECONN|ENOTFOUND|EHOST|fetch failed|UND_ERR|socket|closed/i.test(message);
 }
 
-async function call(url, headers) {
+async function call(url, headers, { method = "GET", body = "" } = {}) {
   const response = await fetch(url, {
-    headers,
+    method,
+    headers: body ? { ...headers, "Content-Type": "application/x-www-form-urlencoded" } : headers,
+    body: body || undefined,
     signal: AbortSignal.timeout(8000),
   });
   return { status: response.status, text: await response.text() };
@@ -194,8 +196,11 @@ function endpoint(session, apiPath) {
   return `https://${session.host}:2087/json-api/cpanel?${params}`;
 }
 
-async function uapi(session, apiPath) {
-  const response = await call(endpoint(session, apiPath), authHeaders(session.kind, session.user));
+async function uapi(session, apiPath, body = "") {
+  const response = await call(endpoint(session, apiPath), authHeaders(session.kind, session.user), {
+    method: body ? "POST" : "GET",
+    body,
+  });
   note(`${apiPath.split("?")[0]} HTTP ${response.status} ${snippet(response.text)}`);
   try {
     return { ...response, json: JSON.parse(response.text) };
@@ -413,6 +418,19 @@ async function publishTree(session) {
     return;
   }
   note(`CARPETA_ARBOL ${target} ${fileNames(check.text).slice(0, 20).join(" ")}`);
+  const marker = new URLSearchParams({
+    dir: `/home2/irvinjos/${target}`,
+    file: "gs-marca.txt",
+    content: "marca-sefard",
+  });
+  await uapi(session, "/execute/Fileman/save_file_content", marker);
+  await uapi(session, "/execute/Fileman/mkdir?path=public_html/sefarad-mx");
+  const bridge = new URLSearchParams({
+    dir: "/home2/irvinjos/public_html/sefarad-mx",
+    file: "index.php",
+    content: "<?php header('Location: https://arbol.genealogiasefardi.site/index.php?route=' . rawurlencode('/sefarad-mx/tree/sefarad')); exit;\n",
+  });
+  await uapi(session, "/execute/Fileman/save_file_content", bridge);
   for (const name of ["tree", "arbol"]) {
     await uapi(
       session,
@@ -448,6 +466,8 @@ async function main() {
   await peek(`https://tree.${site}/`);
   await peek(`https://tree.${site}/sefarad-mx/index.php?route=${route}`);
   await peek(`https://tree.${site}/index.php?route=${route}`);
+  await peek(`https://tree.${site}/gs-marca.txt`);
+  await peek(`https://arbol.${site}/gs-marca.txt`);
   await peek(`https://arbol.${site}/`);
   await peek(`https://arbol.${site}/index.php?route=${route}`);
   await peek(`https://${site}/sefarad-mx/index.php?route=${route}`);
