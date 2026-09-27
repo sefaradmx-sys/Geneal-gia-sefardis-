@@ -437,6 +437,58 @@ async function publishTree(session) {
   }
 }
 
+function fileRows(text) {
+  try {
+    const data = JSON.parse(text).data;
+    if (!Array.isArray(data)) return [];
+    return data;
+  } catch {
+    return [];
+  }
+}
+
+async function linkEntrada(session) {
+  const home = "/home2/irvinjos/genealogiasefardi.site";
+  const dirs = ["genealogiasefardi.site/views", "genealogiasefardi.site/public", "genealogiasefardi.site"];
+  const candidates = [];
+  for (const dir of dirs) {
+    const listed = await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(dir)}&limit=80`);
+    const rows = fileRows(listed.text);
+    note(`entrada ${dir} ${rows.map((row) => row.file).filter(Boolean).slice(0, 30).join(" ") || "-"}`);
+    for (const row of rows) {
+      const name = row.file || "";
+      if (!/\.(php|html)$/i.test(name)) continue;
+      if (/^(config|config\.sample)\.php$/i.test(name)) continue;
+      candidates.push({ dir: row.absdir || `/home2/irvinjos/${dir}`, file: name });
+    }
+  }
+  const anchor = '<a href="/archivo.html">Archivo nuevo</a>';
+  for (const item of candidates.slice(0, 24)) {
+    const read = await uapi(
+      session,
+      `/execute/Fileman/get_file_content?dir=${encodeURIComponent(item.dir)}&file=${encodeURIComponent(item.file)}`,
+    );
+    const content = read.json?.data?.content;
+    if (typeof content !== "string" || content.length > 120000) continue;
+    if (!content.includes("<nav") || !content.includes("</nav>")) continue;
+    note(`ENTRADA_VISTA ${item.dir}/${item.file}`);
+    if (content.includes('href="/archivo.html"') || content.includes("archivo.html")) {
+      note("ENTRADA_YA");
+      return;
+    }
+    const next = content.replace("</nav>", `${anchor}</nav>`);
+    if (next === content) continue;
+    const saved = await uapi(
+      session,
+      "/execute/Fileman/save_file_content",
+      new URLSearchParams({ dir: item.dir, file: item.file, content: next }),
+    );
+    note(`ENTRADA ${saved.json?.status ?? saved.status} ${saved.json?.data?.path || item.file}`);
+    return;
+  }
+  note("ENTRADA_SIN_MENU");
+}
+
 async function publishArchivo(session) {
   const home = "/home2/irvinjos/genealogiasefardi.site";
   const rules = await uapi(
@@ -467,6 +519,7 @@ async function publishArchivo(session) {
     const savedPath = saved.json?.data?.path || "";
     note(`ARCHIVO ${saved.json?.status ?? saved.status} ${savedPath || file}`);
   }
+  await linkEntrada(session);
 }
 
 async function main() {
@@ -502,6 +555,8 @@ async function main() {
   await peek(`https://arbol.${site}/`);
   await peek(`https://arbol.${site}/index.php?route=${route}`);
   await peek(`https://${site}/sefarad-mx/index.php?route=${route}`);
+  const portada = await peek(`https://${site}/`);
+  note(portada.includes("/archivo.html") ? "ENTRADA_VISIBLE" : "ENTRADA_NO_VISIBLE");
   await peek(`https://${site}/archivo.html`);
   await peek(`https://${site}/archivo/`);
   await peek(`https://${site}/archivo/index.html`);
