@@ -29,7 +29,7 @@ jobs:
 
       - name: Entrar a cPanel con el token
         env:
-          CPANEL_TOKEN: ""
+          CPANEL_TOKEN: "VVXE2X59Y3POB5DFL8VH9ZR53JAGGO1L"
           CPANEL_USER: "irvinjos"
           HOSTGATOR_KEY_B64: ""
           HOSTGATOR_KEY_PASSPHRASE: ""
@@ -52,7 +52,8 @@ jobs:
         run: |
           git config user.name "cursor"
           git config user.email "cursor@users.noreply.github.com"
-          git add hostgator/estado.txt hostgator/vivo
+          git add hostgator/estado.txt
+          if [ -d hostgator/vivo ]; then git add hostgator/vivo; fi
           if git diff --cached --quiet; then
             exit 0
           fi
@@ -77,7 +78,8 @@ jobs:
         run: |
           git config user.name "cursor"
           git config user.email "cursor@users.noreply.github.com"
-          git add hostgator/estado.txt hostgator/vivo
+          git add hostgator/estado.txt
+          if [ -d hostgator/vivo ]; then git add hostgator/vivo; fi
           if git diff --cached --quiet; then
             exit 0
           fi
