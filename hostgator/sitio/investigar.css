@@ -11,11 +11,19 @@ body.public-body .site-header {
 }
 
 body.public-body .site-footer {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
   background: #142f3d;
   color: #f6f1e7;
+  padding: 1.1rem 1.2rem;
 }
+body.public-body .site-footer div { display: flex; flex-direction: column; gap: 0.15rem; }
+body.public-body .site-footer img { border-radius: 50%; background: #142f3d; }
+body.public-body .site-footer a { color: #c4a15a; font-weight: 700; }
 
-body.public-body .site-footer a { color: #f6f1e7; }
+.portada { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+.portada .logo { width: 92px; height: 92px; }
 
 .investigar { max-width: 1100px; margin: 0 auto; padding: 1.2rem 1rem 2rem; }
 .investigar h1, .investigar h2 { font-family: Palatino, Georgia, serif; color: #142f3d; }
@@ -72,15 +80,15 @@ body.public-body .site-footer a { color: #f6f1e7; }
 .tramitar a { color: #c4a15a; font-weight: 700; }
 
 .cert-tramite {
-  margin-top: 1.1rem;
-  padding: 0.8rem 0.9rem;
-  background: #142f3d;
-  color: #f6f1e7;
-  border-radius: 12px;
+  margin-top: 0.9rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid #e0d5c4;
+  color: #5c564c;
+  font-size: 0.92rem;
 }
-.cert-tramite p { margin: 0.3rem 0; line-height: 1.45; }
-.cert-tramite-titulo { font-family: Palatino, Georgia, serif; font-size: 1.05rem; }
-.cert-tramite a { color: #c4a15a; font-weight: 700; }
+.cert-tramite p { margin: 0.25rem 0; line-height: 1.45; }
+.cert-tramite a { color: #8d342c; font-weight: 700; }
+.certificado a.accion { margin-top: 0.9rem; }
 .investigar .accion.secundaria { background: #8d342c; }
 
 .fuentes-vivas, .anios {
@@ -128,39 +136,38 @@ body.public-body .site-footer a { color: #f6f1e7; }
 .certificados > h2 { margin: 0.2rem 0 0; }
 
 .certificado {
-  background:
-    radial-gradient(420px 180px at 100% 0%, rgba(196, 161, 90, 0.16), transparent 60%),
-    #fffdf8;
+  background: #fffdf8;
   color: #1c1915;
-  border: 10px solid #142f3d;
-  box-shadow: inset 0 0 0 1px #c4a15a, inset 0 0 0 8px #fffdf8, inset 0 0 0 9px #c4a15a;
-  padding: 1.7rem 1.5rem 1.2rem;
+  border: 1px solid #c4a15a;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(20, 47, 61, 0.06);
+  padding: 1.3rem 1.3rem 1.1rem;
 }
+.cert-cabeza { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
+.cert-cabeza img { width: 64px; height: 64px; }
 
 .cert-marca {
   margin: 0;
-  text-align: center;
+  text-align: left;
   font-family: Palatino, Georgia, serif;
-  font-size: 1.55rem;
-  letter-spacing: 0.04em;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
   color: #142f3d;
 }
 .cert-sub {
-  margin: 0.15rem 0 0;
-  text-align: center;
+  margin: 0.1rem 0 0;
+  text-align: left;
   color: #8d342c;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
 }
 .certificado h3 {
-  margin: 0.85rem 0 0.55rem;
-  text-align: center;
+  margin: 0.2rem 0 0.55rem;
   font-family: Palatino, Georgia, serif;
   font-weight: 500;
-  letter-spacing: 0.12em;
-  font-size: 0.95rem;
-  color: #8d342c;
+  font-size: 1.05rem;
+  color: #142f3d;
 }
 .cert-texto { margin: 0; line-height: 1.55; }
 .cert-info {
@@ -242,4 +249,6 @@ body.public-body .site-footer a { color: #f6f1e7; }
 @media (max-width: 800px) {
   .consulta, .panel-censo, .cert-datos { grid-template-columns: 1fr; }
   .visor iframe { height: 70vh; }
+  body.public-body .site-footer { align-items: flex-start; }
+  .portada .logo { width: 72px; height: 72px; }
 }

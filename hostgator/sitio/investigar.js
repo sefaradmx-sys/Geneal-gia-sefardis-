@@ -144,49 +144,36 @@ function oracion(registro) {
     ? "el expediente " + registro.expediente
     : "la referencia " + (registro.referencia || "que consta en esta certificación");
   const tipo = registro.tipo || "documento";
-  return "Genealogía Sefardí y Sefarad MX certifican que en " + cuando + ", en " + expediente + " del Archivo principal de Sefarad, se encuentra el documento " + tipo + ", con la información siguiente.";
-}
-
-async function generarPdf(registro, boton) {
-  boton.disabled = true;
-  boton.textContent = "Generando…";
-  const url = new URL("/certificado.php", location.origin);
-  url.searchParams.set("id", String(registro.id));
-  const respuesta = await fetch(url);
-  if (!respuesta.ok) {
-    boton.disabled = false;
-    boton.textContent = "Generar PDF";
-    return;
-  }
-  const archivo = await respuesta.blob();
-  const enlace = document.createElement("a");
-  const caja = registro.caja ? "caja-" + registro.caja : "expediente";
-  const pieza = registro.expediente ? "-expediente-" + registro.expediente : "";
-  enlace.href = URL.createObjectURL(archivo);
-  enlace.download = ("Sefarad-MX-" + caja + pieza + ".pdf").replace(/\s+/g, "-");
-  enlace.click();
-  URL.revokeObjectURL(enlace.href);
-  boton.disabled = false;
-  boton.textContent = "Generar PDF";
+  return "Genealogía Sefardí y Sefarad MX certifican que en " + cuando + ", en " + expediente + " del Archivo Municipal de Saltillo, se encuentra el documento " + tipo + ". Nos consta y damos fe de que ahí está.";
 }
 
 function certificado(registro) {
   const article = document.createElement("article");
   article.className = "certificado";
 
+  const cabeza = document.createElement("div");
+  cabeza.className = "cert-cabeza";
+  const logo = document.createElement("img");
+  logo.src = "/public/assets/logo.svg";
+  logo.alt = "";
+  logo.width = 64;
+  logo.height = 64;
+  const marcas = document.createElement("div");
   const marca = document.createElement("p");
   marca.className = "cert-marca";
   marca.textContent = "Genealogía Sefardí";
   const sub = document.createElement("p");
   sub.className = "cert-sub";
   sub.textContent = "Sefarad MX";
+  marcas.append(marca, sub);
+  cabeza.append(logo, marcas);
   const titulo = document.createElement("h3");
-  titulo.textContent = "Certificación";
+  titulo.textContent = "Consta en el Archivo Municipal de Saltillo";
   const texto = document.createElement("p");
   texto.className = "cert-texto";
   texto.textContent = oracion(registro);
 
-  article.append(marca, sub, titulo, texto);
+  article.append(cabeza, titulo, texto);
 
   if (registro.descripcion) {
     const info = document.createElement("p");
@@ -211,7 +198,7 @@ function certificado(registro) {
 
   const leyenda = document.createElement("p");
   leyenda.className = "cert-leyenda";
-  leyenda.textContent = "Información Consultada de la Plataforma Sefarad MX. Ante Mí Consta y Doy Fe.";
+  leyenda.textContent = "Información consultada en la plataforma Sefarad MX. Nos consta y damos fe de que el documento está en el Archivo Municipal de Saltillo.";
   const firma = document.createElement("div");
   firma.className = "cert-firma";
   const lineaFirma = document.createElement("span");
@@ -224,23 +211,19 @@ function certificado(registro) {
 
   const tramite = document.createElement("div");
   tramite.className = "cert-tramite";
-  const tituloTramite = document.createElement("p");
-  tituloTramite.className = "cert-tramite-titulo";
-  tituloTramite.textContent = "Tramitar documentos certificados ante el archivo";
   const aviso = document.createElement("p");
-  aviso.textContent = "No puedes venir hasta el archivo de Saltillo, no te preocupes, nosotros lo tramitamos por ti y te lo enviamos.";
+  aviso.textContent = "Si no puedes venir a Saltillo, lo gestionamos directamente en el Archivo Municipal de Saltillo. El documento lo expide ese archivo y se envía a cualquier parte del mundo.";
   const contacto = document.createElement("p");
   const enlace = document.createElement("a");
   enlace.href = "tel:+528442195952";
   enlace.textContent = "+52 844 219 5952";
   contacto.append("Contáctanos ", enlace);
-  tramite.append(tituloTramite, aviso, contacto);
+  tramite.append(aviso, contacto);
 
-  const boton = document.createElement("button");
-  boton.type = "button";
-  boton.className = "no-imprimir";
+  const boton = document.createElement("a");
+  boton.className = "accion no-imprimir";
+  boton.href = "/certificado.php?id=" + encodeURIComponent(registro.id);
   boton.textContent = "Generar PDF";
-  boton.addEventListener("click", () => generarPdf(registro, boton));
 
   article.append(leyenda, firma, tramite, boton);
   return article;
@@ -250,10 +233,6 @@ function pintarSaltillo(registros) {
   if (!registros || !registros.length) return null;
   const seccion = document.createElement("section");
   seccion.className = "certificados";
-  const encabezado = document.createElement("h2");
-  encabezado.className = "no-imprimir";
-  encabezado.textContent = "Archivo principal de Sefarad";
-  seccion.appendChild(encabezado);
   for (const registro of registros) seccion.appendChild(certificado(registro));
   return seccion;
 }

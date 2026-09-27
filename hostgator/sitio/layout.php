@@ -38,7 +38,7 @@ $isPublic = !empty($public) || $isPublicAuth;
   <script type="application/ld+json"><?= $jsonLd /* pre-encoded JSON */ ?></script>
   <?php endif; ?>
   <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
-  <link rel="stylesheet" href="/public/assets/investigar.css?v=tramite">
+  <link rel="stylesheet" href="/public/assets/investigar.css?v=portada">
 </head>
 <body class="<?= $isPublic && !$currentUser ? 'public-body' : '' ?>">
 <?php if ($isPublicAuth): ?>
@@ -88,8 +88,12 @@ $isPublic = !empty($public) || $isPublicAuth;
   <?= $content ?>
 </main>
 <footer class="site-footer">
-  <?= e($appName) ?> — archivo documental · evidencia primero
-  · <a href="/biografias">Biografías</a> · <a href="/archivo">Archivo</a>
+  <img src="/public/assets/logo.svg" alt="" width="42" height="42">
+  <div>
+    <strong><?= e($appName) ?> · Sefarad MX</strong>
+    <span>Contáctanos <a href="tel:+528442195952">+52 844 219 5952</a></span>
+    <span>Los documentos los expide el Archivo Municipal de Saltillo y se envían a cualquier parte del mundo.</span>
+  </div>
 </footer>
 <?php endif; ?>
 
@@ -100,6 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-<script src="/public/assets/investigar.js?v=tramite" defer></script>
+<script src="/public/assets/investigar.js?v=portada" defer></script>
 </body>
 </html>

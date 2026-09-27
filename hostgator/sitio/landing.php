@@ -1,6 +1,11 @@
 <div class="investigar" id="investigar">
-  <p class="kicker">Genealogía Sefardí</p>
-  <h1>Sefarad MX</h1>
+  <header class="portada">
+    <img class="logo" src="/public/assets/logo.svg" alt="" width="92" height="92">
+    <div>
+      <p class="kicker">Genealogía Sefardí</p>
+      <h1>Sefarad MX</h1>
+    </div>
+  </header>
 
   <section class="bloque-busqueda" id="archivo">
     <h2>Búsqueda de archivos en el Archivo Histórico de Saltillo</h2>
@@ -39,8 +44,8 @@
   </section>
 
   <section class="tramitar" id="tramitar">
-    <h2>Tramitar documentos certificados ante el archivo</h2>
-    <p>No puedes venir hasta el archivo de Saltillo, no te preocupes, nosotros lo tramitamos por ti y te lo enviamos.</p>
+    <h2>Si no puedes venir a Saltillo</h2>
+    <p>Solamente en ese caso lo gestionamos nosotros, directamente en el Archivo Municipal de Saltillo. El documento lo expide ese archivo y se envía a cualquier parte del mundo.</p>
     <p class="telefono">Contáctanos <a href="tel:+528442195952">+52 844 219 5952</a></p>
   </section>
 </div>

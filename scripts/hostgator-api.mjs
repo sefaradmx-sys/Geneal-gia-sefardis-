@@ -592,6 +592,7 @@ async function subirInvestigacion(session) {
     [`${home}/views`, "layout.php", "layout.php"],
     [`${home}/public/assets`, "investigar.css", "investigar.css"],
     [`${home}/public/assets`, "investigar.js", "investigar.js"],
+    [`${home}/public/assets`, "logo.svg", "logo.svg"],
   ];
   for (const [dir, file, localName] of files) {
     const content = fs.readFileSync(localName.startsWith("/") ? localName : path.join(root, "hostgator", "sitio", localName), "utf8");

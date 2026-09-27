@@ -56,7 +56,7 @@ $cuando = trim((string) ($expediente['lugar_fecha'] ?? ''));
 $cuando = $cuando !== '' ? rtrim($cuando, '.') : 'la fecha que consta en el expediente';
 $expedienteNumero = trim((string) ($expediente['expediente'] ?? ''));
 $donde = $expedienteNumero !== '' ? 'el expediente ' . $expedienteNumero : 'la referencia ' . ((string) ($expediente['referencia'] ?? 'que consta en esta certificación'));
-$certifica = 'Genealogía Sefardí y Sefarad MX certifican que en ' . $cuando . ', en ' . $donde . ' del Archivo Principal de Sefarad, se encuentra el documento ' . $tipo . ', con la información siguiente.';
+$certifica = 'Genealogía Sefardí y Sefarad MX certifican que en ' . $cuando . ', en ' . $donde . ' del Archivo Municipal de Saltillo, se encuentra el documento ' . $tipo . '. Nos consta y damos fe de que ahí está.';
 $descripcion = trim((string) ($expediente['descripcion'] ?? ''));
 $datos = array_filter([
     'Lugar y Fecha' => trim((string) ($expediente['lugar_fecha'] ?? '')),
@@ -69,9 +69,9 @@ $datos = array_filter([
 ], static fn (string $valor): bool => $valor !== '');
 
 $bloques = [
-    ['Genealogía Sefardí', 'F1', 22, '0.078 0.184 0.239', true, 0],
-    ['Sefarad MX', 'F1', 13, '0.553 0.204 0.173', true, 8],
-    ['Certificación', 'F1', 12, '0.553 0.204 0.173', true, 22],
+    ['Genealogía Sefardí', 'F1', 20, '0.078 0.184 0.239', true, 0],
+    ['Sefarad MX', 'F1', 12, '0.553 0.204 0.173', true, 6],
+    ['Consta en el Archivo Municipal de Saltillo', 'F1', 12, '0.553 0.204 0.173', true, 18],
 ];
 foreach (cortar($certifica, 78) as $linea) {
     $bloques[] = [$linea, 'F2', 11, '0.110 0.098 0.082', false, 16];
@@ -89,29 +89,56 @@ foreach ($datos as $etiqueta => $valor) {
         $bloques[] = [$linea, 'F2', 11, '0.110 0.098 0.082', false, $i === 0 ? 18 : 14];
     }
 }
-foreach (cortar('Tramitar Documentos Certificados ante el Archivo. No puedes venir hasta el Archivo de Saltillo. No te preocupes: nosotros lo tramitamos por ti y te lo enviamos. Contáctanos +52 844 219 5952.', 78) as $linea) {
-    $bloques[] = [$linea, 'F2', 11, '0.078 0.184 0.239', false, 16];
+foreach (cortar('Si no puedes venir a Saltillo, lo gestionamos directamente en el Archivo Municipal de Saltillo. El documento lo expide ese archivo y se envía a cualquier parte del mundo. Contáctanos +52 844 219 5952.', 78) as $linea) {
+    $bloques[] = [$linea, 'F2', 10, '0.345 0.329 0.298', false, 14];
 }
 $cierre = [
-    ['Información Consultada de la Plataforma Sefarad MX.', 'F3', 12, '0.078 0.184 0.239', true, 28],
-    ['Ante Mí Consta y Doy Fe.', 'F3', 12, '0.078 0.184 0.239', true, 18],
-    ['__firma__', 'F1', 12, '0.078 0.184 0.239', true, 36],
+    ['Información consultada en la plataforma Sefarad MX.', 'F3', 11, '0.078 0.184 0.239', true, 20],
+    ['Nos consta y damos fe de que el documento está en el Archivo Municipal de Saltillo.', 'F3', 11, '0.078 0.184 0.239', true, 16],
+    ['__firma__', 'F1', 12, '0.078 0.184 0.239', true, 28],
     ['Lic. Francisco Javier García Gaona', 'F1', 12, '0.078 0.184 0.239', true, 16],
-    ['Fundador de Sefarad MX', 'F2', 11, '0.345 0.329 0.298', true, 16],
+    ['Fundador de Sefarad MX', 'F2', 11, '0.345 0.329 0.298', true, 14],
 ];
 
+function sello(): string
+{
+    return "0.769 0.631 0.353 RG\n1.3 w\n306 718 30 0 360 arc S\n"
+        . "0.078 0.184 0.239 RG\n0.8 w\n306 718 22 0 360 arc S\n"
+        . "BT\n/F1 16 Tf\n0.078 0.184 0.239 rg\n1 0 0 1 300 712 Tm\n(S) Tj\nET\n";
+}
+
+function pie(): string
+{
+    $linea = static function (string $texto, float $y, string $fuente, float $tamano): string {
+        $ancho = mb_strlen($texto) * $tamano * 0.46;
+        $x = (612 - $ancho) / 2;
+        return "BT\n/{$fuente} {$tamano} Tf\n0.078 0.184 0.239 rg\n1 0 0 1 {$x} {$y} Tm\n(" . latin($texto) . ") Tj\nET\n";
+    };
+    return "0.769 0.631 0.353 RG\n0.7 w\n64 78 m 548 78 l S\n"
+        . $linea('Genealogía Sefardí · Sefarad MX · +52 844 219 5952', 62, 'F1', 9)
+        . $linea('Los documentos los expide el Archivo Municipal de Saltillo y se envían a cualquier parte del mundo.', 48, 'F2', 8);
+}
+
 $paginas = [];
-$y = 706.0;
+$y = 640.0;
 $ops = '';
-$abrir = static function () use (&$ops, &$y): void {
-    $ops = "0.078 0.184 0.239 RG\n1.4 w\n40 36 532 720 re S\n0.769 0.631 0.353 RG\n0.7 w\n48 44 516 704 re S\n";
-    $y = 706.0;
+$primera = true;
+$abrir = static function () use (&$ops, &$y, &$primera): void {
+    $ops = "0.078 0.184 0.239 RG\n1.1 w\n36 32 540 728 re S\n0.769 0.631 0.353 RG\n0.6 w\n42 38 528 716 re S\n";
+    if ($primera) {
+        $ops .= sello();
+        $y = 670.0;
+        $primera = false;
+    } else {
+        $y = 700.0;
+    }
 };
 $abrir();
 $pintar = static function (array $bloque) use (&$ops, &$y, &$paginas, $abrir): void {
     [$texto, $fuente, $tamano, $color, $centrado, $salto] = $bloque;
     $avance = max((float) $salto, ($texto === '' || $texto === '__firma__') ? 14 : (float) $tamano + 6);
-    if ($y - $avance < 78) {
+    if ($y - $avance < 108) {
+        $ops .= pie();
         $paginas[] = $ops;
         $abrir();
     }
@@ -129,15 +156,17 @@ $pintar = static function (array $bloque) use (&$ops, &$y, &$paginas, $abrir): v
 foreach ($bloques as $bloque) {
     $pintar($bloque);
 }
-if ($y < 230) {
+if ($y < 250) {
+    $ops .= pie();
     $paginas[] = $ops;
     $abrir();
-} elseif ($y > 270) {
-    $y = 270;
+} elseif ($y > 280) {
+    $y = 280;
 }
 foreach ($cierre as $bloque) {
     $pintar($bloque);
 }
+$ops .= pie();
 $paginas[] = $ops;
 
 $objetos = [];
