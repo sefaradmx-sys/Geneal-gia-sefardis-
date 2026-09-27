@@ -59,13 +59,13 @@ Historypin es la aplicación de pines históricos. El Archivo Histórico Naciona
 
 `hostgator/public_html/index.html` es la portada para subir a la raíz de la cuenta, sin reemplazar la carpeta `sefarad-mx`. La búsqueda abre FamilySearch, INEGI, PARES, Historypin, WikiTree y VIAF, y el botón del árbol entra a esa ruta.
 
-`tree.genealogiasefardi.site` todavía no tiene registro DNS. En cPanel el subdominio `tree` debe usar la carpeta `public_html/sefarad-mx`:
+`tree.genealogiasefardi.site` se crea por SSH (puerto 2222, y si ese no responde, el 22) en el servidor de HostGator. La carpeta del subdominio es `public_html/sefarad-mx`, donde ya está el árbol. El script sube la portada y no reemplaza esa carpeta:
 
 ```bash
-CPANEL_USER=usuario CPANEL_TOKEN=token node scripts/create-tree-subdomain.mjs
+printf '%s' 'CLAVE_SSH' > /tmp/hostgator-ssh-pass
+chmod 600 /tmp/hostgator-ssh-pass
+HOSTGATOR_SSH_USER=usuario HOSTGATOR_SSH_PASS_FILE=/tmp/hostgator-ssh-pass bash scripts/hostgator-ssh.sh
 ```
-
-Hace falta el token de API de cPanel. Desde este repositorio no se puede crear el registro: el puerto 2083 de la cuenta no acepta la conexión.
 
 ## HostGator y el archivo Node
 
