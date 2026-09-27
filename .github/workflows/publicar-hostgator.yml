@@ -6,65 +6,50 @@ on:
       - cursor/hostgator-subdominio-766c
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   hostgator:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Leer el sitio y crear el subdominio
-        env:
-          CPANEL_USER: ${{ secrets.CPANEL_USER }}
-          CPANEL_TOKEN: ${{ secrets.CPANEL_TOKEN }}
-          CPANEL_PASS: ${{ secrets.CPANEL_PASS }}
-        run: |
-          set +e
-          mkdir -p live-snapshot
-          curl -sS -L --max-time 30 -D live-snapshot/home.headers -o live-snapshot/home.html -A "GenealogiaSefardi/0.2" https://genealogiasefardi.site/ || echo "home-fail" > live-snapshot/home.err
-          curl -sS -L --max-time 30 -D live-snapshot/tree.headers -o live-snapshot/tree.html -A "GenealogiaSefardi/0.2" "https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad" || echo "tree-fail" > live-snapshot/tree.err
-          python3 - << 'PY'
-          import socket
-          hosts = ["genealogiasefardi.site", "mx18.hostgator.mx", "108.179.194.59"]
-          ports = [80, 443, 2082, 2083, 2095, 2096, 21, 22, 2222, 8443]
-          lines = []
-          for host in hosts:
-              for port in ports:
-                  sock = socket.socket()
-                  sock.settimeout(6)
-                  try:
-                      sock.connect((host, port))
-                      lines.append(f"OPEN {host}:{port}")
-                  except Exception as error:
-                      lines.append(f"closed {host}:{port} {type(error).__name__}")
-                  finally:
-                      sock.close()
-          open("live-snapshot/ports.txt", "w").write("\n".join(lines) + "\n")
-          print("\n".join(lines))
-          PY
-          if [ -n "$CPANEL_TOKEN" ] || [ -n "$CPANEL_PASS" ]; then
-            for base in \
-              "https://genealogiasefardi.site:2083" \
-              "https://mx18.hostgator.mx:2083" \
-              "https://genealogiasefardi.site:2082" \
-              "https://mx18.hostgator.mx:2082" \
-              "https://genealogiasefardi.site" \
-              "https://mx18.hostgator.mx"
-            do
-              if [ -n "$CPANEL_TOKEN" ]; then
-                auth="Authorization: cpanel ${CPANEL_USER}:${CPANEL_TOKEN}"
-              else
-                auth="Authorization: Basic $(printf '%s' "${CPANEL_USER}:${CPANEL_PASS}" | base64 -w0)"
-              fi
-              code=$(curl -sk --max-time 25 -o live-snapshot/cpanel-body.txt -w '%{http_code}' -H "$auth" \
-                "${base}/execute/SubDomain/addsubdomain?domain=tree&rootdomain=genealogiasefardi.site&dir=public_html%2Fsefarad-mx")
-              echo "$base $code" | tee -a live-snapshot/cpanel-status.txt
-              if [ "$code" = "200" ]; then
-                break
-              fi
-            done
-          else
-            echo "NO_CPANEL_SECRET" | tee live-snapshot/cpanel-status.txt
-          fi
-          wc -c live-snapshot/* || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v4
         with:
-          name: sitio-vivo
-          path: live-snapshot
+          ref: cursor/hostgator-subdominio-766c
+
+      - name: Entrar por SSH y publicar
+        env:
+          HOSTGATOR_SSH_HOST: ${{ secrets.HOSTGATOR_SSH_HOST }}
+          HOSTGATOR_SSH_USER: ${{ secrets.HOSTGATOR_SSH_USER }}
+          HOSTGATOR_SSH_PASS: ${{ secrets.HOSTGATOR_SSH_PASS }}
+          HOSTGATOR_SSH_PORT: ${{ secrets.HOSTGATOR_SSH_PORT }}
+        run: |
+          set -u
+          sudo DEBIAN_FRONTEND=noninteractive apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq sshpass
+          chmod +x scripts/hostgator-ssh.sh
+          if [ -n "${HOSTGATOR_SSH_PASS}" ]; then
+            printf '%s' "$HOSTGATOR_SSH_PASS" > /tmp/hostgator-ssh-pass
+            chmod 600 /tmp/hostgator-ssh-pass
+            export HOSTGATOR_SSH_PASS_FILE=/tmp/hostgator-ssh-pass
+          fi
+          if [ -z "${HOSTGATOR_SSH_HOST}" ]; then
+            export HOSTGATOR_SSH_HOST=mx18.hostgator.mx
+          fi
+          if [ -z "${HOSTGATOR_SSH_PORT}" ]; then
+            export HOSTGATOR_SSH_PORT=2222
+          fi
+          bash scripts/hostgator-ssh.sh
+          rm -f /tmp/hostgator-ssh-pass
+
+      - name: Guardar el resultado en el repositorio
+        run: |
+          git config user.name "cursor"
+          git config user.email "cursor@users.noreply.github.com"
+          git add hostgator/estado.txt
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Estado SSH de HostGator [skip ci]"
+          git push
