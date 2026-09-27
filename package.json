@@ -1,18 +1,15 @@
 {
   "name": "genealogia-sefardi",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Genealogía Sefardí - a small web app to explore Sephardic family trees.",
+  "description": "Archivo genealógico sefardí: árbol, registros y lugares guardados en SQLite.",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.5"
   },
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
-    "test": "node --test"
-  },
-  "dependencies": {
-    "express": "^4.19.2"
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch src/server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test"
   }
 }
