@@ -52,7 +52,7 @@ function una(array $tarea): array
         CURLOPT_TIMEOUT => 12,
         CURLOPT_CONNECTTIMEOUT => 5,
         CURLOPT_ENCODING => '',
-        CURLOPT_USERAGENT => 'GenealogiaSefardi/1.0',
+        CURLOPT_USERAGENT => $tarea['agente'] ?? 'GenealogiaSefardi/1.0 (+https://genealogiasefardi.site)',
         CURLOPT_HTTPHEADER => $tarea['encabezados'] ?? ['Accept: application/json'],
     ];
     if (($tarea['metodo'] ?? 'GET') === 'POST') {
@@ -92,7 +92,7 @@ function pedir(array $tareas): array
             CURLOPT_TIMEOUT => 12,
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_ENCODING => '',
-            CURLOPT_USERAGENT => 'GenealogiaSefardi/1.0',
+            CURLOPT_USERAGENT => $tarea['agente'] ?? 'GenealogiaSefardi/1.0 (+https://genealogiasefardi.site)',
             CURLOPT_HTTPHEADER => $tarea['encabezados'] ?? ['Accept: application/json'],
         ];
         if (($tarea['metodo'] ?? 'GET') === 'POST') {
@@ -158,7 +158,7 @@ if (mb_strlen($persona) >= 2) {
         'url' => 'https://query.wikidata.org/sparql',
         'metodo' => 'POST',
         'cuerpo' => 'SELECT ?item ?itemLabel ?birth ?death ?birthPlaceLabel WHERE { SERVICE wikibase:mwapi { bd:serviceParam wikibase:endpoint "www.wikidata.org"; wikibase:api "EntitySearch"; mwapi:search "' . $termino . '"; mwapi:language "es". ?item wikibase:apiOutputItem mwapi:item. } ?item wdt:P31 wd:Q5. OPTIONAL { ?item wdt:P569 ?birth. } OPTIONAL { ?item wdt:P570 ?death. } OPTIONAL { ?item wdt:P19 ?birthPlace. ?birthPlace rdfs:label ?birthPlaceLabel. FILTER(LANG(?birthPlaceLabel)="es") } SERVICE wikibase:label { bd:serviceParam wikibase:language "es,en". } } LIMIT 6',
-        'encabezados' => ['Content-Type: application/sparql', 'Accept: application/sparql-results+json'],
+        'encabezados' => ['Content-Type: application/sparql', 'Accept: application/sparql-results+json', 'User-Agent: GenealogiaSefardi/1.0 (https://genealogiasefardi.site)'],
     ];
 }
 if ($nombre !== '' || $apellido !== '') {
@@ -171,9 +171,12 @@ if ($nombre !== '' || $apellido !== '') {
     }
     $tareas['wikitree'] = ['url' => $wiki];
 }
-$tareas['loc'] = ['url' => 'https://www.loc.gov/search/?fo=json&c=6&q=' . rawurlencode($consulta)];
+$tareas['loc'] = [
+        'url' => 'https://www.loc.gov/search/?fo=json&c=6&q=' . rawurlencode($consulta),
+        'agente' => 'Mozilla/5.0 (compatible; GenealogiaSefardi/1.0; +https://genealogiasefardi.site)',
+    ];
 $tareas['nara'] = ['url' => 'https://catalog.archives.gov/api/v1/?rows=6&q=' . rawurlencode($consulta)];
-$tareas['datos'] = ['url' => 'https://datos.gob.mx/busca/api/3/action/package_search?rows=5&q=' . rawurlencode('censo población ' . ($lugar !== '' ? $lugar : 'México'))];
+$tareas['datos'] = ['url' => 'https://www.datos.gob.mx/busca/api/3/action/package_search?rows=5&q=' . rawurlencode('censo poblacion ' . ($lugar !== '' ? $lugar : 'Mexico'))];
 if (mb_strlen($lugar) >= 2) {
     $tareas['mapa'] = ['url' => 'https://nominatim.openhistoricalmap.org/search?format=jsonv2&limit=5&q=' . rawurlencode($lugar)];
     $tareas['inegi'] = ['url' => 'https://gaia.inegi.org.mx/wscatgeo/v2/mgem/buscar/' . rawurlencode($lugar)];
