@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -5,6 +6,7 @@ import { fileURLToPath } from "node:url";
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const token = (process.env.CPANEL_TOKEN || "").trim();
+const passphrase = (process.env.HOSTGATOR_KEY_PASSPHRASE || "").trim();
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const statePath = path.join(root, "hostgator", "estado.txt");
 const site = "genealogiasefardi.site";
@@ -17,6 +19,7 @@ const lines = [`fecha=${new Date().toISOString()}`];
 function redact(text) {
   let out = String(text ?? "");
   if (token) out = out.split(token).join("[redacted]");
+  if (passphrase) out = out.split(passphrase).join("[redacted]");
   return out.replace(/(cpanel|whm|basic)\s+[a-z0-9_]+:\S+/gi, "$1 [redacted]");
 }
 
@@ -61,9 +64,34 @@ function isDown(error) {
 async function call(url, headers) {
   const response = await fetch(url, {
     headers,
-    signal: AbortSignal.timeout(20000),
+    signal: AbortSignal.timeout(8000),
   });
   return { status: response.status, text: await response.text() };
+}
+
+function run(command, args, input = "") {
+  return new Promise((resolve) => {
+    const child = spawn(command, args, { stdio: ["pipe", "pipe", "pipe"] });
+    let stdout = "";
+    let stderr = "";
+    const timer = setTimeout(() => child.kill("SIGTERM"), 22000);
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk;
+    });
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk;
+    });
+    child.on("error", (error) => {
+      clearTimeout(timer);
+      resolve({ code: -1, stdout, stderr: `${stderr}\n${error.message}` });
+    });
+    child.on("close", (code) => {
+      clearTimeout(timer);
+      resolve({ code, stdout, stderr });
+    });
+    child.stdin.on("error", () => {});
+    child.stdin.end(input);
+  });
 }
 
 async function peek(url) {
@@ -239,6 +267,72 @@ async function pointSubdomain(session, name) {
   }
 }
 
+async function sshInside(users) {
+  const keyPath = process.env.HOSTGATOR_KEY_PATH || "";
+  if (!keyPath || !fs.existsSync(keyPath)) {
+    note("SSH_SIN_LLAVE");
+    return false;
+  }
+  const remote = [
+    "set +e",
+    `TOKEN=${JSON.stringify(token)}`,
+    'echo SSH_OK "$(whoami)"',
+    "pwd",
+    "ls public_html 2>/dev/null | head",
+    'UAPI=$(command -v uapi || echo /usr/local/cpanel/bin/uapi)',
+    'curl -sk --max-time 20 -H "Authorization: cpanel $(whoami):$TOKEN" https://127.0.0.1:2083/execute/DomainInfo/list_domains | head -c 1200',
+    "echo",
+    '"$UAPI" --output=json DomainInfo domains_data | head -c 2500',
+    "echo",
+    `"$UAPI" SubDomain changedocroot domain=tree.${site} docroot=${docroot}`,
+    "echo",
+    `"$UAPI" SubDomain changedocroot domain=arbol.${site} docroot=${docroot}`,
+    "echo",
+    '"$UAPI" --output=json SubDomain listsubdomains | head -c 2500',
+    "echo",
+  ].join("\n");
+
+  for (const host of ["mx18.hostgator.mx", site]) {
+    for (const port of ["2222", "22"]) {
+      let hostDown = false;
+      for (const user of users) {
+        const result = await run("ssh", [
+          "-i", keyPath,
+          "-p", port,
+          "-o", "StrictHostKeyChecking=accept-new",
+          "-o", "UserKnownHostsFile=/tmp/hg-known",
+          "-o", "BatchMode=yes",
+          "-o", "IdentitiesOnly=yes",
+          "-o", "ConnectTimeout=12",
+          `${user}@${host}`,
+          "bash -s",
+        ], remote);
+        const output = `${result.stdout}\n${result.stderr}`;
+        note(`ssh ${user}@${host}:${port} code ${result.code} ${snippet(output)}`);
+        if (result.code === 0 && output.includes("SSH_OK")) return true;
+        if (/Permission denied|Authentication failed/i.test(output)) continue;
+        if (/timed out|Connection refused|No route|Connection reset/i.test(output)) {
+          hostDown = true;
+          break;
+        }
+      }
+      if (hostDown) break;
+    }
+  }
+  return false;
+}
+
+async function publishTree(session) {
+  note(`SESION ${session.kind} ${session.user} cuenta ${session.accountUser} ${session.host}:${session.port}`);
+  const domains = await uapi(session, "/execute/DomainInfo/list_domains");
+  describe(domains.text);
+  const roots = await uapi(session, "/execute/DomainInfo/domains_data");
+  describe(roots.text);
+  await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(docroot)}&limit=8`);
+  await pointSubdomain(session, "tree");
+  await pointSubdomain(session, "arbol");
+}
+
 async function main() {
   const discovered = await discoverUsers();
   if (discovered.length) note(`usuarios_en_pagina=${discovered.join(",")}`);
@@ -253,22 +347,13 @@ async function main() {
   }
 
   const session = await findSession(users);
-  if (!session) {
-    note("API_NO_ENTRO");
-    fs.mkdirSync(path.dirname(statePath), { recursive: true });
-    fs.writeFileSync(statePath, `${lines.join("\n")}\n`);
-    process.exitCode = 1;
-    return;
+  if (session) {
+    await publishTree(session);
+  } else {
+    note("API_DIRECTA_NO_ENTRO");
+    const entered = await sshInside(users);
+    if (!entered) note("API_NO_ENTRO");
   }
-
-  note(`SESION ${session.kind} ${session.user} cuenta ${session.accountUser} ${session.host}:${session.port}`);
-  const domains = await uapi(session, "/execute/DomainInfo/list_domains");
-  describe(domains.text);
-  const roots = await uapi(session, "/execute/DomainInfo/domains_data");
-  describe(roots.text);
-  await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(docroot)}&limit=8`);
-  await pointSubdomain(session, "tree");
-  await pointSubdomain(session, "arbol");
 
   const route = encodeURIComponent(treeRoute);
   await peek(`https://tree.${site}/`);
