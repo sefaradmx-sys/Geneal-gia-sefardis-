@@ -215,7 +215,14 @@ export function pageSearch(result, { treeHost, csrf }) {
         <summary>Portales de archivo guardados (${result.portals.length})</summary>
         <ul class="plain">${portals}</ul>
       </details>
-      ${reports ? `<h2>Estado de las API</h2><ul class="plain reports">${reports}</ul>` : ""}
+      ${
+        reports
+          ? `<details>
+        <summary>Estado de las API</summary>
+        <ul class="plain reports">${reports}</ul>
+      </details>`
+          : ""
+      }
     </section>`;
   return layout({ title: result.label, body, treeHost, active: "buscar" });
 }
