@@ -340,7 +340,16 @@ if ($inegi) {
     $conectadas++;
 }
 
+$resumen = [];
+foreach ($fuentes as $fuenteLista) {
+    $resumen[] = $fuenteLista['id'] . ':' . count($fuenteLista['registros']) . ($fuenteLista['ok'] ? '' : '!');
+}
+if ($inegi) {
+    $resumen[] = 'inegi:1';
+}
+
 echo json_encode([
+    'resumen' => $resumen,
     'conectadas' => $conectadas,
     'consulta' => $consulta,
     'inegi' => $inegi,

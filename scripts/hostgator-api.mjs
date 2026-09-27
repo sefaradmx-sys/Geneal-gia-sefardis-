@@ -633,7 +633,7 @@ async function main() {
   const portada = await peek(`https://${site}/`);
   note(portada.includes("Censo histórico por municipio") ? "PORTADA_NUEVA" : "PORTADA_VIEJA");
   note(portada.includes("familysearch.org") ? "FAMILYSEARCH_EN_PORTADA" : "FAMILYSEARCH_AUSENTE");
-  const consulta = await peek(`https://${site}/consulta.php?apellido=Toledano&lugar=Tetuan`);
+  const consulta = await peek(`https://${site}/consulta.php?apellido=Toledano&lugar=Monterrey`);
   note(consulta.includes('"conectadas":') ? "API_CONSULTA" : "API_SIN_CONSULTA");
   const conectadas = consulta.match(/"conectadas":\s*(\d+)/);
   if (conectadas) note(`API_CONECTADAS ${conectadas[1]}`);
