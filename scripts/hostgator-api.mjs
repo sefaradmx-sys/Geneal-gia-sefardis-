@@ -425,12 +425,10 @@ async function publishTree(session) {
   });
   await uapi(session, "/execute/Fileman/save_file_content", marker);
   await uapi(session, "/execute/Fileman/mkdir?path=public_html/sefarad-mx");
-  const bridge = new URLSearchParams({
-    dir: "/home2/irvinjos/public_html/sefarad-mx",
-    file: "index.php",
-    content: "<?php header('Location: https://arbol.genealogiasefardi.site/index.php?route=' . rawurlencode('/sefarad-mx/tree/sefarad')); exit;\n",
-  });
-  await uapi(session, "/execute/Fileman/save_file_content", bridge);
+  const bridge = "<?php header('Location: https://arbol.genealogiasefardi.site/index.php?route=' . rawurlencode('/sefarad-mx/tree/sefarad')); exit;\n";
+  for (const dir of ["/home2/irvinjos/tree.genealogiasefardi.site", "/home2/irvinjos/public_html/tree", "/home2/irvinjos/public_html/sefarad-mx"]) {
+    await uapi(session, "/execute/Fileman/save_file_content", new URLSearchParams({ dir, file: "index.php", content: bridge }));
+  }
   for (const name of ["tree", "arbol"]) {
     await uapi(
       session,
