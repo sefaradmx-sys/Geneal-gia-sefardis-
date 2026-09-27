@@ -47,7 +47,7 @@ if (!is_array($expedientes)) {
 }
 
 $hallados = [];
-foreach ($expedientes as $expediente) {
+foreach ($expedientes as $indice => $expediente) {
     if (!is_array($expediente)) {
         continue;
     }
@@ -68,10 +68,16 @@ foreach ($expedientes as $expediente) {
         continue;
     }
     $hallados[] = [
+        'id' => $indice,
+        'volumen' => (int) ($expediente['volumen'] ?? 0),
+        'numero' => (int) ($expediente['numero'] ?? 0),
         'tipo' => (string) ($expediente['tipo'] ?? ''),
         'descripcion' => (string) ($expediente['descripcion'] ?? ''),
         'lugar_fecha' => (string) ($expediente['lugar_fecha'] ?? ''),
         'referencia' => (string) ($expediente['referencia'] ?? ''),
+        'caja' => (string) ($expediente['caja'] ?? ''),
+        'expediente' => (string) ($expediente['expediente'] ?? ''),
+        'documento' => (string) ($expediente['documento'] ?? ''),
         'fojas' => (int) ($expediente['fojas'] ?? 0),
     ];
     if (count($hallados) >= 40) {

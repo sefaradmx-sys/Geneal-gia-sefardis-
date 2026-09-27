@@ -586,6 +586,7 @@ async function subirInvestigacion(session) {
     [home, "censo.php", "censo.php"],
     [home, "consulta.php", "consulta.php"],
     [home, "saltillo.php", "saltillo.php"],
+    [home, "certificado.php", "certificado.php"],
     [`${home}/storage`, "saltillo.json", path.join(root, "data", "saltillo", "expedientes.json")],
     [`${home}/views/home`, "landing.php", "landing.php"],
     [`${home}/views`, "layout.php", "layout.php"],
@@ -594,7 +595,7 @@ async function subirInvestigacion(session) {
   ];
   for (const [dir, file, localName] of files) {
     const content = fs.readFileSync(localName.startsWith("/") ? localName : path.join(root, "hostgator", "sitio", localName), "utf8");
-    const saved = await uapi(session, "/execute/Fileman/save_file_content", new URLSearchParams({ dir, file, content }), file.endsWith(".json") ? 60000 : 20000);
+    const saved = await uapi(session, "/execute/Fileman/save_file_content", new URLSearchParams({ dir, file, content }), file.endsWith(".json") ? 120000 : 20000);
     note(`SITIO ${saved.json?.status ?? saved.status} ${saved.json?.data?.path || file}`);
   }
 }
@@ -638,6 +639,8 @@ async function main() {
   note(portada.includes("este servidor") || portada.includes("familysearch.org") || portada.includes("VIAF") ? "TEXTO_DE_MAS" : "SIN_TEXTO_DE_MAS");
   const saltillo = await peek(`https://${site}/saltillo.php?apellido=Urdiñola`);
   note(saltillo.includes("AMS, PM") ? "SALTILLO_OK" : "SALTILLO_NO");
+  const pdf = await peek(`https://${site}/certificado.php?id=1`);
+  note(pdf.startsWith("%PDF") && pdf.includes("Sefarad MX") && pdf.includes("Gaona") ? "PDF_OK" : "PDF_NO");
   const consulta = await peek(`https://${site}/consulta.php?apellido=Toledano&lugar=Monterrey`);
   note(consulta.includes('"conectadas":') ? "API_CONSULTA" : "API_SIN_CONSULTA");
   const conectadas = consulta.match(/"conectadas":\s*(\d+)/);

@@ -128,37 +128,121 @@ function bloque(titulo, registros) {
   return article;
 }
 
+function dato(etiqueta, valor) {
+  if (!valor) return null;
+  const fila = document.createElement("div");
+  const nombre = document.createElement("dt");
+  nombre.textContent = etiqueta;
+  const contenido = document.createElement("dd");
+  contenido.textContent = valor;
+  fila.append(nombre, contenido);
+  return fila;
+}
+
+function oracion(registro) {
+  const cuando = (registro.lugar_fecha || "la fecha que consta en el expediente").replace(/\.$/, "");
+  const expediente = registro.expediente
+    ? "el expediente " + registro.expediente
+    : "la referencia " + (registro.referencia || "que consta en esta certificación");
+  const tipo = registro.tipo || "documento";
+  return "Genealogía Sefardí y Sefarad MX certifican que en " + cuando + ", en " + expediente + " del Archivo principal de Sefarad, se encuentra el documento " + tipo + ", con la información siguiente.";
+}
+
+async function generarPdf(registro, boton) {
+  boton.disabled = true;
+  boton.textContent = "Generando…";
+  const url = new URL("/certificado.php", location.origin);
+  url.searchParams.set("id", String(registro.id));
+  const respuesta = await fetch(url);
+  if (!respuesta.ok) {
+    boton.disabled = false;
+    boton.textContent = "Generar PDF";
+    return;
+  }
+  const archivo = await respuesta.blob();
+  const enlace = document.createElement("a");
+  const caja = registro.caja ? "caja-" + registro.caja : "expediente";
+  const pieza = registro.expediente ? "-expediente-" + registro.expediente : "";
+  enlace.href = URL.createObjectURL(archivo);
+  enlace.download = ("Sefarad-MX-" + caja + pieza + ".pdf").replace(/\s+/g, "-");
+  enlace.click();
+  URL.revokeObjectURL(enlace.href);
+  boton.disabled = false;
+  boton.textContent = "Generar PDF";
+}
+
+function certificado(registro) {
+  const article = document.createElement("article");
+  article.className = "certificado";
+
+  const marca = document.createElement("p");
+  marca.className = "cert-marca";
+  marca.textContent = "Genealogía Sefardí";
+  const sub = document.createElement("p");
+  sub.className = "cert-sub";
+  sub.textContent = "Sefarad MX";
+  const titulo = document.createElement("h3");
+  titulo.textContent = "Certificación";
+  const texto = document.createElement("p");
+  texto.className = "cert-texto";
+  texto.textContent = oracion(registro);
+
+  article.append(marca, sub, titulo, texto);
+
+  if (registro.descripcion) {
+    const info = document.createElement("p");
+    info.className = "cert-info";
+    info.textContent = registro.descripcion;
+    article.appendChild(info);
+  }
+
+  const ficha = document.createElement("dl");
+  ficha.className = "cert-datos";
+  for (const fila of [
+    dato("Lugar y fecha", registro.lugar_fecha),
+    dato("Caja", registro.caja),
+    dato("Expediente", registro.expediente),
+    dato("Documento", registro.documento),
+    dato("Fojas", registro.fojas ? String(registro.fojas) : ""),
+    dato("Referencia", registro.referencia),
+  ]) {
+    if (fila) ficha.appendChild(fila);
+  }
+  article.appendChild(ficha);
+
+  const leyenda = document.createElement("p");
+  leyenda.className = "cert-leyenda";
+  leyenda.textContent = "Información Consultada de la Plataforma Sefarad MX. Ante Mí Consta y Doy Fe.";
+  const firma = document.createElement("div");
+  firma.className = "cert-firma";
+  const lineaFirma = document.createElement("span");
+  lineaFirma.className = "cert-linea";
+  const nombre = document.createElement("strong");
+  nombre.textContent = "Lic. Francisco Javier García Gaona";
+  const cargo = document.createElement("span");
+  cargo.textContent = "Fundador de Sefarad MX";
+  firma.append(lineaFirma, nombre, cargo);
+
+  const boton = document.createElement("button");
+  boton.type = "button";
+  boton.className = "no-imprimir";
+  boton.textContent = "Generar PDF";
+  boton.addEventListener("click", () => generarPdf(registro, boton));
+
+  article.append(leyenda, firma, boton);
+  return article;
+}
+
 function pintarSaltillo(registros) {
   if (!registros || !registros.length) return null;
-  const article = document.createElement("article");
-  const encabezado = document.createElement("h3");
-  encabezado.textContent = "Archivo Municipal de Saltillo";
-  article.appendChild(encabezado);
-  const lista = document.createElement("ul");
-  for (const registro of registros) {
-    const item = document.createElement("li");
-    const fuerte = document.createElement("strong");
-    fuerte.textContent = registro.tipo || "Expediente";
-    item.appendChild(fuerte);
-    if (registro.descripcion) {
-      const texto = document.createElement("p");
-      texto.textContent = registro.descripcion;
-      item.appendChild(texto);
-    }
-    if (registro.lugar_fecha) {
-      const cuando = document.createElement("p");
-      cuando.textContent = registro.lugar_fecha;
-      item.appendChild(cuando);
-    }
-    if (registro.referencia) {
-      const ref = document.createElement("p");
-      ref.textContent = registro.referencia;
-      item.appendChild(ref);
-    }
-    lista.appendChild(item);
-  }
-  article.appendChild(lista);
-  return article;
+  const seccion = document.createElement("section");
+  seccion.className = "certificados";
+  const encabezado = document.createElement("h2");
+  encabezado.className = "no-imprimir";
+  encabezado.textContent = "Archivo principal de Sefarad";
+  seccion.appendChild(encabezado);
+  for (const registro of registros) seccion.appendChild(certificado(registro));
+  return seccion;
 }
 
 function pintarResultados(data, saltillo) {
@@ -213,8 +297,8 @@ async function consultar() {
   }
   if (ano) archivo.searchParams.set("ano", ano);
   const [respuesta, saltilloRespuesta] = await Promise.all([fetch(url), fetch(archivo)]);
-  const data = await respuesta.json();
-  const saltillo = await saltilloRespuesta.json();
+  const data = respuesta.ok ? await respuesta.json() : { fuentes: [] };
+  const saltillo = saltilloRespuesta.ok ? await saltilloRespuesta.json() : { registros: [] };
   pintarResultados(data, saltillo.registros || []);
 }
 
