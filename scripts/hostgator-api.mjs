@@ -61,12 +61,12 @@ function isDown(error) {
   return /timeout|abort|ECONN|ENOTFOUND|EHOST|fetch failed|UND_ERR|socket|closed/i.test(message);
 }
 
-async function call(url, headers, { method = "GET", body = "" } = {}) {
+async function call(url, headers, { method = "GET", body = "", timeoutMs = 8000 } = {}) {
   const response = await fetch(url, {
     method,
     headers: body ? { ...headers, "Content-Type": "application/x-www-form-urlencoded" } : headers,
     body: body || undefined,
-    signal: AbortSignal.timeout(8000),
+    signal: AbortSignal.timeout(timeoutMs),
   });
   return { status: response.status, text: await response.text() };
 }
@@ -196,10 +196,11 @@ function endpoint(session, apiPath) {
   return `https://${session.host}:2087/json-api/cpanel?${params}`;
 }
 
-async function uapi(session, apiPath, body = "") {
+async function uapi(session, apiPath, body = "", timeoutMs = 8000) {
   const response = await call(endpoint(session, apiPath), authHeaders(session.kind, session.user), {
     method: body ? "POST" : "GET",
     body,
+    timeoutMs,
   });
   note(`${apiPath.split("?")[0]} HTTP ${response.status} ${snippet(response.text)}`);
   try {
@@ -584,14 +585,16 @@ async function subirInvestigacion(session) {
   const files = [
     [home, "censo.php", "censo.php"],
     [home, "consulta.php", "consulta.php"],
+    [home, "saltillo.php", "saltillo.php"],
+    [`${home}/storage`, "saltillo.json", path.join(root, "data", "saltillo", "expedientes.json")],
     [`${home}/views/home`, "landing.php", "landing.php"],
     [`${home}/views`, "layout.php", "layout.php"],
     [`${home}/public/assets`, "investigar.css", "investigar.css"],
     [`${home}/public/assets`, "investigar.js", "investigar.js"],
   ];
   for (const [dir, file, localName] of files) {
-    const content = fs.readFileSync(path.join(root, "hostgator", "sitio", localName), "utf8");
-    const saved = await uapi(session, "/execute/Fileman/save_file_content", new URLSearchParams({ dir, file, content }));
+    const content = fs.readFileSync(localName.startsWith("/") ? localName : path.join(root, "hostgator", "sitio", localName), "utf8");
+    const saved = await uapi(session, "/execute/Fileman/save_file_content", new URLSearchParams({ dir, file, content }), file.endsWith(".json") ? 60000 : 20000);
     note(`SITIO ${saved.json?.status ?? saved.status} ${saved.json?.data?.path || file}`);
   }
 }
@@ -633,6 +636,8 @@ async function main() {
   const portada = await peek(`https://${site}/`);
   note(portada.includes("Censo del municipio") ? "PORTADA_NUEVA" : "PORTADA_VIEJA");
   note(portada.includes("este servidor") || portada.includes("familysearch.org") || portada.includes("VIAF") ? "TEXTO_DE_MAS" : "SIN_TEXTO_DE_MAS");
+  const saltillo = await peek(`https://${site}/saltillo.php?apellido=Urdiñola`);
+  note(saltillo.includes("AMS, PM") ? "SALTILLO_OK" : "SALTILLO_NO");
   const consulta = await peek(`https://${site}/consulta.php?apellido=Toledano&lugar=Monterrey`);
   note(consulta.includes('"conectadas":') ? "API_CONSULTA" : "API_SIN_CONSULTA");
   const conectadas = consulta.match(/"conectadas":\s*(\d+)/);

@@ -128,10 +128,45 @@ function bloque(titulo, registros) {
   return article;
 }
 
-function pintarResultados(data) {
+function pintarSaltillo(registros) {
+  if (!registros || !registros.length) return null;
+  const article = document.createElement("article");
+  const encabezado = document.createElement("h3");
+  encabezado.textContent = "Archivo Municipal de Saltillo";
+  article.appendChild(encabezado);
+  const lista = document.createElement("ul");
+  for (const registro of registros) {
+    const item = document.createElement("li");
+    const fuerte = document.createElement("strong");
+    fuerte.textContent = registro.tipo || "Expediente";
+    item.appendChild(fuerte);
+    if (registro.descripcion) {
+      const texto = document.createElement("p");
+      texto.textContent = registro.descripcion;
+      item.appendChild(texto);
+    }
+    if (registro.lugar_fecha) {
+      const cuando = document.createElement("p");
+      cuando.textContent = registro.lugar_fecha;
+      item.appendChild(cuando);
+    }
+    if (registro.referencia) {
+      const ref = document.createElement("p");
+      ref.textContent = registro.referencia;
+      item.appendChild(ref);
+    }
+    lista.appendChild(item);
+  }
+  article.appendChild(lista);
+  return article;
+}
+
+function pintarResultados(data, saltillo) {
   const caja = document.querySelector("#resultados");
   if (!caja) return;
   caja.replaceChildren();
+  const archivo = pintarSaltillo(saltillo);
+  if (archivo) caja.appendChild(archivo);
   if (data.inegi) {
     pintarFicha(data.inegi);
   }
@@ -162,12 +197,25 @@ async function consultar() {
   if (!nombre && !apellido && !lugar) return;
   if (caja) caja.textContent = "Buscando…";
   const url = new URL("/consulta.php", location.origin);
-  if (nombre) url.searchParams.set("nombre", nombre);
-  if (apellido) url.searchParams.set("apellido", apellido);
-  if (lugar) url.searchParams.set("lugar", lugar);
-  const respuesta = await fetch(url);
+  const archivo = new URL("/saltillo.php", location.origin);
+  const ano = valor("#ano");
+  if (nombre) {
+    url.searchParams.set("nombre", nombre);
+    archivo.searchParams.set("nombre", nombre);
+  }
+  if (apellido) {
+    url.searchParams.set("apellido", apellido);
+    archivo.searchParams.set("apellido", apellido);
+  }
+  if (lugar) {
+    url.searchParams.set("lugar", lugar);
+    archivo.searchParams.set("lugar", lugar);
+  }
+  if (ano) archivo.searchParams.set("ano", ano);
+  const [respuesta, saltilloRespuesta] = await Promise.all([fetch(url), fetch(archivo)]);
   const data = await respuesta.json();
-  pintarResultados(data);
+  const saltillo = await saltilloRespuesta.json();
+  pintarResultados(data, saltillo.registros || []);
 }
 
 function iniciar() {
