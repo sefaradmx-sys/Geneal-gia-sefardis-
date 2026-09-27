@@ -12,7 +12,7 @@ const statePath = path.join(root, "hostgator", "estado.txt");
 const site = "genealogiasefardi.site";
 const docroot = "public_html/sefarad-mx";
 const treeRoute = "/sefarad-mx/tree/sefarad";
-const hosts = ["mx18.hostgator.mx", "108.179.194.59", site];
+const hosts = ["garga.com.mx", "mx18.hostgator.mx", "108.179.194.59", site];
 const fallbackUsers = ["irvinjos"];
 const lines = [`fecha=${new Date().toISOString()}`];
 
@@ -350,15 +350,75 @@ async function sshInside(users) {
   return false;
 }
 
+function collectRoots(value, found = []) {
+  if (!value || typeof value !== "object") return found;
+  const root = value.documentroot || value.docroot;
+  if (typeof root === "string") {
+    found.push({ name: value.domain || value.servername || "", root });
+  }
+  for (const child of Object.values(value)) {
+    if (child && typeof child === "object") collectRoots(child, found);
+  }
+  return found;
+}
+
+function fileNames(text) {
+  try {
+    const data = JSON.parse(text).data;
+    if (!Array.isArray(data)) return [];
+    return data.map((row) => row.file || row.name || "").filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function relativeToHome(abs) {
+  return String(abs).replace(/^\/home2\/irvinjos\//, "").replace(/^\//, "");
+}
+
 async function publishTree(session) {
   note(`SESION ${session.kind} ${session.user} cuenta ${session.accountUser} ${session.host}:${session.port}`);
   const domains = await uapi(session, "/execute/DomainInfo/list_domains");
   describe(domains.text);
-  const roots = await uapi(session, "/execute/DomainInfo/domains_data");
-  describe(roots.text);
-  await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(docroot)}&limit=8`);
-  await pointSubdomain(session, "tree");
-  await pointSubdomain(session, "arbol");
+  const wanted = ["garga.com.mx", site, `tree.${site}`, `arbol.${site}`];
+  const roots = [];
+  for (const domain of wanted) {
+    const info = await uapi(session, `/execute/DomainInfo/single_domain_data?domain=${encodeURIComponent(domain)}`);
+    roots.push(...collectRoots(info.json));
+  }
+  for (const row of roots) note(`raiz ${row.name || "?"} ${row.root}`);
+
+  const addon = roots.find((row) => row.name === site);
+  const candidates = [];
+  if (addon?.root) candidates.push(relativeToHome(addon.root));
+  candidates.push("public_html", `public_html/${site}`, site);
+
+  let target = "";
+  for (const dir of [...new Set(candidates)]) {
+    const listed = await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(dir)}&limit=40`);
+    const names = fileNames(listed.text);
+    note(`carpeta ${dir} ${names.slice(0, 24).join(" ") || "-"}`);
+    if (names.includes("sefarad-mx")) {
+      target = `${dir}/sefarad-mx`.replace(/^\//, "");
+      break;
+    }
+    if (names.includes("index.php") && dir.includes("sefarad")) target = target || dir;
+  }
+
+  const check = target
+    ? await uapi(session, `/execute/Fileman/list_files?dir=${encodeURIComponent(target)}&limit=8`)
+    : null;
+  if (!target || check?.json?.status !== 1) {
+    note(`SIN_CARPETA ${target || "desconocida"}`);
+    return;
+  }
+  note(`CARPETA_ARBOL ${target}`);
+  for (const name of ["tree", "arbol"]) {
+    await uapi(
+      session,
+      `/execute/SubDomain/changedocroot?domain=${encodeURIComponent(`${name}.${site}`)}&docroot=${encodeURIComponent(target)}`,
+    );
+  }
 }
 
 async function main() {
