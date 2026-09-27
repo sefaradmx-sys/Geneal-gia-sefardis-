@@ -14,22 +14,24 @@ const docroot = "public_html/sefarad-mx";
 const treeRoute = "/sefarad-mx/tree/sefarad";
 const hosts = ["mx18.hostgator.mx", "108.179.194.59", site];
 const fallbackUsers = [
-  "nuevaexp",
-  "genealog",
-  "sefarad",
-  "geneal",
-  "sefaradm",
-  "sefaradmx",
-  "edgarpue",
-  "cardenas",
-  "juanmanu",
-  "sefardi",
-  "sefardis",
-  "gsefardi",
-  "genealogi",
-  "puente85",
-  "edgar850",
-  "jmcarden",
+  "irvin",
+  "irving",
+  "irvine",
+  "irvined",
+  "irvinp",
+  "irvins",
+  "irvinse",
+  "irvinmx",
+  "irvinho",
+  "irvin850",
+  "irvin85",
+  "irvinpue",
+  "irvinge",
+  "irvinsef",
+  "irvinc",
+  "irvinm",
+  "irvinpu",
+  "irvin8507",
 ];
 const lines = [`fecha=${new Date().toISOString()}`];
 
@@ -263,16 +265,20 @@ function describe(text) {
 }
 
 async function findSession(users) {
+  let answered = false;
   for (const host of hosts) {
+    if (answered) break;
     for (const kind of ["cpanel", "basic"]) {
       const found = await tryUsers(host, 2083, kind, "/execute/DomainInfo/list_domains", users);
       if (found.session) return found.session;
+      if (!found.down) answered = true;
       if (found.down) break;
     }
   }
   for (const host of hosts) {
     const found = await tryUsers(host, 2087, "whm", "/json-api/version?api.version=1", users);
-    if (!found.session) continue;
+    if (found.down) continue;
+    if (!found.session) break;
     const session = found.session;
     const listed = await call(
       `https://${host}:2087/json-api/listaccts?api.version=1&searchtype=domain&search=${site}`,
