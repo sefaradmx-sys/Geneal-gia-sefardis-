@@ -1,78 +1,27 @@
-fecha=2026-09-27T16:22:11.450Z
+fecha=2026-09-27T16:23:16.864Z
 web 500 https://arbol.genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 500 Internal Server Error <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> <html><head> <title>500 Internal Server Error</title> </head><body> <h1>Internal Server E
 web 404 https://arbol.genealogiasefardi.site/ 
 web 403 https://tree.genealogiasefardi.site/ 403 - FORBIDDEN <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
 web 200 https://genealogiasefardi.site/ Inicio — Genealogía Sefardí <!DOCTYPE html> <html lang="es"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Inicio — Genealogía Sefardí</title> <meta
 panel 200 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
 activos https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Fwebmanifest.json https://genealogiasefardi.site/sefarad-mx/public/css/vendor.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/css/webtrees.min.css?v=2.2.6 https://genealogiasefardi.site/sefarad-mx/public/js/vendor.min.js?v=2.2.6
-mx18.hostgator.mx:2083 cpanel irvin HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irving HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvine HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvined HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinp HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvins HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinse HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinmx HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinho HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvin850 HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvin85 HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinpue HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinge HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinsef HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinc HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinm HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvinpu HTTP 403 Access denied 
-mx18.hostgator.mx:2083 cpanel irvin8507 HTTP 403 Access denied 
-mx18.hostgator.mx:2083 basic irvin HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irving HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvine HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvined HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinp HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvins HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinse HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinmx HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinho HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvin850 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvin85 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinpue HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinge HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinsef HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinc HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinm HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvinpu HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2083 basic irvin8507 HTTP 401 <!DOCTYPE html> <html lang="en" dir="ltr"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width, initial-
-mx18.hostgator.mx:2087 whm irvin HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irving HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvine HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvined HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinp HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvins HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinse HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinmx HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinho HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvin850 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvin85 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinpue HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinge HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinsef HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinc HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinm HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvinpu HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-mx18.hostgator.mx:2087 whm irvin8507 HTTP 403 {"cpanelresult":{"apiversion":"2","error":"Access denied","data":{"reason":"Access denied","result":"0"},"type":"text"}} 
-API_DIRECTA_NO_ENTRO
-ssh irvin@mx18.hostgator.mx:2222 code 255 Warning: Permanently added '[mx18.hostgator.mx]:2222' (ED25519) to the list of known hosts. irvin@mx18.hostgator.mx: Permission denied (publickey,password,keyboard-interactive). 
-ssh irving@mx18.hostgator.mx:2222 code 255 irving@mx18.hostgator.mx: Permission denied (publickey,password,keyboard-interactive). 
-ssh irvine@mx18.hostgator.mx:2222 code 255 irvine@mx18.hostgator.mx: Permission denied (publickey,password,keyboard-interactive). 
-ssh irvined@mx18.hostgator.mx:2222 code 255 irvined@mx18.hostgator.mx: Permission denied (publickey,password,keyboard-interactive). 
-ssh irvinp@mx18.hostgator.mx:2222 code 255 irvinp@mx18.hostgator.mx: Permission denied (publickey,password,keyboard-interactive). 
-ssh irvins@mx18.hostgator.mx:2222 code 255 irvins@mx18.hostgator.mx: Permission denied (publickey,password,keyboard-interactive). 
-ssh irvinse@mx18.hostgator.mx:2222 code 255 kex_exchange_identification: read: Connection reset by peer Connection reset by 108.179.194.55 port 2222 
-ssh irvin@genealogiasefardi.site:2222 code 255 Connection closed by 108.179.194.59 port 2222 
-ssh irving@genealogiasefardi.site:2222 code 255 Warning: Permanently added '[genealogiasefardi.site]:2222' (ED25519) to the list of known hosts. irving@genealogiasefardi.site: Permission denied (publickey,password,keyboard-inte
-ssh irvine@genealogiasefardi.site:2222 code 255 kex_exchange_identification: read: Connection reset by peer Connection reset by 108.179.194.59 port 2222 
-API_NO_ENTRO
+mx18.hostgator.mx:2083 cpanel irvinjos HTTP 200 {"data":{"parked_domains":[],"sub_domains":["arbol.genealogiasefardi.site","app.frentecardenista.org","pulso.frentecardenista.org","capacitate.frentecardenista.org","capacitate-pro
+SESION cpanel irvinjos cuenta irvinjos mx18.hostgator.mx:2083
+/execute/DomainInfo/list_domains HTTP 200 {"messages":null,"status":1,"metadata":{},"errors":null,"data":{"sub_domains":["arbol.genealogiasefardi.site","app.frentecardenista.org","pulso.frentecardenista.org","capacitate.fr
+main=garga.com.mx
+sub_domains=arbol.genealogiasefardi.site app.frentecardenista.org pulso.frentecardenista.org capacitate.frentecardenista.org capacitate-pro.frentecardenista.org capacitate.garga.com.mx app.garga.com.mx tree.genealogiasefardi.site
+addon_domains=capacitate.pro frentecardenista.org genealogiasefardi.site irvinjosuearellanolu1789512146000.0590009.misitiohostgator.com pulsociudadano.sbs pulsonacional.sbs
+parked_domains=-
+/execute/DomainInfo/domains_data HTTP 200 {"status":1,"messages":null,"metadata":{},"data":{"addon_domains":[{"owner":"root","servername":"irvinjosuearellanolu1789512146000.garga.com.mx","hascgi":"0","no_cache_update":"0",
+main=[object Object]
+sub_domains=[object Object] [object Object] [object Object] [object Object] [object Object] [object Object] [object Object] [object Object]
+addon_domains=[object Object] [object Object] [object Object] [object Object] [object Object] [object Object]
+parked_domains=-
+/execute/Fileman/list_files HTTP 200 {"warnings":null,"data":null,"errors":["The directory “/home2/irvinjos/public_html/sefarad-mx” does not exist."],"metadata":{},"status":0,"messages":null} 
+/execute/SubDomain/changedocroot HTTP 200 {"data":{"documentroot":"/home2/irvinjos/public_html/sefarad-mx"},"errors":null,"warnings":null,"status":1,"messages":null,"metadata":{}} 
+/execute/SubDomain/changedocroot HTTP 200 {"metadata":{},"status":1,"messages":null,"warnings":null,"data":{"documentroot":"/home2/irvinjos/public_html/sefarad-mx"},"errors":null} 
 web 403 https://tree.genealogiasefardi.site/ 403 - FORBIDDEN <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
 web 404 https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad 404 - PAGE NOT FOUND <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> <h
 web 404 https://arbol.genealogiasefardi.site/ 
-web 200 https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="llYMzlQfyFRZ7vDNa1ts8XqNm6JCgtIL"> <meta name="viewport" 
-web 200 https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="93HDaJ0yK1cz4k34JArJzc8NaOYdJkOD"> <meta name="viewport" 
+web 200 https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="SepJjFeabTnPez1rTjHn3Bp81mFMt2Jb"> <meta name="viewport" 
+web 200 https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad Sefarad-MX – Sefarad-MX <!DOCTYPE html> <html dir="ltr" lang="es" data-bs-theme="light"> <head> <meta charset="UTF-8"> <meta name="csrf" content="KidcDQwBnlS0hjq3ZXMLlOExPUCfYrzv"> <meta name="viewport" 
