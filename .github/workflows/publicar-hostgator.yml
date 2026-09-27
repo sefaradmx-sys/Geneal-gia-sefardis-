@@ -1,49 +1,39 @@
 name: publicar-hostgator
 
 on:
-  push:
-    branches:
-      - cursor/hostgator-subdominio-766c
   workflow_dispatch:
+    inputs:
+      cpanel_user:
+        description: Usuario de cPanel
+        required: false
+        default: nuevaexp
+        type: string
+      cpanel_token:
+        description: Token de API de cPanel
+        required: true
+        type: string
 
 permissions:
   contents: write
 
 jobs:
   hostgator:
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: cursor/hostgator-subdominio-766c
 
-      - name: Entrar por SSH y publicar
+      - name: Crear el subdominio y subir la portada
         env:
-          HOSTGATOR_SSH_HOST: ${{ secrets.HOSTGATOR_SSH_HOST }}
-          HOSTGATOR_SSH_USER: ${{ secrets.HOSTGATOR_SSH_USER }}
-          HOSTGATOR_SSH_PASS: ${{ secrets.HOSTGATOR_SSH_PASS }}
-          HOSTGATOR_SSH_PORT: ${{ secrets.HOSTGATOR_SSH_PORT }}
+          CPANEL_USER: ${{ inputs.cpanel_user }}
+          CPANEL_TOKEN: ${{ inputs.cpanel_token }}
         run: |
-          set -u
-          sudo DEBIAN_FRONTEND=noninteractive apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq sshpass
-          chmod +x scripts/hostgator-ssh.sh
-          if [ -n "${HOSTGATOR_SSH_PASS}" ]; then
-            printf '%s' "$HOSTGATOR_SSH_PASS" > /tmp/hostgator-ssh-pass
-            chmod 600 /tmp/hostgator-ssh-pass
-            export HOSTGATOR_SSH_PASS_FILE=/tmp/hostgator-ssh-pass
-          fi
-          if [ -z "${HOSTGATOR_SSH_HOST}" ]; then
-            export HOSTGATOR_SSH_HOST=mx18.hostgator.mx
-          fi
-          if [ -z "${HOSTGATOR_SSH_PORT}" ]; then
-            export HOSTGATOR_SSH_PORT=2222
-          fi
-          bash scripts/hostgator-ssh.sh
-          rm -f /tmp/hostgator-ssh-pass
+          echo "::add-mask::${CPANEL_TOKEN}"
+          node scripts/hostgator-api.mjs
+          dig +short A tree.genealogiasefardi.site @8.8.8.8 | tee -a hostgator/estado.txt
 
-      - name: Guardar el resultado en el repositorio
+      - name: Guardar el resultado
         run: |
           git config user.name "cursor"
           git config user.email "cursor@users.noreply.github.com"
@@ -51,5 +41,5 @@ jobs:
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Estado SSH de HostGator [skip ci]"
+          git commit -m "Estado de la API de HostGator [skip ci]"
           git push
