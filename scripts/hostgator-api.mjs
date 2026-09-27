@@ -583,6 +583,7 @@ async function subirInvestigacion(session) {
   const home = "/home2/irvinjos/genealogiasefardi.site";
   const files = [
     [home, "censo.php", "censo.php"],
+    [home, "consulta.php", "consulta.php"],
     [`${home}/views/home`, "landing.php", "landing.php"],
     [`${home}/views`, "layout.php", "layout.php"],
     [`${home}/public/assets`, "investigar.css", "investigar.css"],
@@ -632,6 +633,10 @@ async function main() {
   const portada = await peek(`https://${site}/`);
   note(portada.includes("Censo histórico por municipio") ? "PORTADA_NUEVA" : "PORTADA_VIEJA");
   note(portada.includes("familysearch.org") ? "FAMILYSEARCH_EN_PORTADA" : "FAMILYSEARCH_AUSENTE");
+  const consulta = await peek(`https://${site}/consulta.php?apellido=Toledano&lugar=Tetuan`);
+  note(consulta.includes('"conectadas":') ? "API_CONSULTA" : "API_SIN_CONSULTA");
+  const conectadas = consulta.match(/"conectadas":\s*(\d+)/);
+  if (conectadas) note(`API_CONECTADAS ${conectadas[1]}`);
   await peek(`https://${site}/censo.php?accion=municipios&q=monterrey`);
   await peek(`https://${site}/censo.php?accion=municipio&cve=19039`);
   await peek(`https://${site}/censo.php?accion=ficha&cve=190390001`);

@@ -189,8 +189,91 @@ function iniciar() {
     if (event.target.id !== "busqueda-viva") return;
     event.preventDefault();
     pintarFuentes();
-    window.open(familySearch(), "_blank", "noopener");
+    consultar();
   });
+}
+
+function linea(texto) {
+  return texto ? " · " + texto : "";
+}
+
+function pintarResultados(data) {
+  const caja = document.querySelector("#resultados");
+  if (!caja) return;
+  caja.replaceChildren();
+  const resumen = document.createElement("p");
+  resumen.textContent = "Los servidores contestaron con " + (data.conectadas || 0) + " fuentes para «" + (data.consulta || "esta consulta") + "».";
+  caja.appendChild(resumen);
+  if (data.inegi) {
+    const ficha = data.inegi;
+    const estado = estados[ficha.entidad] || "";
+    const bloque = document.createElement("article");
+    const titulo = document.createElement("h3");
+    titulo.textContent = "INEGI · " + ficha.nombre + (estado ? ", " + estado : "");
+    bloque.appendChild(titulo);
+    const cifras = document.createElement("p");
+    const poblacion = ficha.poblacion ? Number(ficha.poblacion).toLocaleString("es-MX") : "sin cifra";
+    const hombres = ficha.hombres ? Number(ficha.hombres).toLocaleString("es-MX") : "—";
+    const mujeres = ficha.mujeres ? Number(ficha.mujeres).toLocaleString("es-MX") : "—";
+    const viviendas = ficha.viviendas ? Number(ficha.viviendas).toLocaleString("es-MX") : "—";
+    cifras.textContent = "Población " + poblacion + ". Hombres " + hombres + ". Mujeres " + mujeres + ". Viviendas habitadas " + viviendas + ". Estas cifras las devolvió el catálogo del INEGI.";
+    bloque.appendChild(cifras);
+    caja.appendChild(bloque);
+    const municipio = document.querySelector("#municipio");
+    if (municipio) municipio.value = ficha.nombre;
+    pintarFicha({
+      entidad: ficha.entidad,
+      nombre: ficha.nombre,
+      cabecera: ficha.nombre,
+      poblacion: ficha.poblacion,
+      ficha: ficha.ficha
+    });
+  }
+  for (const fuente of data.fuentes || []) {
+    const bloque = document.createElement("article");
+    const titulo = document.createElement("h3");
+    titulo.textContent = fuente.nombre;
+    bloque.appendChild(titulo);
+    if (!fuente.registros || !fuente.registros.length) {
+      const vacio = document.createElement("p");
+      vacio.textContent = fuente.ok ? "Ese servidor contestó y no trajo fichas para esta consulta." : "Ese servidor no contestó en esta consulta.";
+      bloque.appendChild(vacio);
+    } else {
+      const lista = document.createElement("ul");
+      for (const registro of fuente.registros) {
+        const item = document.createElement("li");
+        const fuerte = document.createElement("strong");
+        fuerte.textContent = registro.titulo;
+        item.appendChild(fuerte);
+        const extra = document.createElement("span");
+        extra.textContent = linea(registro.fecha) + linea(registro.lugar);
+        item.appendChild(extra);
+        if (registro.detalle) {
+          const detalle = document.createElement("p");
+          detalle.textContent = registro.detalle;
+          item.appendChild(detalle);
+        }
+        lista.appendChild(item);
+      }
+      bloque.appendChild(lista);
+    }
+    caja.appendChild(bloque);
+  }
+}
+
+async function consultar() {
+  const caja = document.querySelector("#resultados");
+  if (caja) caja.textContent = "Consultando los servidores…";
+  const url = new URL("/consulta.php", location.origin);
+  const nombre = valor("#nombre");
+  const apellido = valor("#apellido");
+  const lugar = lugarConsulta();
+  if (nombre) url.searchParams.set("nombre", nombre);
+  if (apellido) url.searchParams.set("apellido", apellido);
+  if (lugar) url.searchParams.set("lugar", lugar);
+  const respuesta = await fetch(url);
+  const data = await respuesta.json();
+  pintarResultados(data);
 }
 
 iniciar();
