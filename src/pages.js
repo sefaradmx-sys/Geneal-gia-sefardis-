@@ -1,4 +1,5 @@
 import { listPersons, recordsForPerson, spousesOf } from "./db.js";
+import { SEFARAD_TREE_URL, sourceLinks, TREE_SUBDOMAIN } from "./links.js";
 import { sourceCatalog } from "./sources.js";
 import { ancestorNode, descendantTree, earliestAncestor, generationColumns } from "./tree.js";
 
@@ -38,7 +39,16 @@ function sexLabel(sex) {
   }
 }
 
-function layout({ title, body, treeHost, active }) {
+function sourceLinkHtml(links) {
+  return links
+    .map(
+      (link) =>
+        `<a class="source-link" data-fuente="${esc(link.id)}" href="${esc(link.href)}" rel="noopener noreferrer">${esc(link.label)}</a>`,
+    )
+    .join("");
+}
+
+function layout({ title, body, treeHost, active, script = "" }) {
   const treeHref = treeHost ? "/" : "/arbol";
   const homeHref = treeHost ? "https://genealogiasefardi.site/" : "/";
   const item = (href, id, label) =>
@@ -72,14 +82,16 @@ function layout({ title, body, treeHost, active }) {
       ${item(homeHref, "inicio", "Inicio")}
       ${item("/buscar", "buscar", "Registros")}
       ${item(treeHref, "arbol", "Árbol")}
+      ${item(SEFARAD_TREE_URL, "sefarad", "Sefarad")}
       ${item("/lugares", "lugares", "Lugares")}
       ${item("/fuentes", "fuentes", "Fuentes")}
     </nav>
   </header>
   <main id="contenido">${body}</main>
   <footer>
-    <p>Cada búsqueda se guarda en la base del archivo. Los enlaces a FamilySearch, PARES, INEGI y el resto de portales abren la fuente oficial; no son partidas transcritas aquí.</p>
+    <p>El sitio principal está en HostGator. Cada búsqueda se guarda en el archivo y abre la misma consulta en FamilySearch, INEGI, PARES, Historypin y el árbol <a href="${esc(SEFARAD_TREE_URL)}">sefarad-mx</a>.</p>
   </footer>
+  ${script ? `<script src="${esc(script)}"></script>` : ""}
 </body>
 </html>`;
 }
@@ -96,19 +108,38 @@ function personLine(person) {
   </a>`;
 }
 
-export function pageHome({ treeHost, stats, people }) {
+export function pageHome({ treeHost, stats, people, places }) {
+  const sources = sourceLinkHtml(sourceLinks());
+  const archiveTree = treeHost ? "/" : "/arbol";
   const body = `
     <section class="hero-search">
-      <p class="kicker">Archivo</p>
+      <p class="kicker">Sitio principal · HostGator</p>
       <h1>Busca una persona, un registro o un lugar</h1>
-      <p class="lede">Los árboles están en <a href="${treeHost ? "/" : "/arbol"}">la página del árbol</a> (<span class="host">tree.genealogiasefardi.site</span>). Cada búsqueda queda guardada en la base de datos.</p>
-      <form class="search-grid" method="get" action="/buscar">
+      <p class="lede">La búsqueda guarda la consulta en el archivo y abre la misma persona en FamilySearch, los censos del INEGI, el Archivo Histórico Nacional, el Archivo General de Indias, Historypin, WikiTree y VIAF. El árbol publicado sigue en este servidor: <a href="${esc(SEFARAD_TREE_URL)}">sefarad-mx</a>.</p>
+      <ol class="flow">
+        <li><a href="#busqueda-principal"><span>1</span> Búsqueda</a></li>
+        <li><a href="/buscar"><span>2</span> Archivo</a></li>
+        <li><a href="${esc(SEFARAD_TREE_URL)}"><span>3</span> Árbol Sefarad</a></li>
+        <li><a href="/lugares"><span>4</span> Lugares</a></li>
+        <li><a href="/fuentes"><span>5</span> Fuentes</a></li>
+      </ol>
+      <form class="search-grid" id="busqueda-principal" method="get" action="/buscar">
         <label>Nombre <input name="nombre" autocomplete="given-name" /></label>
         <label>Apellido <input name="apellido" autocomplete="family-name" /></label>
         <label>Lugar <input name="lugar" /></label>
         <label>Año <input name="ano" inputmode="numeric" maxlength="4" /></label>
-        <button type="submit">Buscar en el archivo</button>
+        <button type="submit">Buscar y guardar</button>
       </form>
+      <div class="source-links" aria-label="Fuentes conectadas">
+        ${sources}
+      </div>
+      <p class="actions">
+        <a class="button" href="${esc(SEFARAD_TREE_URL)}">Abrir el árbol Sefarad</a>
+        <a class="button button-quiet" href="${archiveTree}">Árbol del archivo</a>
+      </p>
+      <aside class="callout">
+        <strong>${esc(TREE_SUBDOMAIN)}</strong> se asigna en cPanel de HostGator a la carpeta <code>public_html/sefarad-mx</code>, la misma donde ya está el árbol.
+      </aside>
       <dl class="stats">
         <div><dt>Personas</dt><dd>${stats.persons}</dd></div>
         <div><dt>Registros</dt><dd>${stats.records}</dd></div>
@@ -118,24 +149,17 @@ export function pageHome({ treeHost, stats, people }) {
     </section>
     <section class="split">
       <article>
-        <h2>Cómo investigar</h2>
-        <ol class="steps">
-          <li>Busca el apellido en el archivo local y en las fuentes conectadas.</li>
-          <li>Incorpora al árbol solo el registro que reconozcas.</li>
-          <li>Abre el árbol para ver padres, cónyuges e hijos.</li>
-        </ol>
-      </article>
-      <article>
-        <h2>Añadir una persona</h2>
-        <p>Si la persona todavía no está en ninguna fuente, créala en el archivo. Después enlaza padres, cónyuge e hijos.</p>
+        <h2>Personas en el archivo</h2>
+        <div class="stack">${people.slice(0, 20).map(personLine).join("")}</div>
         <p><a class="button" href="/persona/nueva">Nueva persona</a></p>
       </article>
-    </section>
-    <section class="panel">
-      <h2>Personas en el archivo</h2>
-      <div class="stack">${people.slice(0, 20).map(personLine).join("")}</div>
+      <article>
+        <h2>Lugares con pin</h2>
+        ${mapSvg(places)}
+        <p><a href="/lugares">Abrir el mapa completo</a></p>
+      </article>
     </section>`;
-  return layout({ title: "Inicio", body, treeHost, active: "inicio" });
+  return layout({ title: "Inicio", body, treeHost, active: "inicio", script: "/inicio.js" });
 }
 
 export function pageSearch(result, { treeHost, csrf }) {
@@ -189,13 +213,16 @@ export function pageSearch(result, { treeHost, csrf }) {
     <section class="panel">
       <p class="kicker">Búsqueda ${result.searchId} guardada</p>
       <h1>${esc(result.label)}</h1>
-      <form class="search-grid compact" method="get" action="/buscar">
+      <form class="search-grid compact" id="busqueda-principal" method="get" action="/buscar">
         <label>Nombre <input name="nombre" value="${esc(q.givenName)}" /></label>
         <label>Apellido <input name="apellido" value="${esc(q.surname)}" /></label>
         <label>Lugar <input name="lugar" value="${esc(q.place)}" /></label>
         <label>Año <input name="ano" value="${esc(q.year)}" /></label>
         <button type="submit">Buscar de nuevo</button>
       </form>
+      <div class="source-links" aria-label="La misma consulta en las fuentes">
+        ${sourceLinkHtml(sourceLinks(q))}
+      </div>
     </section>
     <section class="panel">
       <h2>Personas en el archivo</h2>
@@ -224,7 +251,7 @@ export function pageSearch(result, { treeHost, csrf }) {
           : ""
       }
     </section>`;
-  return layout({ title: result.label, body, treeHost, active: "buscar" });
+  return layout({ title: result.label, body, treeHost, active: "buscar", script: "/inicio.js" });
 }
 
 function fact(label, value) {
@@ -247,7 +274,11 @@ export function pagePerson(person, { db, treeHost, csrf }) {
         ${fact("Defunción", [person.death_date, person.death_place].filter(Boolean).join(", "))}
       </dl>
       ${person.notes ? `<p>${esc(person.notes)}</p>` : ""}
-      <p><a class="button" href="${treeHost ? `/?persona=${person.id}` : `/arbol?persona=${person.id}`}">Ver en el árbol</a></p>
+      <p class="actions">
+        <a class="button" href="${treeHost ? `/?persona=${person.id}` : `/arbol?persona=${person.id}`}">Ver en el árbol del archivo</a>
+        <a class="button button-quiet" href="${esc(SEFARAD_TREE_URL)}">Ver en el árbol Sefarad</a>
+        <a href="/buscar?apellido=${encodeURIComponent(person.surname)}">Buscar el apellido</a>
+      </p>
     </section>
     <section class="split">
       <article>
@@ -367,8 +398,9 @@ export function pageTree(db, focusId, { treeHost }) {
   const action = treeHost ? "/" : "/arbol";
   const body = `
     <section class="panel">
-      <p class="kicker">${treeHost ? "tree.genealogiasefardi.site" : "Árbol"}</p>
+      <p class="kicker">${treeHost ? TREE_SUBDOMAIN : "Árbol del archivo"}</p>
       <h1>Árbol genealógico</h1>
+      <p class="tree-banner">El árbol publicado en HostGator es <a href="${esc(SEFARAD_TREE_URL)}">sefarad-mx / sefarad</a>. Esta vista es la del archivo local, con las personas y parentescos guardados aquí. El subdominio ${esc(TREE_SUBDOMAIN)} corresponde a la carpeta <code>public_html/sefarad-mx</code>.</p>
       <form class="inline-form" method="get" action="${action}">
         <label>Persona de referencia
           <select name="persona">${options}</select>

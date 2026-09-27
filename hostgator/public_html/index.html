@@ -4,9 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Genealogía Sefardí</title>
+    <meta name="description" content="Archivo genealógico sefardí en HostGator: búsqueda, fuentes y el árbol sefarad-mx." />
     <link rel="stylesheet" href="./estilos.css" />
   </head>
   <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
     <header class="site-header">
       <a class="brand" href="./">
         <span class="brand-mark">GS</span>
@@ -14,16 +16,23 @@
       </a>
       <nav>
         <a class="active" href="./">Inicio</a>
-        <a href="https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
+        <a href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
         <a href="#lugares">Lugares</a>
         <a href="#fuentes">Fuentes</a>
       </nav>
     </header>
     <main id="contenido">
       <section class="hero-search">
-        <p class="kicker">Sitio principal</p>
+        <p class="kicker">Sitio principal · HostGator</p>
         <h1>Busca una persona, un registro o un lugar</h1>
-        <p class="lede">El sitio principal está en HostGator. Esta búsqueda conecta el apellido con FamilySearch, los censos del INEGI, el Archivo Histórico Nacional, el Archivo General de Indias e Historypin. El árbol publicado está en <a href="https://genealogiasefardi.site/sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">sefarad-mx</a>. El subdominio tree.genealogiasefardi.site se asigna a esa misma carpeta.</p>
+        <p class="lede">Esta portada vive en el mismo HostGator que el árbol. La búsqueda abre FamilySearch, los censos del INEGI, el Archivo Histórico Nacional, el Archivo General de Indias, Historypin, WikiTree y VIAF, y lleva al árbol publicado en sefarad-mx.</p>
+        <ol class="flow">
+          <li><a href="#busqueda"><span>1</span> Búsqueda</a></li>
+          <li><a href="#fuentes"><span>2</span> Fuentes</a></li>
+          <li><a href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad"><span>3</span> Árbol Sefarad</a></li>
+          <li><a href="#lugares"><span>4</span> Lugares</a></li>
+          <li><a href="https://tree.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad"><span>5</span> Subdominio</a></li>
+        </ol>
         <form class="search-grid" id="busqueda">
           <label>Nombre <input name="nombre" /></label>
           <label>Apellido <input name="apellido" value="Toledano" /></label>
@@ -31,30 +40,36 @@
           <label>Año <input name="ano" maxlength="4" /></label>
           <button type="submit">Buscar en las fuentes</button>
         </form>
+        <div class="source-links" id="fuentes-lista" aria-label="Fuentes conectadas"></div>
+        <p class="actions">
+          <a class="button" href="./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Abrir el árbol Sefarad</a>
+        </p>
+        <aside class="callout">
+          <strong>tree.genealogiasefardi.site</strong> se crea en cPanel y su carpeta es <code>public_html/sefarad-mx</code>, donde ya está el árbol.
+        </aside>
         <div id="resultado" class="stack"></div>
-      </section>
-      <section class="panel" id="fuentes">
-        <h2>Fuentes conectadas</h2>
-        <div class="source-links" id="fuentes-lista"></div>
       </section>
       <section class="split">
         <article>
-          <h2>Personas en el archivo</h2>
+          <h2>Personas de demostración</h2>
           <div class="stack" id="personas"></div>
         </article>
         <article id="lugares">
           <h2>Lugares con pin</h2>
           <svg class="map" viewBox="0 0 800 360" role="img" aria-label="Mapa de lugares">
             <rect width="800" height="360"></rect>
-            <a href="https://www.openstreetmap.org/?mlat=35.589&mlon=-5.363#map=10/35.589/-5.363"><circle cx="388.1" cy="108.8" r="5"></circle><text x="396" y="103">Tetuán</text></a>
-            <a href="https://www.openstreetmap.org/?mlat=35.760&mlon=-5.834#map=10/35.760/-5.834"><circle cx="387.0" cy="108.5" r="5"></circle><text x="395" y="102">Tánger</text></a>
-            <a href="https://www.openstreetmap.org/?mlat=36.141&mlon=-5.354#map=10/36.141/-5.354"><circle cx="388.1" cy="107.7" r="5"></circle><text x="396" y="102">Gibraltar</text></a>
-            <a href="https://www.openstreetmap.org/?mlat=-34.604&mlon=-58.382#map=10/-34.604/-58.382"><circle cx="270.3" cy="249.2" r="5"></circle><text x="278" y="243">Buenos Aires</text></a>
-            <a href="https://www.openstreetmap.org/?mlat=19.433&mlon=-99.133#map=10/19.433/-99.133"><circle cx="179.7" cy="141.1" r="5"></circle><text x="188" y="135">Ciudad de México</text></a>
+            <a href="https://www.historypin.org/en/search?q=Tetu%C3%A1n"><circle cx="388.1" cy="108.8" r="5"></circle><text x="396" y="103">Tetuán</text></a>
+            <a href="https://www.historypin.org/en/search?q=T%C3%A1nger"><circle cx="387.0" cy="108.5" r="5"></circle><text x="395" y="102">Tánger</text></a>
+            <a href="https://www.historypin.org/en/search?q=Gibraltar"><circle cx="388.1" cy="107.7" r="5"></circle><text x="396" y="102">Gibraltar</text></a>
+            <a href="https://www.historypin.org/en/search?q=Buenos%20Aires"><circle cx="270.3" cy="249.2" r="5"></circle><text x="278" y="243">Buenos Aires</text></a>
+            <a href="https://datos.gob.mx/busca/dataset?q=censo%20poblaci%C3%B3n%20Ciudad%20de%20M%C3%A9xico"><circle cx="179.7" cy="141.1" r="5"></circle><text x="188" y="135">Ciudad de México</text></a>
           </svg>
         </article>
       </section>
     </main>
+    <footer>
+      <p id="fuentes">HostGator sirve esta portada y el árbol sefarad-mx. Los enlaces abren la fuente oficial; no son partidas transcritas aquí.</p>
+    </footer>
     <script>
       const personas = [
         ["Abraham Toledano", "1780", "Tetuán, Marruecos"],
@@ -70,15 +85,18 @@
       ];
       const caja = document.querySelector("#personas");
       for (const [nombre, ano, lugar] of personas) {
-        const row = document.createElement("div");
+        const row = document.createElement("a");
         row.className = "person-row";
+        row.href = "./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
         row.innerHTML = "<span><strong></strong> <em class=\"demo\">demostración</em></span><small></small>";
         row.querySelector("strong").textContent = nombre;
         row.querySelector("small").textContent = ano + " · " + lugar;
         caja.appendChild(row);
       }
 
+      const arbol = "./sefarad-mx/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad";
       const fuentes = [
+        ["Árbol Sefarad", () => arbol],
         ["FamilySearch", (v) => {
           const url = new URL("https://www.familysearch.org/search/record/results");
           if (v.nombre) url.searchParams.set("q.givenName", v.nombre);
@@ -90,7 +108,20 @@
         ["INEGI censos", (v) => "https://datos.gob.mx/busca/dataset?q=" + encodeURIComponent("censo población " + (v.lugar || "México"))],
         ["Archivo Histórico Nacional", (v) => "https://pares.mcu.es/ParesBusquedas20/catalogo/search?q=" + encodeURIComponent([v.nombre, v.apellido, v.lugar, "Archivo Histórico Nacional"].filter(Boolean).join(" "))],
         ["Archivo General de Indias", (v) => "https://pares.mcu.es/ParesBusquedas20/catalogo/search?q=" + encodeURIComponent([v.nombre, v.apellido, v.lugar, "Archivo General de Indias"].filter(Boolean).join(" "))],
-        ["Historypin", (v) => "https://www.historypin.org/en/search?q=" + encodeURIComponent(v.lugar || [v.nombre, v.apellido].filter(Boolean).join(" "))]
+        ["Historypin", (v) => "https://www.historypin.org/en/search?q=" + encodeURIComponent(v.lugar || [v.nombre, v.apellido].filter(Boolean).join(" ") || "sefardi")],
+        ["WikiTree", (v) => {
+          const url = new URL("https://www.wikitree.com/wiki/Special:SearchPerson");
+          if (v.nombre) url.searchParams.set("g", v.nombre);
+          if (v.apellido) url.searchParams.set("s", v.apellido);
+          if (v.lugar) url.searchParams.set("b", v.lugar);
+          return url.toString();
+        }],
+        ["VIAF", (v) => {
+          const url = new URL("https://viaf.org/viaf/search");
+          const texto = [v.nombre, v.apellido, v.lugar, v.ano].filter(Boolean).join(" ") || "sefardi";
+          url.searchParams.set("query", 'local.personalNames all "' + texto + '"');
+          return url.toString();
+        }]
       ];
 
       function valores() {
@@ -114,23 +145,12 @@
           const a = document.createElement("a");
           a.className = "source-link";
           a.href = href(v);
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
+          if (!a.href.includes("sefarad-mx")) {
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+          }
           a.textContent = nombre;
           lista.appendChild(a);
-          const item = document.createElement("article");
-          item.className = "hit";
-          const h3 = document.createElement("h3");
-          h3.textContent = nombre;
-          const p = document.createElement("p");
-          const link = document.createElement("a");
-          link.href = a.href;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          link.textContent = "Abrir con esta búsqueda";
-          p.appendChild(link);
-          item.append(h3, p);
-          resultado.appendChild(item);
         }
         if (guardadas.length) {
           const nota = document.createElement("p");
@@ -139,6 +159,7 @@
         }
       }
 
+      document.querySelector("#busqueda").addEventListener("input", pintar);
       document.querySelector("#busqueda").addEventListener("submit", (event) => {
         event.preventDefault();
         const v = valores();

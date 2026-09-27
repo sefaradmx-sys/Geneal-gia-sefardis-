@@ -128,9 +128,10 @@ async function dispatch(req, res, ctx) {
   const { session, cookieHeader } = ensureSession(req, ctx.sessions);
   const view = { treeHost };
 
-  if (req.method === "GET" && pathName === "/estilos.css") {
-    const css = fs.readFileSync(STYLES);
-    send(res, 200, css, { type: "text/css; charset=utf-8" });
+  if (req.method === "GET" && (pathName === "/estilos.css" || pathName === "/inicio.js")) {
+    const file = pathName === "/estilos.css" ? STYLES : path.join(__dirname, "..", "public", "inicio.js");
+    const type = pathName === "/estilos.css" ? "text/css; charset=utf-8" : "text/javascript; charset=utf-8";
+    send(res, 200, fs.readFileSync(file), { type });
     return;
   }
 
@@ -260,7 +261,12 @@ async function dispatch(req, res, ctx) {
   }
 
   if (req.method === "GET" && pathName === "/") {
-    send(res, 200, pageHome({ ...view, stats: counts(ctx.db), people: listPersons(ctx.db) }), { cookie: cookieHeader });
+    send(res, 200, pageHome({
+      ...view,
+      stats: counts(ctx.db),
+      people: listPersons(ctx.db),
+      places: listPlaces(ctx.db),
+    }), { cookie: cookieHeader });
     return;
   }
 
