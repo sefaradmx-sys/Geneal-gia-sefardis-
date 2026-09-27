@@ -13,7 +13,24 @@ const site = "genealogiasefardi.site";
 const docroot = "public_html/sefarad-mx";
 const treeRoute = "/sefarad-mx/tree/sefarad";
 const hosts = ["mx18.hostgator.mx", "108.179.194.59", site];
-const fallbackUsers = ["nuevaexp", "genealog", "sefarad", "geneal", "sefaradm", "sefaradmx"];
+const fallbackUsers = [
+  "nuevaexp",
+  "genealog",
+  "sefarad",
+  "geneal",
+  "sefaradm",
+  "sefaradmx",
+  "edgarpue",
+  "cardenas",
+  "juanmanu",
+  "sefardi",
+  "sefardis",
+  "gsefardi",
+  "genealogi",
+  "puente85",
+  "edgar850",
+  "jmcarden",
+];
 const lines = [`fecha=${new Date().toISOString()}`];
 
 function redact(text) {
@@ -134,6 +151,16 @@ async function discoverUsers() {
     if (preset) found.push(preset);
   } catch (error) {
     note(`panel red ${error.name}`);
+  }
+  const treePage = `https://arbol.${site}/index.php?route=${encodeURIComponent(treeRoute)}`;
+  try {
+    const response = await fetch(treePage, { signal: AbortSignal.timeout(20000), headers: { "User-Agent": "genealogia" } });
+    const text = await response.text();
+    for (const match of text.matchAll(/\/home\/([a-z][a-z0-9]{2,16})\//g)) found.push(match[1]);
+    const assets = [...text.matchAll(/(?:src|href)="([^"]+\.(?:js|css)[^"]*)"/g)].slice(0, 4).map((match) => match[1]);
+    note(`activos ${assets.join(" ") || "-"}`);
+  } catch (error) {
+    note(`arbol red ${error.name}`);
   }
   return [...new Set(found)];
 }

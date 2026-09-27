@@ -29,7 +29,7 @@ jobs:
 
       - name: Entrar a cPanel con el token
         env:
-          CPANEL_TOKEN: ""
+          CPANEL_TOKEN: "VVXE2X59Y3POB5DFL8VH9ZR53JAGGO1L"
           CPANEL_USER: ""
           HOSTGATOR_KEY_B64: ""
           HOSTGATOR_KEY_PASSPHRASE: ""
