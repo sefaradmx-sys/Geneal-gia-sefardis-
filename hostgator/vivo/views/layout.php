@@ -38,6 +38,7 @@ $isPublic = !empty($public) || $isPublicAuth;
   <script type="application/ld+json"><?= $jsonLd /* pre-encoded JSON */ ?></script>
   <?php endif; ?>
   <link rel="stylesheet" href="<?= e(asset('app.css')) ?>">
+  <link rel="stylesheet" href="/public/assets/investigar.css">
 </head>
 <body class="<?= $isPublic && !$currentUser ? 'public-body' : '' ?>">
 <?php if ($isPublicAuth): ?>
@@ -59,6 +60,7 @@ $isPublic = !empty($public) || $isPublicAuth;
         <a href="/sources">Fuentes</a>
         <a href="/memories">Memorias</a>
         <a href="/proof-chains">Pruebas</a>
+        <a href="/#censos">Censos</a>
         <a href="/search">Buscar</a>
         <?php if (Auth::canEdit()): ?><a href="/panel/import">Importar</a><?php endif; ?>
         <a href="/archivo">Archivo</a>
@@ -70,14 +72,15 @@ $isPublic = !empty($public) || $isPublicAuth;
         </form>
       <?php else: ?>
         <a href="/">Inicio</a>
+        <a href="/#censos">Censos</a>
+        <a href="/#fuentes">Fuentes</a>
+        <a href="https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol</a>
         <a href="/archivo">Archivo</a>
-        <a href="https://genealogiasefardi.site/sefarad-mx/">Sefarad-MX</a>
-        <a href="/search">Buscar</a>
         <a href="/biografias">Biografías</a>
         <a href="/registro">Registro</a>
         <a href="/login">Entrar</a>
       <?php endif; ?>
-    <a href="/archivo.html">Archivo nuevo</a></nav>
+    </nav>
   </div>
 </header>
 <main class="wrap<?= !empty($public) && ($title ?? '') === 'Inicio' ? ' wrap-landing' : '' ?>">
@@ -98,5 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+<script src="/public/assets/investigar.js" defer></script>
 </body>
 </html>

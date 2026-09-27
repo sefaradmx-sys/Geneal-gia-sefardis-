@@ -1,53 +1,43 @@
-<section class="landing-hero">
-  <div class="landing-hero-inner">
-    <p class="eyebrow">Archivo documental · evidencia primero</p>
-    <h1>Genealogía Sefardí</h1>
-    <p class="lede">Reconstruya su linaje con fuentes compartidas, cadenas de prueba y un árbol propio — registro gratuito.</p>
-    <form class="landing-search" method="get" action="/search" role="search">
-      <label class="sr-only" for="landing-q">Buscar en Genealogía Sefardí</label>
-      <input id="landing-q" type="search" name="q" placeholder="Buscar Garza Falcón, un apellido, un año…" autocomplete="off">
-      <button type="submit" class="btn btn-lg">Buscar</button>
-    </form>
-    <div class="landing-ctas">
-      <a class="btn btn-lg" href="/registro">Registro gratis</a>
-      <a class="btn btn-lg btn-outline-light" href="/login">Iniciar sesión</a>
-      <a class="btn btn-lg btn-outline-light" href="/archivo">Ver archivo de pruebas</a>
-    </div>
+<div class="investigar" id="investigar">
+  <p class="kicker">Genealogía Sefardí</p>
+  <h1>Investiga un nombre y el censo de su municipio</h1>
+  <p class="lede">La misma consulta abre FamilySearch, el Archivo Histórico Nacional, el Archivo General de Indias, Historypin, WikiTree y VIAF. El censo histórico del INEGI se ve aquí, según el municipio.</p>
+  <form class="consulta" id="busqueda-viva">
+    <label>Nombre <input id="nombre" name="nombre" autocomplete="given-name"></label>
+    <label>Apellido <input id="apellido" name="apellido" autocomplete="family-name"></label>
+    <label>Lugar <input id="lugar" name="lugar" placeholder="Municipio, estado"></label>
+    <label>Año <input id="ano" name="ano" inputmode="numeric" maxlength="4" placeholder="1930"></label>
+    <button type="submit">Buscar en FamilySearch</button>
+  </form>
+  <div class="fuentes-vivas" id="fuentes">
+    <a id="fuente-familysearch" href="https://www.familysearch.org/search/record/results?q.any=sefardi">FamilySearch</a>
+    <a id="fuente-inegi" href="#censos">Censo INEGI</a>
+    <a id="fuente-ahn" href="https://pares.mcu.es/ParesBusquedas20/catalogo/search?q=sefardi%20Archivo%20Hist%C3%B3rico%20Nacional">Archivo Histórico Nacional</a>
+    <a id="fuente-agi" href="https://pares.mcu.es/ParesBusquedas20/catalogo/search?q=sefardi%20Archivo%20General%20de%20Indias">Archivo General de Indias</a>
+    <a id="fuente-historypin" href="https://www.historypin.org/en/search?q=sefardi">Historypin</a>
+    <a id="fuente-wikitree" href="https://www.wikitree.com/wiki/Special:SearchPerson">WikiTree</a>
+    <a id="fuente-viaf" href="https://viaf.org/viaf/search?query=local.personalNames%20all%20%22sefardi%22">VIAF</a>
+    <a id="fuente-arbol" href="https://arbol.genealogiasefardi.site/index.php?route=%2Fsefarad-mx%2Ftree%2Fsefarad">Árbol Sefarad</a>
+    <a id="fuente-archivo" href="/search">Buscar en este archivo</a>
   </div>
-</section>
 
-<section class="landing-section">
-  <div class="features-grid">
-    <article class="feature-card">
-      <h2>Árbol</h2>
-      <p>Cada usuario posee su propio árbol de personas. Defina la raíz y explore el pedigree con control de propiedad.</p>
-    </article>
-    <article class="feature-card">
-      <h2>Fuentes compartidas</h2>
-      <p>Publique evidencias como compartidas o de archivo para que toda la comunidad registrada las cite — estilo archivo colaborativo.</p>
-    </article>
-    <article class="feature-card">
-      <h2>Cadenas de prueba</h2>
-      <p>Enlace documentos a afirmaciones genealógicas. Separe lo <em>probado</em> de lo <em>pendiente</em>.</p>
-    </article>
-  </div>
-</section>
-
-<section class="landing-section">
-  <div class="two-col">
-    <div class="card">
-      <h2>Archivo público de pruebas</h2>
-      <p>Consulte imágenes y PDFs marcados como compartidos o de archivo, sin iniciar sesión.</p>
-      <p><?php if (!empty($archiveCount)): ?><span class="badge"><?= (int)$archiveCount ?> documentos</span><?php endif; ?></p>
-      <a class="btn" href="/archivo">Explorar archivo</a>
+  <section id="censos">
+    <h2>Censo histórico por municipio</h2>
+    <p>Escribe el municipio. Al elegirlo aparece la ficha del INEGI con los censos de esa cabecera, y el enlace a las imágenes del padrón de 1930 en FamilySearch.</p>
+    <div class="panel-censo">
+      <div class="censo-busqueda">
+        <label>Municipio <input id="municipio" placeholder="Ejemplo: Monterrey"></label>
+        <div class="lista-municipios" id="lista-municipios"></div>
+      </div>
+      <div class="visor">
+        <p class="ficha-meta" id="ficha-meta">Elige un municipio para ver la ficha censal.</p>
+        <p class="anios" id="anios-censo"></p>
+        <p><a class="accion secundaria" id="imagen-familysearch" hidden href="https://www.familysearch.org/search/collection/1307314">Ver las imágenes del censo de 1930 en FamilySearch</a></p>
+        <iframe id="ficha-censo" title="Ficha censal del INEGI" src="about:blank"></iframe>
+      </div>
     </div>
-    <div class="card">
-      <h2>Biografías citables</h2>
-      <p>Fichas públicas de figuras del linaje, con filiación documentada y bloque «Cómo citar».</p>
-      <a class="btn btn-outline" href="/biografias">Ver biografías</a>
-    </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <?php if (!empty($featuredBios)): ?>
 <section class="landing-section">
@@ -63,10 +53,3 @@
   </div>
 </section>
 <?php endif; ?>
-
-<section class="landing-section about-block">
-  <div class="card">
-    <h2>Sobre el proyecto</h2>
-    <p>Genealogía Sefardí es un archivo de trabajo propio: prioriza documentos, citas y honestidad sobre afirmaciones sin prueba. Marca claramente lo probado y lo pendiente. No está afiliado a FamilySearch ni reproduce sus marcas.</p>
-  </div>
-</section>
